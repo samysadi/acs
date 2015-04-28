@@ -11,7 +11,7 @@ supervision of Belabbas Yagoubi (byagoubi at gmail).
 ACS' code is published under the [GNU General Public License, version 3](http://www.gnu.org/licenses/gpl.txt)
 
 # Downloads
-ACS' Jar file can be downloaded [from here](http://samysadi.github.com/acs/releases).
+ACS' Jar file can be downloaded [from here](http://github.com/samysadi/acs/releases).
 
 Sample configuration file can be found [here](http://github.com/samysadi/acs/releases).
 
