@@ -13,17 +13,17 @@ ACS' code is published under the [GNU General Public License, version 3](http://
 # Downloads
 ACS' Jar file can be downloaded [from here](http://samysadi.github.com/acs/releases).
 
-Sample configuration file can be found [here](http://samysadi.github.com/acs/releases).
+Sample configuration file can be found [here](http://github.com/samysadi/acs/releases).
 
 # Documentation
-The Html java documentation can be found [here](http://samysadi.github.io/acs/doc).
+The Html java documentation can be found [here](http://github.io/samysadi/acs/doc).
 
 # Contributing
 We accept Pull Requests. Please use [developer mailing list][ml] as the main channel of communication for contributors.
 
 Also make sure to respect the next guidelines:
 + Respect the code style.
-+ The simpler diffs the better. For instance make sure the code was not reformatted.
++ The simpler diffs the better. For instance, make sure the code was not reformatted.
 + Create separate PR for code reformatting.
 + Make sure your changes does not break anything in existing code. In particular, make sure the existing junit tests can complete successfully.
 
