@@ -1,0 +1,10 @@
+bin
+.classpath
+html
+javadoc.xml
+.project
+.settings
+TODO
+var
+etc/*
+!etc/config.sample
