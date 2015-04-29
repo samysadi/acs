@@ -10,6 +10,16 @@ supervision of Belabbas Yagoubi (byagoubi at gmail).
 # License
 ACS' code is published under the [GNU General Public License, version 3](http://www.gnu.org/licenses/gpl.txt)
 
+Moreover, the source and binary forms of ACS are subject to the following
+citation license. By downloading ACS, you agree to cite [the following paper describing ACS](#papers) and all relevant papers listed in the package citations here
+in any kind of material you produce where ACS was used to conduct search or experimentation, whether
+be it a research paper, dissertation, article, poster, presentation, 
+or documentation.
+
+## Papers <a name="papers"></a>
++ Samy Sadi and Belabbas Yagoubi, "ACS - Advanced Cloud Simulator: A Discrete Event Based Simulator for Cloud Computing Environments", 
+In Proceedings of ICNAS'2015, Annaba, Algeria. ISBN 978-9931-9142-0-4.
+
 # Downloads
 ACS' Jar file can be downloaded [from here](http://github.com/samysadi/acs/releases).
 
