@@ -26,7 +26,7 @@ ACS' Jar file can be downloaded [from here](http://github.com/samysadi/acs/relea
 Sample configuration file can be found [here](http://github.com/samysadi/acs/releases).
 
 # Documentation
-The Html java documentation can be found [here](http://github.io/samysadi/acs/doc).
+The Html java documentation can be found [here](http://samysadi.github.io/acs/javadoc/).
 
 # Contributing
 We accept Pull Requests. Please use [developer mailing list][ml] as the main channel of communication for contributors.
