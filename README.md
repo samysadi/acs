@@ -29,7 +29,7 @@ Sample configuration file can be found [here](http://github.com/samysadi/acs/rel
 The Html java documentation can be found [here](http://samysadi.github.io/acs/javadoc/).
 
 # Contributing
-We accept Pull Requests. Please use [developer mailing list][ml] as the main channel of communication for contributors.
+We accept Pull Requests. Please use the [google group](https://groups.google.com/d/forum/acs-ml) <acs-ml@googlegroups.com> as the main channel of communication for contributors.
 
 Also make sure to respect the next guidelines:
 + Respect the code style.
