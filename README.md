@@ -17,8 +17,8 @@ be it a research paper, dissertation, article, poster, presentation,
 or documentation.
 
 ## Papers <a name="papers"></a>
-+ Samy Sadi and Belabbas Yagoubi, "ACS - Advanced Cloud Simulator: A Discrete Event Based Simulator for Cloud Computing Environments", 
-In Proceedings of ICNAS'2015, Annaba, Algeria. ISBN 978-9931-9142-0-4.
++ Samy Sadi and Belabbas Yagoubi : Acs - advanced cloud simulator: A discrete event based simulator for cloud computing environments.
+In: 2nd International Conference on Networking and Advanced Systems. ICNAS 2015. pp. 11–16 (2015). ISBN 978-9931-9142-0-4.
 
 # Downloads
 ACS' Jar file can be downloaded [from here](http://github.com/samysadi/acs/releases).
