@@ -102,7 +102,7 @@ Download the configuration sample file (see downloads section) and unzip it some
 <p>Create a new class and write the following code:</p>
 
 <div class="highlight highlight-java"><pre>    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> main(<span class="pl-k">String</span>[] args) throws <span class="pl-smi">Exception</span> {
-        <span class="pl-smi">Simulator</span> simulator <span class="pl-k">=</span> <span class="pl-smi">FactoryUtils</span><span class="pl-k">.</span>generateSimulator(<span class="pl-s"><span class="pl-pds">"</span>C:<span class="pl-cce">\\</span>acs<span class="pl-cce">\\</span>config<span class="pl-cce">\\</span>main.config<span class="pl-pds">"</span></span>); <span class="pl-c">//assuming this is the path where you have extracted the downloaded configuration</span>
+        <span class="pl-smi">Simulator</span> simulator <span class="pl-k">=</span> <span class="pl-smi">FactoryUtils</span><span class="pl-k">.</span>generateSimulator(<span class="pl-s"><span class="pl-pds">"</span>C:<span class="pl-cce">\\</span>acs<span class="pl-cce">\\</span>config<span class="pl-cce">\\</span>main.xml<span class="pl-pds">"</span></span>); <span class="pl-c">//assuming this is the path where you have extracted the downloaded configuration</span>
         simulator<span class="pl-k">.</span>start();
     }</pre></div>
 
@@ -149,7 +149,7 @@ Such implementation will look something like this:</p>
 
 <p>Configuration files can be used to modify different simulation parameters
 as the network topology, the number of hosts, the configuration of those hosts and so forth.
-They can also be used to define user behaviours by generating different workloads.</p>
+They can also be used to define user behaviors by generating different workloads.</p>
 
 <p>In another hand, you can also define which output you want to generate (and where you want the output to be saved)
 using configuration files.</p>
