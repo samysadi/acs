@@ -33,8 +33,6 @@ import com.samysadi.acs.virtualization.job.operation.provisioner.InfiniteProvisi
 
 /**
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class InfiniteStorageProvisioner extends InfiniteProvisioner<StorageOperation, StorageResource> 

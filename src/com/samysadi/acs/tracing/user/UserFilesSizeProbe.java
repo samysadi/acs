@@ -41,8 +41,6 @@ import com.samysadi.acs.utility.NotificationCodes;
 /**
  * Does not include virtual storages.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class UserFilesSizeProbe extends AbstractProbe<Long> implements DataSizeProbe {

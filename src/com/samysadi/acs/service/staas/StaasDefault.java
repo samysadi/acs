@@ -51,8 +51,6 @@ import com.samysadi.acs.utility.factory.Factory;
  * <p>You should create your own implementation if you need more replicas per file, and 
  * add listeners in order to keep consistency.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class StaasDefault extends EntityImpl implements Staas {

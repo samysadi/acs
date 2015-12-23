@@ -27,8 +27,6 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 /**
  * This package contains miscellaneous utility classes of the simulator.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 package com.samysadi.acs.utility;

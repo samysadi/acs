@@ -48,8 +48,6 @@ import com.samysadi.acs.core.tracing.Probe;
  * 
  * <p><tt>0x80XXXXXX</tt> notification codes are reserved for core package.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class CoreNotificationCodes {

@@ -46,8 +46,6 @@ import com.samysadi.acs.utility.NotificationCodes;
  * This should only happen if one of the 
  * operations makes a bad implementation of {@link SynchronizableOperation}.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class OperationSynchronizer extends NotificationListener {

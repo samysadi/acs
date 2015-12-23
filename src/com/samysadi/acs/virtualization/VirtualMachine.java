@@ -65,8 +65,6 @@ import com.samysadi.acs.virtualization.job.Job;
  * <p>A {@link User} may own the VM.
  * 
  * <p>
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface VirtualMachine extends Entity, RunnableEntity {

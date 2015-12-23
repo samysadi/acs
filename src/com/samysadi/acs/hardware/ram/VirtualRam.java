@@ -30,8 +30,6 @@ import com.samysadi.acs.hardware.misc.VirtualMemoryUnit;
 
 /**
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface VirtualRam extends Ram, RamZone, VirtualMemoryUnit<RamZone, Ram> {

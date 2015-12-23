@@ -45,8 +45,6 @@ import com.samysadi.acs.virtualization.VirtualMachine;
  * <p><b>Note</b> you cannot migrate a virtual machine that is already being migrated, 
  * if you try to do so an IllegalArgumentException is thrown.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface MigrationHandler extends Entity {

@@ -40,8 +40,6 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
 
 /**
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class JobMipsProbe extends AbstractProbe<Long> implements MipsProbe {

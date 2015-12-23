@@ -41,8 +41,6 @@ import com.samysadi.acs.utility.NotificationCodes;
 /**
  * This class defines a Operation that uses a {@link LongResource}.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class LongOperationImpl<Resource extends LongResource> extends OperationImpl<Resource> {

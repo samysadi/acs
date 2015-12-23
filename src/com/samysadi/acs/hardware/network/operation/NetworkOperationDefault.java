@@ -48,8 +48,6 @@ import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
  * <p>Make sure that the {@link RoutingProtocol} on the host of the parent job's VM is not <tt>null</tt> or a
  * NullPointerException will be thrown whenever you try to start this operation.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class NetworkOperationDefault extends LongOperationImpl<NetworkResource> implements NetworkOperation, SynchronizableOperation<NetworkResource> {

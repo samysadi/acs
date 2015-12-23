@@ -49,8 +49,6 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
  * <p>You need to define the file to read, and the remote job that will read the file
  * using appropriate tasks.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class ReadFileTask extends TaskImpl {

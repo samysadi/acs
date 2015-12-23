@@ -40,8 +40,6 @@ import com.samysadi.acs.core.notifications.CoreNotificationCodes;
  * 
  * <p>Default failure state when instantiating a new object which implements this class is {@link FailureState#OK}.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface FailureProneEntity extends Entity {

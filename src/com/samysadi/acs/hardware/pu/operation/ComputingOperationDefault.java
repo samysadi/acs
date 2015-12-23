@@ -42,8 +42,6 @@ import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
  * <p>Make sure the parent job's VM has a non <tt>null</tt> {@link PuAllocator} or a
  * NullPointerException will be thrown whenever you try to start this operation.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class ComputingOperationDefault extends LongOperationImpl<ComputingResource> implements ComputingOperation, SynchronizableOperation<ComputingResource> {

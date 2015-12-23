@@ -61,8 +61,6 @@ import com.samysadi.acs.utility.NotificationCodes;
  *			The Network Interface linking has changed.
  * </ul>
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface RoutingProtocol extends Entity {

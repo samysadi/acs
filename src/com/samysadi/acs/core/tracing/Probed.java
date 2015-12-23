@@ -33,8 +33,6 @@ import java.util.Collection;
  * one or multiple probes, and defines methods to add/remove probes and
  * to access those probes.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface Probed {

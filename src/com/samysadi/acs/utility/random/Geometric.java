@@ -33,8 +33,6 @@ import com.samysadi.acs.core.Simulator;
 /**
  * For more details on the implementation, refer to the cumulative distribution function in <a href="http://en.wikipedia.org/wiki/Geometric_distribution">wikipedia</a>.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class Geometric extends AbstractRandom {

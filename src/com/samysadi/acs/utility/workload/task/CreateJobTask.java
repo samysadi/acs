@@ -38,8 +38,6 @@ import com.samysadi.acs.virtualization.job.Job;
  * in one of the current user's VMs.<br/>
  * The created job is defined as the current workload's remote job.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class CreateJobTask extends TaskImpl {

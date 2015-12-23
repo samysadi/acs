@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is the main configuration file of the simulator.
+	############################################################################
+	Use the reserved "include" tag to include an other configuration file. You
+	can also use relative paths which are resolved based on the current
+	configuration file.
+
+	Tags starting with
+	Use the reserved "context" key to define a context for next configurations.
+	All further configuration keys are assumed to be in the given context.
+	Moreover, included configuration files will be included under the given
+	context.
+	The $ symbol in context names is automatically replaced with a number which
+	is equal to 0 when the context is used for the first time, and it is
+	incremented each time the context is used again.
+	When context names starts with the @ symbol, then this symbol is replaced
+	with the current context.
+	When context names starts with the % symbol, then this symbol is replaced
+	with the parent context.
+
+	Use the reserved "remove_config" key to remove a given configuration.
+	Use regular expressions to remove multiple configurations, or to remove
+	whole context configurations.  
+	############################################################################ -->
+<config>
+	<!-- include classes configuration file -->
+	<include>classes.xml</include>
+
+	<!-- Maximum simulation run time in seconds before simulation is automatically stopped (if omitted, default is 0). Set to 0 for infinity. -->
+	<!-- <MaximumRunTime>360.0</MaximumRunTime> -->
+
+	<!-- Random seed, give explicit seed value or set to "auto" to use a new seed per simulation (if omitted, default is 0) -->
+	<seed>0</seed>
+
+	<!-- Set custom var directory -->
+	<!-- <VarDirectory>/my/own/path</VarDirectory> -->
+
+	<Failures>
+		<!-- Set to 0 to disable failure generation  (if omitted, default is 1) -->
+		<Enabled>1</Enabled>
+	</Failures>
+
+	
+	<CloudProvider>
+		<!-- Specifies how many CloudProvider to generate -->
+		<Count>1</Count>
+	</CloudProvider>
+
+	<!-- Adds a cloud provider configuration -->
+	<AddCloudProvider><include>cloudproviders/cloudprovider0.xml</include></AddCloudProvider>
+	
+</config>

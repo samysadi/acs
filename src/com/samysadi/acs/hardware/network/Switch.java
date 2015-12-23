@@ -30,8 +30,6 @@ package com.samysadi.acs.hardware.network;
  * A switch is a {@link NetworkDevice} that connects one or more
  * devices between each other.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface Switch extends NetworkDevice {

@@ -49,8 +49,6 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
  * <p>You need to define the file to write, and the remote job that will write the file
  * using appropriate tasks.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class WriteFileTask extends TaskImpl {

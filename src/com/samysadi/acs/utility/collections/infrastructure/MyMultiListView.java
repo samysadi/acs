@@ -33,8 +33,6 @@ import com.samysadi.acs.utility.collections.AbstractMultiListView;
 
 /**
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 abstract class MyMultiListView<E> extends AbstractMultiListView<E> {

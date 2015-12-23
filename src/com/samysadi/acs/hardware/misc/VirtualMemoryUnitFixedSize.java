@@ -33,8 +33,6 @@ package com.samysadi.acs.hardware.misc;
  * <p>A fixed-size VirtualMemoryUnit immediately allocates its capacity on the parent MemoryUnit.<br/>
  * So, if you create a 5GB virtual Memory Unit and only use 3GB, then 5GB are still allocated on the parent MemoryUnit.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class VirtualMemoryUnitFixedSize<Zone extends MemoryZone, Unit extends MemoryUnit<Zone>> extends VirtualMemoryUnitImpl<Zone, Unit>  {

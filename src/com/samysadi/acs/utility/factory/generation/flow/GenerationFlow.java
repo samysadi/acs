@@ -35,8 +35,6 @@ package com.samysadi.acs.utility.factory.generation.flow;
  * <p>Factories that need to generate entities gradually as the simulation runs
  * may use this interface.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface GenerationFlow extends Cloneable {

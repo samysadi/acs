@@ -39,8 +39,6 @@ import com.samysadi.acs.utility.random.Uniform;
  * This TopologyFactory can be used to generated a given number of hosts that are all
  * interconnected.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class TopologyFactoryFlat extends TopologyFactory {

@@ -39,8 +39,6 @@ package com.samysadi.acs.core.event;
  * 
  * <p>Make your events implement this interface if you want to make them dispensable.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface DispensableEvent extends Event {

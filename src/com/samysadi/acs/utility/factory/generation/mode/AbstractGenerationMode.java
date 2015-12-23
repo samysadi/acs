@@ -37,15 +37,13 @@ import com.samysadi.acs.core.Config;
  * are determined as follows.
  * 
  * <p>It is assumed that all configuration candidates are put under the same configuration.<br/>
- * Each candidate's context contains two String parts. A fixed prefix which is the same between
- * all other candidates. And, an integer suffix that distinguish it between other candidates.<br/>
+ * Each candidate's context contains two String parts. A fixed prefix which is the same among
+ * all other candidates. And, an integer suffix that distinguish it among other candidates.<br/>
  * For example, multiple host configurations maybe named: <i>Host0</i>, <i>Host1</i>, <i>Host2</i> ...
  * 
  * <p>When instantiating this class, all configuration candidates are determined and put under
  * a list which is accessible by subclasses using the protected <tt>configurations</tt> field.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class AbstractGenerationMode implements GenerationMode {
@@ -60,16 +58,14 @@ public abstract class AbstractGenerationMode implements GenerationMode {
 		this.configurations = new ArrayList<Config>();
 
 		int i = 0;
-		while (true) {
-			Config cfg = getConfig().addContext(context + i);
-			if (cfg.isEmpty())
-				break;
+		while (getConfig().hasContext(context, i)) {
+			Config cfg = getConfig().addContext(context, i);
 			this.configurations.add(cfg);
 			i++;
 		}
 
 		if (i == 0)
-			this.configurations.add(getConfig().addContext(context + i)); //make sure we have at least one config
+			this.configurations.add(getConfig().addContext(context, i)); //make sure we have at least one config
 	}
 
 	public Config getConfig() {

@@ -40,10 +40,8 @@ import com.samysadi.acs.utility.random.Exponential;
 
 /**
  * This implementation generates failures and reparations with a {@link Exponential} probability
- * for each {@link FailureProneEntity} based the <tt>mtbf</tt> and <tt>mtbr</tt> in their configuration.
+ * for each {@link FailureProneEntity} based the <tt>mtbf</tt> and <tt>mttr</tt> in their configuration.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class FailuresFactoryDefault extends FailuresFactory {
@@ -125,14 +123,14 @@ public class FailuresFactoryDefault extends FailuresFactory {
 			return;
 		if (fp.getConfig() != null) {
 			//configuration value is in hours
-			long mtbr = fp.getConfig().getLong("Mtbr", 0l) * Simulator.HOUR;
-			if (mtbr != 0) {
+			long mttr = fp.getConfig().getLong("Mttr", 0l) * Simulator.HOUR;
+			if (mttr != 0) {
 				Event event = (Event) fp.getProperty(PROP_FAILURE_EVENT);
 				if (event != null)
 					event.cancel();
 				event = new RepairEventImpl(fp);
 				fp.setProperty(PROP_FAILURE_EVENT, event);
-				Simulator.getSimulator().schedule((new Exponential(mtbr)).nextLong(), event);
+				Simulator.getSimulator().schedule((new Exponential(mttr)).nextLong(), event);
 			}
 		}
 	}

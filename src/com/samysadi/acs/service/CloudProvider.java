@@ -46,8 +46,6 @@ import com.samysadi.acs.utility.collections.infrastructure.Rack;
  * A cloud provider is the entity that provides infrastructure and
  * services to the users.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface CloudProvider extends Entity {

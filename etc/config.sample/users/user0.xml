@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sample User configuration -->
+<config>
+	<Name></Name>
+
+	<ThinClient>
+		<!-- Specifies how many thin clients to generate -->
+		<!-- Note that other thin clients may be generated using appropriate workload tasks  -->
+		<Count>1</Count>
+	</ThinClient>
+
+	<VirtualMachine>
+		<!-- Specifies how many VMs to generate -->
+		<!-- Note that other VMs may be generated using appropriate workload tasks -->
+		<Count>1</Count>
+		<FlowInitialDelay>0</FlowInitialDelay>
+		<FlowInitialCount>0</FlowInitialCount>
+		<!-- FlowMeanTime defines when the user asks to deploy a new VM -->
+		<!-- Zero FlowMeanTime means that all VMs (as specified by Count) are deployed immediately -->
+		<FlowMeanTime>0</FlowMeanTime>
+	</VirtualMachine>
+
+	<!-- Adds a VM configuration -->
+	<AddVirtualMachine><include>../virtualmachines/virtualmachine0.xml</include></AddVirtualMachine>
+
+	<Workload>
+		<Count>1</Count>
+		<FlowInitialDelay>0</FlowInitialDelay>
+		<FlowInitialCount>0</FlowInitialCount>
+		<!-- FlowMeanTime defines when a new workload is initiated -->
+		<!-- Zero FlowMeanTime means that all Workloads (as specified by Count) are immediately initiated -->
+		<FlowMeanTime>0</FlowMeanTime>
+	</Workload>
+	
+
+	<!-- Adds a Workload configuration -->
+	<AddWorkload><include>../workloads/workload0.xml</include></AddWorkload>
+
+	<!-- The next lines will generate UserBilling trace  -->
+	<AddTrace>
+		<Probe>UserBilling</Probe>
+		<!-- leave Output commented so the trace will be saved in the ./var folder. Or Specify your own folder. Use - for console. -->
+		<!--<Output>-</Output>-->
+	</AddTrace>
+</config>

@@ -36,8 +36,6 @@ import com.samysadi.acs.hardware.network.operation.provisioner.NetworkProvisione
  * <p>All implementation classes should provide a constructor with two {@link NetworkInterface} arguments
  * that defines the link's end points.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface NetworkLink extends Entity {

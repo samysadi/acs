@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sample configuration for a hierarchical topology -->
+<config>
+	<TopologyFactory_Class>com.samysadi.acs.utility.factory.TopologyFactoryHierarchical</TopologyFactory_Class>
+
+	<!-- include hosts configurations -->
+	<include>hosts/all.xml</include>
+
+	<AddLayer><include>hierarchical/layer0.xml</include></AddLayer>
+	<AddLayer><include>hierarchical/layer1.xml</include></AddLayer>
+	<AddLayer><include>hierarchical/layer2.xml</include></AddLayer>
+
+	<InternetLayer><include>default/internetlayer.xml</include></InternetLayer>
+</config>

@@ -69,8 +69,6 @@ import com.samysadi.acs.core.Config;
  * 	</mfrac>
  * </math>
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class FrequencyGenerationMode extends AbstractGenerationMode {

@@ -52,8 +52,6 @@ import com.samysadi.acs.core.Simulator;
 /**
  * Run with <tt>junit</tt>.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 @RunWith(AllTests.Runner.class)

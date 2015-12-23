@@ -38,8 +38,6 @@ import com.samysadi.acs.utility.collections.Bitmap;
  * 
  * <p>This class only allows you to set basic meta-data. You are free to create subclasses to add extra fields.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class MetaData implements Cloneable {

@@ -37,8 +37,6 @@ import com.samysadi.acs.virtualization.job.operation.provisioner.Provisioner;
  * type specifies the induced latency when using the provisioner. The last specified the
  * induced loss rate.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface NetworkProvisioner extends Provisioner<NetworkOperation, NetworkResource> {

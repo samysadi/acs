@@ -35,8 +35,6 @@ import com.samysadi.acs.virtualization.job.operation.provisioner.Provisioner;
  * All implementation classes should provide a constructor with one argument
  * of <tt>long</tt> type that specifies the provisioner's capacity.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface ComputingProvisioner extends Provisioner<ComputingOperation, ComputingResource> {

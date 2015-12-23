@@ -36,8 +36,6 @@ import com.samysadi.acs.core.notifications.NotifierImpl;
 /**
  * <b>Note:</b>This implementation also extends {@link NotifierImpl}.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class ProbedImpl extends NotifierImpl implements Probed {

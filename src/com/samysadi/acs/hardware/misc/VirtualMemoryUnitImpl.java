@@ -33,8 +33,6 @@ import com.samysadi.acs.utility.collections.Bitmap;
 
 /** 
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class VirtualMemoryUnitImpl<Zone extends MemoryZone, Unit extends MemoryUnit<Zone>> extends MemoryUnitImpl<Zone> implements VirtualMemoryUnit<Zone, Unit> {

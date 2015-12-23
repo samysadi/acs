@@ -67,8 +67,6 @@ import com.samysadi.acs.virtualization.VirtualMachine;
  * <li><b>IsStorageUsed</b> a boolean indicating whether the checkpoint is stored on
  * disk storage or directly in memory. Default value is <tt>false</tt>.
  * </ul>
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class CheckpointDefault extends CheckpointAbstract {

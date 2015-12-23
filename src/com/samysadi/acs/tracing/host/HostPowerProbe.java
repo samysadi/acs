@@ -58,8 +58,6 @@ import com.samysadi.acs.utility.NotificationCodes;
  * The power usage of a host at a given moment is then:<br/>
  * <math><mi>P</mi><mo>=</mo><msub><mi>P</mi><mi>idle</mi></msub><mo>+</mo><mo>(</mo><msub><mi>P</mi><mi>busy</mi></msub><mo>-</mo><msub><mi>P</mi><mi>idle</mi></msub><mo>)</mo><mi>u</mi></math>
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class HostPowerProbe extends AbstractProbe<Long> implements PowerProbe {

@@ -36,8 +36,6 @@ import com.samysadi.acs.utility.workload.Workload;
  * Frees a maximum of the given <i>Size</i> in {@link Simulator#MEBIBYTE}
  * in the Ram.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class FreeRamTask extends TaskImpl {

@@ -39,8 +39,6 @@ import com.samysadi.acs.core.Simulator;
  * 
  * <p>This implementation does not make any verification regarding if the underlying list is modified.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class ShuffledIterator<T> implements Iterator<T> {

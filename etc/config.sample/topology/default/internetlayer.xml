@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sample internet layer configuration -->
+<config>
+	<Name></Name>
+
+	<Switch>
+		<Name>Core</Name>
+		<Count>2</Count>
+		<Mtbf></Mtbf>
+		<Mttr></Mttr>
+	</Switch>
+
+	<NetworkInterface>
+		<Name></Name>
+		<Mtbf></Mtbf>
+		<Mttr></Mttr>
+		<MaxUploadBw>50</MaxUploadBw>
+		<MaxDownloadBw>50</MaxDownloadBw>
+	</NetworkInterface>
+
+	<NetworkLink>
+		<LengthMin>100000</LengthMin>
+		<LengthMax>10000000</LengthMax>
+		<LossRateMin></LossRateMin>
+		<LossRateMax></LossRateMax>
+	</NetworkLink>
+</config>

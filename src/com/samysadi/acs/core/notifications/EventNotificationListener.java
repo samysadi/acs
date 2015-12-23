@@ -37,8 +37,6 @@ import com.samysadi.acs.core.event.Event;
  * add an instance of this class to the simulator to listen for the appropriate notification code
  * ({@link CoreNotificationCodes#SIMULATOR_EVENT_PROCESSED}).
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class EventNotificationListener extends NotificationListener {

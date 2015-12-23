@@ -40,8 +40,6 @@ import com.samysadi.acs.virtualization.VirtualMachine;
  * The host is chosen according to the best fit method.<br/>
  * If none is found then a new host is powered on.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class VmPlacementPolicyBestFit extends VmPlacementPolicyAbstract {

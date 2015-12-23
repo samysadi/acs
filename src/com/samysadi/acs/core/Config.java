@@ -26,24 +26,35 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.core;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
-import java.util.Properties;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * This class is used to keep different configuration values
- * usually read from a configuration file.
+ * This class is used to keep configuration values that can be fetch from a configuration file.
  * 
  * <p>Configuration values are contexted.
  * You can get an instance of {@link Config} containing only 
@@ -52,79 +63,44 @@ import java.util.regex.PatternSyntaxException;
  * Note that contexted instances are transparently cached by this implementation. And modifications
  * to any instance will reflect on the parent/children instances.
  * 
- * <p>There are multiple get and set method to access and modify configuration values (String, Boolean, Short, 
+ * <p>There are multiple get and set methods to access and modify configuration values (String, Boolean, Short, 
  * Integer, Long, Float, Double).<br/>
  * These methods will only operate in the current context. Though, for get methods you can
  * set a recursive flag in order to look for a configuration value in parent contexts when
  * the configuration value is not present in current context.
  * 
  * <p><u><b>Configuration File Format:</b></u><br/>
- * The configuration is a text file that contains a {@code NAME=VALUE} pair on each line.<br/>
- * For each configuration file, we associate a load context that defines
- * the default context of all the configuration values in that file.
- * This default context can be modified using appropriate directives (see below). But
- * all modifications will ensure that the new context is equal to or is a sub context of the file's load context.
+ * The configuration can be read from a xml file where tags define configuration names (i.e. keys), and tag contents define the configuration values.
+ * Each configuration can have an id attribute which is used to refer back to it (in order to remove for instance).<br/>
+ * When defining children elements, their context will be defined using the context and the configuration name of their parent element.
+ * So, for instance, if an element {@code A} in the context {@code C} has a child {@code B}, then the context of {@code B} will be {@code C.A}.<br/> 
  * 
- * <p>Configuration values are defined using a {@code NAME=VALUE} line.<br/>
- * The NAME part of the line defines the configuration value name which may be split into one or more contexts.
- * The VALUE part contains the string representation of the configuration value.<br/>
- * <u>For example:</u><br/>
- * {@code CloudProvider0.User0.Budget=500}<br/>
- * Tells that the configuration named {@code "CloudProvider0.User0.Budget"}
- * has a value of 500.
- * The dot (.) can be used to determine configuration contexts.
- * You could use any of these next forms to access the previous configuration value:<ul>
- * <li>{@code config.getInt("CloudProvider0.User0.Budget")};
- * <li>{@code config.addContext("CloudProvider0").getInt("User0.Budget")};
- * <li>{@code config.addContext("CloudProvider0").addContext("User0").getInt("Budget")};
- * <li>{@code config.addContext("CloudProvider0.User0").getInt("Budget")}.
+ * <p>We define some special tags that cannot be used as configuration names. These are listed in the following:
+ * <ul>
+ * <li><b>&lt;include&gt;</b> includes another configuration file in the current context. If the filename is not absolute,
+ * the file is searched in the same directory as the current configuration file. Also, relative paths are determined based on the directory
+ * of the current configuration file.
+ * <li><b>&lt;AddFoo&gt;</b> adds a configuration named Foo in the current context. This configuration does not replace existing configurations named Foo.
+ * Instead, we keep a counter internally so that when you call multiple AddFoo, we actually create Foo#0, Foo#1, ... etc.
+ * If you want to create the configuration Foo, then use directly the tag &lt;Foo&gt;.
+ * <li><b>&lt;RemoveFoo&gt;</b> removes the configuration named Foo (or Foo#n where n is a number) in the current context. You must give its id using the id attribute.
+ * if you use the wildcard (*) value for the id attribute, then all configurations in the current context whose name starts with Foo are removed.
+ * <li><b>&lt;Remove&gt;</b> same as &lt;RemoveFoo&gt; but applies for all configurations in the current context independently from their name.
  * </ul>
- * Note that some configuration names are reserved and are described below.
  * 
- * <p>Lines starting with a {@code #} are comment lines, and are ignored.
- * 
- * <p>Lines starting with {@code context=}, {@code context=@} or {@code context=%} are special directives
- * that defines the current context. All next configuration values are put under the given context.<ul>
- * <li>{@code context=} computes the current context by appending
- * the given context to the load context of the configuration file (which is empty by default);
- * <li>{@code context=@} computes the current context by appending the given context to the previous 
- * context of the configuration file;
- * <li>{@code context=%} computes the current context by appending the given context to the
- * parent context of the previous context of the configuration file.
- * </ul>
- * When using these directives, a {@code $} can be used at the end of context name to
- * ask the configuration file loader to replace it with a number that is automatically incremented
- * starting from 0.
- * 
- * <p>Lines starting with <i>include=</i> are special directives that asks to include
- * another configuration file.<br/>
- * The load context of the configuration file is 
- * set to the current context.<br/>
- * You can use relative paths when including the configuration file. The path is resolving
- * using the current configuration file path as base path.
- * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class Config {
-	public final static String DEFAULT_CONFIG_FILENAME = checkConfigFilename(System.getProperty("acs.config", "./etc/config/main.config"));
+	public final static String DEFAULT_CONFIG_FILENAME = checkConfigFilename(System.getProperty("acs.config", "./etc/config/main.xml"));
 
-	public static final String INCLUDE_KEY = "include";
-	public static final String CONTEXT_KEY = "context";
-	public static final String REMOVE_CONFIG_KEY = "remove_config";
 	public static final char CONTEXT_SEPARATOR = '.';
-	public static final char CONTEXT_VAR_SYMBOL = '$';
-	private static final Pattern CONTEXT_VAR_SYMBOL_PATTERN = Pattern.compile("" + CONTEXT_VAR_SYMBOL, Pattern.LITERAL);
-	public static final char CONTEXT_CURRENT_SYMBOL = '@';
-	private static final Pattern CONTEXT_CURRENT_SYMBOL_PATTERN = Pattern.compile(Pattern.quote("" + CONTEXT_CURRENT_SYMBOL) + 
-			"(" + Pattern.quote("" + CONTEXT_SEPARATOR) + ")*");
-	public static final char CONTEXT_PARENT_SYMBOL = '%';
-	private static final Pattern CONTEXT_PARENT_SYMBOL_PATTERN = Pattern.compile(Pattern.quote("" + CONTEXT_PARENT_SYMBOL) + 
-			"(" + Pattern.quote("" + CONTEXT_SEPARATOR) + ")*");
+	public static final char CONTEXT_ARRAY_SEPARATOR = '#';
 
 	private final HashMap<String, Object> config;
 	private final WeakHashMap<String, WeakReference<Config>> contextsCache;
+	/**
+	 * Current context of the Config. Either empty (""), or ending with CONTEXT_SEPARATOR
+	 */
 	private final String context;
 
 	private static String checkConfigFilename(String filename) {
@@ -132,7 +108,7 @@ public class Config {
 			try {
 				File file = (new File(filename)).getCanonicalFile();
 				if (file.isDirectory()) {
-					file = new File(file, "main.config");
+					file = new File(file, "main.xml");
 					if (!file.isFile())
 						return filename;
 				}
@@ -166,21 +142,23 @@ public class Config {
 		super();
 		this.config = config.config;
 		this.contextsCache = config.contextsCache;
-		this.context = trimContext(context) + CONTEXT_SEPARATOR;
+		String c = trimContext(context);
+		this.context = c.isEmpty() ? "" : c + CONTEXT_SEPARATOR;
 	}
 
-	private Config getConfigForContext(String context) {
-		context = trimContext(context);
-		if (!context.isEmpty())
-			context += CONTEXT_SEPARATOR;
-
-		if (context.equals(this.context))
+	/**
+	 * 
+	 * @param stdContext Must contain a trailing {@link Config#CONTEXT_SEPARATOR} (if not empty).
+	 * @return a config with the given context
+	 */
+	private Config getConfigForContext(String stdContext) {
+		if (stdContext.equals(this.context))
 			return this;
 
-		WeakReference<Config> w = this.contextsCache.get(context);
+		WeakReference<Config> w = this.contextsCache.get(stdContext);
 		Config r = null;
 		if (w == null || ((r=w.get()) == null)) {
-			r = new Config(this, context);
+			r = new Config(this, stdContext);
 			this.contextsCache.put(r.context, new WeakReference<Config>(r));
 		}
 
@@ -188,16 +166,36 @@ public class Config {
 	}
 
 	public Config addContext(String context) {
-		return getConfigForContext(this.context + trimContext(context));
+		context = trimContext(context);
+		if (!context.isEmpty())
+			context += CONTEXT_SEPARATOR;
+		return getConfigForContext(this.context + context);
 	}
 
-	private static String getParentContext(String context) {
-		if (context.isEmpty())
+	public Config addContext(String context, int index) {
+		return addContext(context + CONTEXT_ARRAY_SEPARATOR + String.valueOf(index));
+	}
+
+	public boolean hasContext(String context) {
+		return getConfig(context, null) != null;
+	}
+
+	public boolean hasContext(String context, int index) {
+		return getConfig(context + CONTEXT_ARRAY_SEPARATOR + String.valueOf(index), null) != null;
+	}
+
+	/**
+	 * 
+	 * @param stdContext Must contain a trailing {@link Config#CONTEXT_SEPARATOR} (if not empty).
+	 * @return parent context with a trailing {@link Config#CONTEXT_SEPARATOR} (if not empty).
+	 */
+	private static String getParentContext(String stdContext) {
+		if (stdContext.isEmpty())
 			return null;
-		int p = context.lastIndexOf(CONTEXT_SEPARATOR, context.length() - 2);
+		int p = stdContext.lastIndexOf(CONTEXT_SEPARATOR, stdContext.length() - 2);
 		if (p < 0)
 			return "";
-		return context.substring(0, p+1);
+		return stdContext.substring(0, p+1);
 	}
 
 	public Config parentContext() {
@@ -230,158 +228,10 @@ public class Config {
 			}
 	
 			if (!includeConfigFile(mainDir, filename, this.context)) {
-				getLogger().log(Level.SEVERE, "Cannot load the configuration file: " + filename);
+				//
 			} else
 				setString("ConfigDirectory", mainDir.getAbsolutePath());
 		}
-	}
-
-	protected boolean includeConfigFile(File baseDir, String filename, final String loadContext, final HashMap<String, Integer> contextVars) {
-		if (filename == null)
-			return false;
-		final File f;
-		{
-			File ff = new File(filename);
-			if ((baseDir != null) && !ff.isAbsolute()) {
-				ff = new File(baseDir, ff.getPath());
-			}
-			try {
-				ff = ff.getCanonicalFile();
-			} catch (IOException e) {
-				return false;
-			}
-			f = ff;
-		}
-		
-		final File newBaseDir = f.getParentFile();
-		try {
-			FileInputStream fis = new FileInputStream(f);
-			try {
-				@SuppressWarnings("serial")
-				Properties p = new Properties() {
-					String ctx = "";
-					@Override
-					public synchronized Object put(Object key, Object value) {
-						if (key == null)
-							return null;
-						if (value == null)
-							value = ""; //do not allow null values
-						if (INCLUDE_KEY.equals(key)) {
-							if (!Config.this.includeConfigFile(newBaseDir, value.toString(), loadContext + ctx, contextVars))
-								Config.this.getLogger().log(Level.SEVERE, f.getPath() + ": Cannot include file: \"" + value.toString() + "\".");
-							return null;
-						} else if (CONTEXT_KEY.equals(key)) {
-							String newCtx = trimContext(value.toString());
-							if (!newCtx.isEmpty()) {
-								int i;
-
-								i = newCtx.lastIndexOf(CONTEXT_CURRENT_SYMBOL);
-								if (i > 0) {
-									Config.this.getLogger().log(Level.SEVERE, f.getPath() + ": " + CONTEXT_CURRENT_SYMBOL + " must the first and unique character in the context name.");
-									return null;
-								} else if (i == 0) {
-									newCtx = trimContext(CONTEXT_CURRENT_SYMBOL_PATTERN.matcher(newCtx).replaceFirst(ctx));
-								}
-
-								i = newCtx.lastIndexOf(CONTEXT_PARENT_SYMBOL);
-								if (i > 0) {
-									Config.this.getLogger().log(Level.SEVERE, f.getPath() + ": " + CONTEXT_PARENT_SYMBOL + " must the first and unique character in the context name.");
-									return null;
-								} else if (i == 0) {
-									String p = getParentContext(ctx);
-									if (p == null)
-										p = "";
-									newCtx = trimContext(CONTEXT_PARENT_SYMBOL_PATTERN.matcher(newCtx).replaceFirst(p));
-								}
-
-								if (!newCtx.isEmpty()) {
-									if (newCtx.indexOf(CONTEXT_VAR_SYMBOL) >= 0) {
-										Integer v = contextVars.get(loadContext + newCtx);
-										if (v == null)
-											v = 0;
-										else
-											v = v + 1;
-										contextVars.put(loadContext + newCtx, v);
-										newCtx = CONTEXT_VAR_SYMBOL_PATTERN.matcher(newCtx).replaceFirst(v.toString());
-										if (newCtx.indexOf(CONTEXT_VAR_SYMBOL) >= 0) {
-											Config.this.getLogger().log(Level.SEVERE, f.getPath() + ": " + CONTEXT_VAR_SYMBOL + " can be used once in each context name.");
-											return null;
-										}
-									}
-	
-									newCtx = newCtx + CONTEXT_SEPARATOR;
-								}
-							}
-							ctx = newCtx;
-							return null;
-						} else if (REMOVE_CONFIG_KEY.equals(key)) {
-							String v = value.toString();
-							if (!v.isEmpty()) {
-								if (v.charAt(0) == '^') {
-									v = v.substring(1);
-								} else {
-									v = ".*" + v;
-								}
-							}
-							if (v.isEmpty())
-								return null;
-							Pattern rmctx;
-							try {
-								rmctx = Pattern.compile("^" + Pattern.quote(loadContext + ctx + CONTEXT_SEPARATOR) + v);
-							} catch (PatternSyntaxException e) {
-								Config.this.getLogger().log(Level.SEVERE, f.getPath() + ": Cannot remove the given config key (bad RegExp) :\"" + value.toString() + "\"");
-								return null;
-							}
-							Iterator<Entry<String, Object>> it = Config.this.config.entrySet().iterator();
-							while (it.hasNext()) {
-								Entry<String, Object> e = it.next();
-								if (rmctx.matcher(e.getKey()).matches())
-									it.remove();
-							}
-							return null;
-						}
-
-
-						//if (!(value instanceof String))
-						//	value = value.toString();
-						if (((String)value).isEmpty())
-							return null;
-
-						if (!(key instanceof String))
-							key = key.toString();
-
-						Config.this.config.put(loadContext + ctx + trimContext((String) key), value);
-
-						return null;
-					}
-				};
-				p.load(fis);
-			} finally {
-				fis.close();
-			}
-		} catch (FileNotFoundException e) {
-			return false;
-		} catch (IOException e) {
-			return false;
-		}
-
-		return true;
-	}
-
-	public boolean includeConfigFile(String filename) {
-		return includeConfigFile((String) null, filename);
-	}
-
-	public boolean includeConfigFile(String filename, String loadContext) {
-		return includeConfigFile(null, filename, loadContext);
-	}
-
-	public boolean includeConfigFile(File baseDir, String filename) {
-		return includeConfigFile(baseDir, filename, this.context);
-	}
-
-	public boolean includeConfigFile(File baseDir, String filename, String loadContext) {
-		return includeConfigFile(baseDir, filename, loadContext, new HashMap<String, Integer>());
 	}
 
 	public Iterator<String> getConfigNamesIterator() {
@@ -837,5 +687,483 @@ public class Config {
 		}
 		sb.append('\n').append('}');
 		return sb.toString();
+	}
+
+	/*
+	 * Configuration parsing
+	 * *********************************************************************
+	 */
+
+	protected static class ConfigIncludeTrace extends LinkedList<String> {
+		private static final long serialVersionUID = 1L;
+
+		public ConfigIncludeTrace() {
+			super();
+		}
+
+		@Override
+		public String toString() {
+			return (size() == 0 ? "" : getLast() + ": ");
+		}
+		
+	}
+
+	protected boolean includeConfigFile(File baseDir, String filename, ConfigIncludeTrace includeTrace, String loadContext) {
+		if (filename == null)
+			return false;
+
+		final File f;
+		{
+			File ff = new File(filename);
+			if ((baseDir != null) && !ff.isAbsolute()) {
+				ff = new File(baseDir, ff.getPath());
+			}
+			try {
+				ff = ff.getCanonicalFile();
+			} catch (IOException e) {
+				Config.this.getLogger().log(Level.SEVERE, includeTrace.toString() +
+						"Configuration file not found: \"" + filename + "\".");
+				return false;
+			}
+			f = ff;
+		}
+
+		final File newBaseDir = f.getParentFile();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(f));
+			try {
+				//check file extension
+				String ext = f.getName();
+				int i = ext.lastIndexOf('.');
+				ext = i == -1 ? "" : ext.substring(i+1).toLowerCase();
+
+				includeTrace.add(f.getPath());
+
+				boolean loaded = false;
+				if ("xml".equals(ext)) {
+					loaded = includeXMLConfigFile(br, newBaseDir, includeTrace, loadContext);
+				} else if ("config".equals(ext)) {
+					includeTrace.removeLast();
+					Config.this.getLogger().log(Level.SEVERE, includeTrace.toString() +
+							"Old .config files are not supported anymore. Please use XML format instead for file: \"" + f.getPath() + "\".");
+					return false;
+				} else {
+					includeTrace.removeLast();
+					Config.this.getLogger().log(Level.SEVERE, includeTrace.toString() +
+							"Configuration file extension unknown: \"" + f.getPath() + "\".");
+					return false;
+				}
+
+				if (!loaded) {
+					includeTrace.removeLast();
+					Config.this.getLogger().log(Level.SEVERE, includeTrace.toString() +
+							"Error when loading configuration file: \"" + f.getPath() + "\".");
+					return false;
+				}
+				
+			} finally {
+				br.close();
+			}
+		} catch (FileNotFoundException e) {
+			Config.this.getLogger().log(Level.SEVERE, includeTrace.toString() +
+					"Configuration file not found: \"" + f.getPath() + "\".");
+			return false;
+		} catch (IOException e) {
+			Config.this.getLogger().log(Level.SEVERE, includeTrace.toString() +
+					"Configuration file cannot be opened: \"" + f.getPath() + "\".");
+			return false;
+		}
+
+		return true;
+	}
+
+	public final boolean includeConfigFile(String filename) {
+		return includeConfigFile((String) null, filename);
+	}
+
+	public final boolean includeConfigFile(String filename, String loadContext) {
+		return includeConfigFile(null, filename, loadContext);
+	}
+
+	public final boolean includeConfigFile(File baseDir, String filename) {
+		return includeConfigFile(baseDir, filename, this.context);
+	}
+
+	public final boolean includeConfigFile(File baseDir, String filename, String loadContext) {
+		return includeConfigFile(baseDir, filename, new ConfigIncludeTrace(), loadContext);
+	}
+
+	/*
+	 * XMLConfig
+	 * *********************************************************************
+	 */
+
+	public static final String ROOT_TAG = "config";
+	public static final String INCLUDE_TAG = "include";
+	public static final String ADD_TAG = "add";
+	public static final String REMOVE_TAG = "remove";
+	public static final String ID_ATTRIBUTE = "id";
+	public static final String WILDCARD_ID_ATTRIBUTE_VALUE = "*";
+	
+
+	public static final String DEFAULT_SAX_FACTORY = "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl"; 
+
+	private static HashMap<String, SAXParserFactory> parserFactories = new HashMap<String, SAXParserFactory>();
+	protected static SAXParserFactory getSAXParserFactory(String driver) {
+		SAXParserFactory rtr = parserFactories.get(driver);
+		if (rtr == null) {
+			rtr = SAXParserFactory.newInstance(driver, null);
+			try {
+				rtr.setNamespaceAware(true);
+				rtr.setValidating(false);
+				rtr.setXIncludeAware(false);
+				rtr.setSchema(null);
+			} catch(UnsupportedOperationException e) { }
+
+			String falseParams[] = new String[] {
+					"external-general-entities",
+					"resolve-dtd-uris",
+					"external-parameter-entities",
+					"validation",
+					"nonvalidating/load-external-dtd"
+			};
+			for (String s: falseParams) {
+				try {
+					rtr.setFeature("http://xml.org/sax/features/" + s, false);
+				} catch (Exception e) {}
+			}
+	
+			parserFactories.put(driver, rtr);
+		}
+		return rtr;
+	}
+
+	protected SAXParserFactory getSAXParserFactory() {
+		return getSAXParserFactory(DEFAULT_SAX_FACTORY);
+	}
+
+	private enum IncludeXMLConfigFileAction {
+		NONE, DEFAULT, ADD, REMOVE, INCLUDE
+	}
+
+	/**
+	 * Removes configurations belonging to the given context and all configurations belonging to 
+	 * sub-contexts of the given context.
+	 */
+	private void _removeContext(String key) {
+		Iterator<Entry<String, Object>> it = Config.this.config.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String, Object> e = it.next();
+			if (e.getKey().equals(key) || e.getKey().startsWith(key + CONTEXT_SEPARATOR))
+				it.remove();
+		}
+	}
+
+	private void _renameContext(String oldKey, String newKey) {
+		HashMap<String, Object> m = new HashMap<String, Object>();
+
+		Iterator<Entry<String, Object>> it = Config.this.config.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String, Object> e = it.next();
+			if (e.getKey().equals(oldKey) || e.getKey().startsWith(oldKey + CONTEXT_SEPARATOR)) {
+				String k = (oldKey.length() >= e.getKey().length()) ?
+						newKey :
+						newKey + e.getKey().substring(oldKey.length());
+				m.put(k, e.getValue());
+				it.remove();
+			}
+		}
+
+		Config.this.config.putAll(m);
+	}
+
+	/**
+	 * Looks for all configuration belonging to the given context
+	 * and removes them.
+	 * This method will also remove all contexts whose parent is the given context.
+	 * 
+	 * @param stdContext a context name with a trailing {@link Config#CONTEXT_SEPARATOR} if not empty.
+	 */
+	private void removeContext(String stdContext) {
+			if (stdContext.isEmpty())
+				return;
+			_removeContext(stdContext);
+
+			//make sure other contexts names keep consistent
+			StringBuilder si = new StringBuilder();
+			int i = stdContext.length();
+			while (i > 0) {
+				i--;
+				char c = stdContext.charAt(i);
+				if (Character.isDigit(c))
+					si.append(c);
+				else
+					break;
+			}
+
+			if (si.length() > 0) {
+				String key0 = stdContext.substring(0, i + 1);
+
+				si.reverse();
+				i = Integer.valueOf(si.toString());
+
+				String newKey = stdContext;
+				int k = i + 1;
+				while (true) {
+					String oldKey = key0 + String.valueOf(k);
+					if (!Config.this.config.containsKey(oldKey))
+						break;
+					_renameContext(oldKey, newKey);
+					k++;
+					newKey = oldKey;
+				}
+			}
+	}
+
+	protected boolean includeXMLConfigFile(BufferedReader br, final File baseDir,
+			final ConfigIncludeTrace includeTrace, final String loadContext) throws IOException {
+		XMLReader rtr;
+		{
+			SAXParserFactory factory = getSAXParserFactory();
+			String factoryDesc = factory == null ? "null" : factory.getClass().getName();
+
+			try {
+				rtr = getSAXParserFactory().newSAXParser().getXMLReader();
+			} catch (SAXException e) {
+				Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "Error when initiating XML reader (using factory:" + factoryDesc + ").");
+				return false;
+			} catch (ParserConfigurationException e) {
+				Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "Error when initiating XML reader (using factory:" + factoryDesc + ").");
+				return false;
+			}
+		}
+
+		rtr.setContentHandler(new DefaultHandler() {
+			StringBuilder cont = new StringBuilder();
+			Pattern trimmer = Pattern.compile("^\\s+|\\s+$");
+
+			String ctx = "";
+			String lastId = null;
+
+			boolean in_root_tag = false;
+
+			boolean childrenElementsForbidden = false;
+			IncludeXMLConfigFileAction ixcfa = IncludeXMLConfigFileAction.NONE;
+
+			private void remove(String tag, String id) {
+				HashSet<String> toRemove = new HashSet<String>();
+				if (tag.isEmpty() && id.equals(WILDCARD_ID_ATTRIBUTE_VALUE)) {
+					toRemove.add(trimContext(loadContext + ctx));
+				} else {
+					String _ctx = trimContext(loadContext + ctx + tag);
+
+					Iterator<Entry<String, Object>> it = Config.this.config.entrySet().iterator();
+					MAINLOOP:while (it.hasNext()) {
+						Entry<String, Object> e = it.next();
+						if (!_ctx.isEmpty()) {
+							if (e.getKey().startsWith(_ctx)) {
+								//make sure _ctx is not something like _ctx + "abc", in which case it's another context
+								int k = _ctx.length();
+								while (k < e.getKey().length()) {
+									char c = e.getKey().charAt(k);
+									if (c == CONTEXT_SEPARATOR)
+										break;
+									if (!(Character.isDigit(c) || (c == CONTEXT_ARRAY_SEPARATOR)))
+										continue MAINLOOP;
+									k++;
+								}
+							} else
+								continue; //config is in another context, don't remove
+						}
+
+						//at this point config is a candidate to be removed, make sure id matches too
+						if (WILDCARD_ID_ATTRIBUTE_VALUE.equals(id)) {
+							int p = e.getKey().indexOf(CONTEXT_SEPARATOR, _ctx.length());
+							if (p == -1)
+								toRemove.add(e.getKey());
+							else
+								toRemove.add(e.getKey().substring(0, p));
+						} else {
+							String id0key = e.getKey() + CONTEXT_SEPARATOR + ID_ATTRIBUTE;
+							Object id0 = Config.this.config.get(id0key);
+							if (id0 != null && id0.toString().equals(id)) {
+								toRemove.add(e.getKey());
+							}
+						}
+					}
+				}
+
+				for (String key: toRemove)
+					Config.this.removeContext(key);
+			}
+
+			private Boolean isTagPrefixed(String rawTag, String pref) {
+				return pref.compareToIgnoreCase(rawTag.substring(0, Math.min(pref.length(), rawTag.length()))) == 0;
+			}
+
+			private String extractTag(String rawTag, String pref) {
+				return pref.length() >= rawTag.length() ? "" : rawTag.substring(pref.length());
+			}
+
+			@Override
+			public void startElement(String uri, String localName,
+					String qName, Attributes atts) throws SAXException {
+				String tag = localName;
+				if (childrenElementsForbidden) {
+					Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "Children elements not allowed For the element \"" + tag + "\".");
+					throw new SAXException("Malformed document");
+				}
+
+				ixcfa = IncludeXMLConfigFileAction.NONE;
+				if (!in_root_tag) {
+					if (tag.equalsIgnoreCase(ROOT_TAG)) {
+						in_root_tag = true;
+						return;
+					} else {
+						Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "Root tag of the document must be \"" + ROOT_TAG + "\".");
+						throw new SAXException("Malformed document");
+					}
+				}
+
+				if (tag.indexOf(CONTEXT_SEPARATOR) >= 0) {
+					Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "Element name (\"" + tag + "\") contains illegal character.");
+					throw new SAXException("Malformed document");
+				} else if (tag.equalsIgnoreCase(ROOT_TAG) || tag.equalsIgnoreCase(ID_ATTRIBUTE)) {
+					Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "Element name \"" + tag + "\" not allowed.");
+					throw new SAXException("Malformed document");
+				} else if (Character.isDigit(tag.charAt(tag.length()-1))) {
+					Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "Element names ending with digits are reserved (\"" + tag + "\" not allowed).");
+					throw new SAXException("Malformed document");
+				}
+
+				String id = atts.getValue(ID_ATTRIBUTE); 
+				lastId = id;
+
+				if (INCLUDE_TAG.compareToIgnoreCase(tag) == 0) {
+					ixcfa = IncludeXMLConfigFileAction.INCLUDE;
+					childrenElementsForbidden = true;
+				} else if (isTagPrefixed(tag, REMOVE_TAG)) {
+					tag = extractTag(tag, REMOVE_TAG);
+					ixcfa = IncludeXMLConfigFileAction.REMOVE;
+					childrenElementsForbidden = true;
+
+					if (id == null || id.isEmpty()) {
+						Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "You need to specify the "+ ID_ATTRIBUTE +" of the element to remove. Or use \"" + WILDCARD_ID_ATTRIBUTE_VALUE + "\" to remove all elements in this context.");
+						throw new SAXException("Malformed document");
+					}
+				} else if (isTagPrefixed(tag, ADD_TAG)) {
+					tag = extractTag(tag, ADD_TAG);
+					ixcfa = IncludeXMLConfigFileAction.ADD;
+
+					ctx = ctx + trimContext((String) tag);
+					int i = 0;
+					while (true) {
+						String ctx0 = ctx + CONTEXT_ARRAY_SEPARATOR + String.valueOf(i);
+						if (!Config.this.config.containsKey(loadContext + ctx0)) {
+							ctx = ctx0 + CONTEXT_SEPARATOR;
+							break;
+						}
+						i++;	
+					}
+					if (id == null)
+						id = lastId = String.valueOf(i);
+				} else {
+					ixcfa = IncludeXMLConfigFileAction.DEFAULT;
+					ctx = ctx + trimContext((String) tag) + CONTEXT_SEPARATOR;
+				}
+
+				if (ixcfa == IncludeXMLConfigFileAction.ADD || ixcfa == IncludeXMLConfigFileAction.DEFAULT) {
+					if (id != null) {
+						if (id.equals(WILDCARD_ID_ATTRIBUTE_VALUE)) {
+							Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "Wildcard id attribute not allowed for this element (\"" + tag + "\").");
+							throw new SAXException("Malformed document");
+						}
+
+						Config.this.config.put(trimContext(loadContext + ctx + ID_ATTRIBUTE), id);
+					}
+
+					Config.this.config.put(trimContext(loadContext + ctx), "");
+				}
+			}
+
+			@Override
+			public void endElement(String uri, String localName, String qName)
+					throws SAXException {
+				childrenElementsForbidden = false;
+
+				if (!in_root_tag)
+					return;
+
+				String tag = localName;
+				if (tag.equalsIgnoreCase(ROOT_TAG)) {
+					in_root_tag = false;
+					return;
+				}
+
+				String value = trimmer.matcher(cont).replaceAll("");
+				cont = new StringBuilder();
+
+				switch (ixcfa) {
+				case INCLUDE:
+					if (!Config.this.includeConfigFile(baseDir, value, includeTrace, loadContext + ctx)) {
+						throw new SAXException("Included document not found");
+					}
+					break;
+				case REMOVE:
+					remove(extractTag(tag, REMOVE_TAG), lastId);
+
+					break;
+				case ADD:
+				case DEFAULT:
+					Config.this.config.put(trimContext(loadContext + ctx), value);
+				case NONE:
+					ctx = getParentContext(ctx);
+					break;
+				}
+				ixcfa = IncludeXMLConfigFileAction.NONE;
+			}
+
+			@Override
+			public void characters(char[] ch, int start, int length)
+					throws SAXException {
+				cont.append(ch, start, length);
+			}
+
+			@Override
+			public void ignorableWhitespace(char[] ch, int start, int length)
+					throws SAXException {
+				cont.append(ch, start, length);
+			}
+			
+		});
+
+		final SAXParseException[] pexc = new SAXParseException[] {null};
+
+		rtr.setErrorHandler(new ErrorHandler() {
+			@Override
+			public void warning(SAXParseException exception) throws SAXException {
+				//nothing
+			}
+			
+			@Override
+			public void error(SAXParseException exception) throws SAXException {
+				//nothing
+			}
+
+			@Override
+			public void fatalError(SAXParseException exception) throws SAXException {
+				pexc[0] = exception;
+			}
+		});
+
+		try {
+			rtr.parse(new InputSource(br));
+		} catch (SAXException e) {
+			Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "Error when parsing XML file" +
+					(pexc[0] == null ? "" : "(" + pexc[0].getMessage() + ")") + ".");
+			return false;
+		}
+
+		return true;
 	}
 }

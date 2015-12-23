@@ -58,8 +58,6 @@ import com.samysadi.acs.virtualization.job.Job;
 /**
  * This implementation will only set parent for its VirtualRam when it is started.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class VirtualMachineDefault extends RunnableEntityImpl implements VirtualMachine {

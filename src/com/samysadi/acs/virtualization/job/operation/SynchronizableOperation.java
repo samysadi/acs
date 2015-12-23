@@ -31,8 +31,6 @@ package com.samysadi.acs.virtualization.job.operation;
  * with other operations.
  * 
  * @see OperationSynchronizer
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface SynchronizableOperation<Resource> extends Operation<Resource> {

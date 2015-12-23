@@ -39,8 +39,6 @@ import com.samysadi.acs.utility.NotificationCodes;
  * This includes power usage by the hosts and also the power usage for 
  * cooling, lighting, networking etc...
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class CpPowerProbe extends AbstractProbe<Long> implements PowerProbe {

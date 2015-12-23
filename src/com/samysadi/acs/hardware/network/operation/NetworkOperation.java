@@ -59,8 +59,6 @@ import com.samysadi.acs.virtualization.job.operation.RemoteOperation;
  * argument is a {@link Job} that specifies the destination job. The second argument
  * is a <tt>long</tt> that specifies the operation length (length of the transmission).
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface NetworkOperation extends RemoteOperation<NetworkResource> {

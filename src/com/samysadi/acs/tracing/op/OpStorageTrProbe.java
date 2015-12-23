@@ -33,8 +33,6 @@ import com.samysadi.acs.hardware.storage.operation.StorageOperation;
 /**
  * Probe for Storage Transfer rate usage by a {@link StorageOperation}.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class OpStorageTrProbe extends OpLongProbe implements DataRateProbe {

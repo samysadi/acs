@@ -45,8 +45,6 @@ import com.samysadi.acs.utility.Pair;
  * It can contain a maximum of {@link Bitmap#MAX_BITMAP_SIZE} bits. So, if you try to mark
  * or unmark bits starting from an index that is beyond this limit you will get an exception.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class Bitmap implements Cloneable {

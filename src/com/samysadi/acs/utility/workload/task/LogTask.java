@@ -32,8 +32,6 @@ import com.samysadi.acs.utility.workload.Workload;
 /**
  * Logs a message to output.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class LogTask extends TaskImpl {

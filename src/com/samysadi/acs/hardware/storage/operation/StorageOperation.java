@@ -62,8 +62,6 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
  * The third of <tt>long</tt> type specifies file position at which the operation will start.
  * And the fourth specifies the operation length.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface StorageOperation extends Operation<StorageResource> {

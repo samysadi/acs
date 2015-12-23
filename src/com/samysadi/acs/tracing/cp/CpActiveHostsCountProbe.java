@@ -40,8 +40,6 @@ import com.samysadi.acs.utility.NotificationCodes;
  * Probe for number of active (not powered off and not failed) hosts
  * in the Cloud.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class CpActiveHostsCountProbe extends AbstractProbe<Long> {

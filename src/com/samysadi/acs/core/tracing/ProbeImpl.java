@@ -33,8 +33,6 @@ import com.samysadi.acs.core.notifications.NotifierImpl;
  * {@link Probe} interface, and offers protected methods
  * in order to ease subclass implementations.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class ProbeImpl<ValueType> extends NotifierImpl implements Probe<ValueType> {

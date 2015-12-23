@@ -36,8 +36,6 @@ import com.samysadi.acs.virtualization.job.Job;
 /**
  * Probe for instant count of operations of which source (ie: parent) job is a given job.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class JobOpsCountProbe extends AbstractProbe<Long> {

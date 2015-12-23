@@ -47,8 +47,6 @@ import com.samysadi.acs.virtualization.job.Job;
  * <p>Set the <i>NewThinClient</i> configuration value to <tt>true</tt> if you wish
  * to create a new thin client (instead of selecting one from existing).
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class CreateClientJobTask extends TaskImpl {

@@ -30,8 +30,6 @@ import com.samysadi.acs.core.entity.AllocatableEntity;
 
 /**
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface VirtualMemoryUnit<Zone extends MemoryZone, Unit extends MemoryUnit<Zone>> extends MemoryUnit<Zone>, MemoryZone, AllocatableEntity {

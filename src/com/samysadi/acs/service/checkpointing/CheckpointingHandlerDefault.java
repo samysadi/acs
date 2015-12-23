@@ -48,8 +48,6 @@ import com.samysadi.acs.virtualization.VirtualMachine;
  * This implementation relies on its configuration to 
  * determine checkpointing interval.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class CheckpointingHandlerDefault extends EntityImpl implements CheckpointingHandler {

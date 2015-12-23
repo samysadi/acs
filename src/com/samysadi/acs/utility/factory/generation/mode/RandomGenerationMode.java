@@ -34,8 +34,6 @@ import com.samysadi.acs.utility.random.Uniform;
  * A {@link AbstractGenerationMode} subclass that selects next candidate
  * configuration randomly between all available configurations.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class RandomGenerationMode extends AbstractGenerationMode {

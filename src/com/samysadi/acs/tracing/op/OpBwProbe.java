@@ -33,8 +33,6 @@ import com.samysadi.acs.hardware.network.operation.NetworkOperation;
 /**
  * Probe for Network Bw usage by a {@link NetworkOperation}.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class OpBwProbe extends OpLongProbe implements DataRateProbe {

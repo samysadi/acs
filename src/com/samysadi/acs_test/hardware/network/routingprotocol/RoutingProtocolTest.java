@@ -47,8 +47,6 @@ import com.samysadi.acs_test.Utils;
 
 
 /**
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class RoutingProtocolTest {

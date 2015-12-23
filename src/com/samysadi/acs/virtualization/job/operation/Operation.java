@@ -42,8 +42,6 @@ import com.samysadi.acs.virtualization.job.Job;
  * 
  * <p>See {@link RunnableEntity} for more information on runnable entities.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface Operation<Resource> extends Entity, RunnableEntity {

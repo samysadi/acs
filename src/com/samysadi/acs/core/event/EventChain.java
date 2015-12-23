@@ -45,8 +45,6 @@ import com.samysadi.acs.core.entity.Entity;
  * and make sure the generated notifications when calling each of these methods will be processed <b>before</b> the next
  * method is run.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class EventChain extends EventImpl {

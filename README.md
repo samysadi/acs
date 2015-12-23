@@ -45,7 +45,7 @@ Download the configuration sample file (see downloads section) and unzip it some
 Create a new class and write the following code:
 ```java
 	public static void main(String[] args) throws Exception {
-		Simulator simulator = FactoryUtils.generateSimulator("C:\\acs\\config\\main.config"); //assuming this is the path where you have extracted the downloaded configuration
+		Simulator simulator = FactoryUtils.generateSimulator("C:\\acs\\config\\main.xml"); //assuming this is the path where you have extracted the downloaded configuration
 		simulator.start();
 	}
 ```
@@ -90,7 +90,7 @@ public class MyVmPlacementPolicy extends VmPlacementPolicyAbstract {
 ## Mastering the configuration files
 Configuration files can be used to modify different simulation parameters
 as the network topology, the number of hosts, the configuration of those hosts and so forth.
-They can also be used to define user behaviours by generating different workloads.
+They can also be used to define user behaviors by generating different workloads.
 
 In another hand, you can also define which output you want to generate (and where you want the output to be saved)
 using configuration files.

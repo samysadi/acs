@@ -32,8 +32,6 @@ import java.util.Random;
 /**
  * A generator that always generate the same number.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class Constant implements NumberGenerator {

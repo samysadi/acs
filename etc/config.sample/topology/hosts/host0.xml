@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- a storage host LC/LM/VS/VN -->
+<Config>
+	<Name>LC/LM/VS/VN</Name>
+	<Mtbf>1000000</Mtbf>
+	<Mttr></Mttr>
+
+	<BootingDelay></BootingDelay>
+
+	<PowerConsumption></PowerConsumption>
+	<PowerPercentageWhenIdle></PowerPercentageWhenIdle>
+
+	<Pu>
+		<Name>Intel E3-1220L</Name>
+		<Mtbf></Mtbf>
+		<Mttr></Mttr>
+		<Mips>2200</Mips>
+		<Cache>3</Cache>
+		<Count>4</Count>
+	</Pu>
+
+	<Ram>
+		<Capacity>8192</Capacity>
+	</Ram>
+
+	<Storage>
+		<Name>Toshiba MG03SCA400</Name>
+		<Mtbf></Mtbf>
+		<Mttr></Mttr>
+		<Capacity>4000000</Capacity>
+		<TransferRate>600</TransferRate>
+		<Count>3</Count>
+	</Storage>
+
+	<NetworkInterface>
+		<Name>Intel I350-T2</Name>
+		<Mtbf></Mtbf>
+		<Mttr></Mttr>
+		<MaxUploadBw>500</MaxUploadBw>
+		<MaxDownloadBw>500</MaxDownloadBw>
+	</NetworkInterface>
+</Config>

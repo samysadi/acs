@@ -36,8 +36,6 @@ import com.samysadi.acs.core.Simulator;
  * the long value describes how much length (bytes, instructions ..) can be processed
  * per one Unit of Time which is equal to {@link Simulator#SECOND}.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class LongResource implements Cloneable {

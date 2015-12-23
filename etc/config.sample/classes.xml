@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Default classes (leave empty to let the simulator use its own defaults)
+	Make sure to use fully qualified class names -->
+<config>
+	<Checkpoint_Class></Checkpoint_Class>
+	<CheckpointingHandler_Class></CheckpointingHandler_Class>
+	<CloudProvider_Class></CloudProvider_Class>
+	<CloudProviderFactory_Class></CloudProviderFactory_Class>
+	<ComputingOperation_Class></ComputingOperation_Class>
+	<ComputingProvisioner_Class></ComputingProvisioner_Class>
+	<FailureFactory_Class></FailureFactory_Class>
+	<GenerationFlow_Class></GenerationFlow_Class>
+	<GenerationMode_Class></GenerationMode_Class>
+	<Host_Class></Host_Class>
+	<HostFactory_Class></HostFactory_Class>
+	<Job_Class></Job_Class>
+	<JobPlacementPolicy_Class></JobPlacementPolicy_Class>
+	<MigrationHandler_Class></MigrationHandler_Class>
+	<NetworkInterface_Class></NetworkInterface_Class>
+	<NetworkLink_Class></NetworkLink_Class>
+	<NetworkOperation_Class></NetworkOperation_Class>
+	<NetworkProvisioner_Class></NetworkProvisioner_Class>
+	<PowerManager_Class></PowerManager_Class>
+	<ProcessingUnit_Class></ProcessingUnit_Class>
+	<PuAllocator_Class></PuAllocator_Class>
+	<Ram_Class></Ram_Class>
+	<RamZone_Class></RamZone_Class>
+	<RoutingProtocol_Class></RoutingProtocol_Class>
+	<SfConsistencyManager_Class></SfConsistencyManager_Class>
+	<SfPlacementPolicy_Class></SfPlacementPolicy_Class>
+	<SfReplicaSelectionPolicy_Class></SfReplicaSelectionPolicy_Class>
+	<SfReplicationManager_Class></SfReplicationManager_Class>
+	<Simulator_Class></Simulator_Class>
+	<Staas_Class></Staas_Class>
+	<Storage_Class></Storage_Class>
+	<StorageFile_Class></StorageFile_Class>
+	<StorageOperation_Class></StorageOperation_Class>
+	<StorageProvisioner_Class></StorageProvisioner_Class>
+	<Switch_Class></Switch_Class>
+	<ThinClient_Class></ThinClient_Class>
+	<ThinClientVirtualMachine_Class></ThinClientVirtualMachine_Class>
+	<TopologyFactory_Class></TopologyFactory_Class>
+	<Trace_Class></Trace_Class>
+	<TraceFactory_Class></TraceFactory_Class>
+	<User_Class></User_Class>
+	<UserFactory_Class></UserFactory_Class>
+	<VirtualMachine_Class></VirtualMachine_Class>
+	<VirtualRam_Class></VirtualRam_Class>
+	<VirtualStorage_Class></VirtualStorage_Class>
+	<VirtualMachineFactory_Class></VirtualMachineFactory_Class>
+	<VmPlacementPolicy_Class></VmPlacementPolicy_Class>
+	<Workload_Class></Workload_Class>
+</config>

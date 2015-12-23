@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HC/HM/HS/HN -->
+<Config>
+	<Name>HC/HM/HS/HN</Name>
+	<Mtbf>1000000</Mtbf>
+	<Mttr></Mttr>
+
+	<BootingDelay></BootingDelay>
+
+	<PowerConsumption></PowerConsumption>
+	<PowerPercentageWhenIdle></PowerPercentageWhenIdle>
+
+	<Pu>
+		<Name>Intel E5-2673V2</Name>
+		<Mtbf></Mtbf>
+		<Mttr></Mttr>
+		<Mips>3300</Mips>
+		<Cache>25</Cache>
+		<Count>16</Count>
+	</Pu>
+
+	<Ram>
+		<Capacity>32768</Capacity>
+	</Ram>
+
+	<Storage>
+		<Name>Toshiba MG03SCA100</Name>
+		<Mtbf></Mtbf>
+		<Mttr></Mttr>
+		<Capacity>1000000</Capacity>
+		<TransferRate>600</TransferRate>
+		<Count>2</Count>
+	</Storage>
+
+	<NetworkInterface>
+		<Name>Intel PRO/1000 MT</Name>
+		<Mtbf></Mtbf>
+		<Mttr></Mttr>
+		<MaxUploadBw>250</MaxUploadBw>
+		<MaxDownloadBw>250</MaxDownloadBw>
+	</NetworkInterface>
+</Config>

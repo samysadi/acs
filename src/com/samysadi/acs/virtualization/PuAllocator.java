@@ -35,8 +35,6 @@ import com.samysadi.acs.hardware.pu.operation.ComputingOperation;
  * being activated in order to select a {@link ProcessingUnit} among all available ones
  * inside the VM.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface PuAllocator extends Entity {

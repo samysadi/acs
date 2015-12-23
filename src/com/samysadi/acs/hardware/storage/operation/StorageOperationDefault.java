@@ -48,8 +48,6 @@ import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
  * the network operation.<br/>
  * When a remote job is needed, it is created under a new VM or, if the remote host is a {@link ThinClient}, using its main vm.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class StorageOperationDefault extends LongOperationImpl<StorageResource> implements StorageOperation, SynchronizableOperation<StorageResource> {

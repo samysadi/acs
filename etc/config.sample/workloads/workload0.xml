@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sample Workload configuration
+	############################################################################
+	A workload consists of one or more tasks. Each task is run after the last
+	one is finished.
+
+	You can define thin client workloads to simulate users uploading, or
+	downloading data from the cloud.
+
+	With regards to thin clients, there is a limited set of tasks you can do.
+	For instance, you cannot create computing operations with a thin client.
+	############################################################################ -->
+<config>
+	<!-- Set to 1 if this workload is a think client's workload (if omitted, default is 0) -->
+	<ThinClientWorkload>0</ThinClientWorkload>
+
+	<!-- this task simply logs a message to the console -->
+	<AddTask>
+		<Task>Log</Task>
+		<Message>Hello world, I'm starting to compute</Message>
+	</AddTask>
+
+	<AddTask>
+		<Task>Compute</Task>
+		<Length>100000</Length>
+	</AddTask>
+
+	<AddTask>
+		<!-- log a message to the console -->
+		<Task>Log</Task>
+		<Message>Computation ended. Bye!</Message>
+	</AddTask>
+</config>

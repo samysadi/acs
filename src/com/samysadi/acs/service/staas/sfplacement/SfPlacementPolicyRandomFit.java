@@ -39,8 +39,6 @@ import com.samysadi.acs.utility.collections.ShuffledIterator;
  * A placement policy that chooses the storage that has enough capacity for the storage file.<br/>
  * The storage is chosen according to the random fit method.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class SfPlacementPolicyRandomFit extends SfPlacementPolicyAbstract {

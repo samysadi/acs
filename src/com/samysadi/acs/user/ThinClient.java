@@ -38,8 +38,6 @@ import com.samysadi.acs.hardware.Host;
  * 
  * <p>You can still run network operations on top of a thin client through its {@link ThinClientVirtualMachine}.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface ThinClient extends Host {

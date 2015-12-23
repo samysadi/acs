@@ -42,8 +42,6 @@ import com.samysadi.acs.utility.NotificationCodes;
  * 
  * <p>This implementation relies on {@link HostDownBwInternetProbe} to update its value.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class CpDownBwInternetProbe extends AbstractProbe<Long> implements ModifiableProbe<Long>, DataRateProbe {

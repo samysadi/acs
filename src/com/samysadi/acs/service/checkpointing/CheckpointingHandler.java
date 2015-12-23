@@ -39,8 +39,6 @@ import com.samysadi.acs.virtualization.VirtualMachine;
  * <p><b>Note</b> if you try to register for checkpointing a virtual machine that is already registered 
  * for checkpointing, then an IllegalArgumentException is thrown.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface CheckpointingHandler extends Entity {

@@ -45,8 +45,6 @@ import com.samysadi.acs.virtualization.VirtualMachine;
  * <p>This interface also define a method for placing a VM after a host has been selected, and
  * a method to unplace it after it has been placed (see each method documentation for more information).
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface VmPlacementPolicy extends Entity {

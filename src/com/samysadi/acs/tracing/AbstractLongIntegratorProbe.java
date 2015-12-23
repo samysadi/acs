@@ -42,8 +42,6 @@ import com.samysadi.acs.utility.NotificationCodes;
  * the value of this probe is:<br/>
  * <math><mi>F</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mo>&int;</mo><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>&dd;</mo><mi>t</mi></math>
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class AbstractLongIntegratorProbe extends AbstractProbe<Long> {

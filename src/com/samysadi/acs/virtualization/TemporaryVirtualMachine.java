@@ -37,8 +37,6 @@ package com.samysadi.acs.virtualization;
  * <p>Because they are not created by users, temporary VMs are not used by placement
  * policies when placing user jobs.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface TemporaryVirtualMachine extends VirtualMachine {

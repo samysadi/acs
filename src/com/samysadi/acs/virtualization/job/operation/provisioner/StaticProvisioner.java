@@ -37,8 +37,6 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
  * It will also ensure that any granted resource will not be invalidated even if new capacity is freed.
  * Thus, granted resources remain allocated until they are explicitly freed.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class StaticProvisioner<OperationType extends Operation<Resource>, Resource extends LongResource> 

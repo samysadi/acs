@@ -36,8 +36,6 @@ import com.samysadi.acs.virtualization.VirtualMachine;
  * <p>Also, a thin client VM user is always the same as the {@link ThinClient}'s parent.<br/>
  * If you try to set a user for a thin client VM, then the method call is ignored.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface ThinClientVirtualMachine extends VirtualMachine {

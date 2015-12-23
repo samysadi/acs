@@ -35,8 +35,6 @@ import com.samysadi.acs.utility.collections.Bitmap;
  * You can associate for each MemoryZone one or more bitmaps describing the 
  * modified space of the memory zone.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface MemoryZone extends Entity {

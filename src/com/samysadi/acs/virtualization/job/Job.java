@@ -61,8 +61,6 @@ import com.samysadi.acs.virtualization.job.operation.TimerOperation;
  * <li>when the job fails, then the {@link RemoteOperation}s fail;<li>
  * <li>when the job is terminated, then the {@link RemoteOperation}s are terminated;<li>
  * </ul>
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface Job extends Entity, RunnableEntity {

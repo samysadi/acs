@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sample layer configuration -->
+<config>
+	<Name>Cluster</Name>
+	<NewCluster>1</NewCluster>
+
+	<Nodes>
+		<CountMin>50</CountMin>
+		<CountMax>75</CountMax>
+	</Nodes>
+
+	<Switch>
+		<Name>AGR</Name>
+		<Count>2</Count>
+		<Mtbf></Mtbf>
+		<Mttr></Mttr>
+	</Switch>
+
+	<NetworkInterface>
+		<Name></Name>
+		<Mtbf></Mtbf>
+		<Mttr></Mttr>
+		<MaxUploadBw>1250</MaxUploadBw>
+		<MaxDownloadBw>1250</MaxDownloadBw>
+	</NetworkInterface>
+
+	<NetworkLink>
+		<LengthMin>50</LengthMin>
+		<LengthMax>500</LengthMax>
+		<LossRateMin></LossRateMin>
+		<LossRateMax></LossRateMax>
+	</NetworkLink>
+</config>

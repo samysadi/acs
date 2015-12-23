@@ -43,8 +43,6 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
 /**
  * Instant job upload bandwidth.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class JobUpBwProbe extends AbstractProbe<Long> implements DataRateProbe {

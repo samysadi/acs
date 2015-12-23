@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sample VM configuration -->
+<config>
+	<Name>m3.medium</Name>
+
+	<Checkpointing>
+		<!-- Set to 1 to enable checkpointing (if omitted, default is 0) -->
+		<Enabled>0</Enabled>
+	</Checkpointing>
+
+	<Pu_Count>2</Pu_Count>
+	<Pu_Mips></Pu_Mips>
+
+	<Ram_Capacity>3840</Ram_Capacity>
+
+	<Storage_Capacity>40000</Storage_Capacity>
+
+	<Network_UploadBw></Network_UploadBw>
+	<Network_DownloadBw></Network_DownloadBw>
+
+	<Price_FlatPerHour>0.070</Price_FlatPerHour>
+</config>

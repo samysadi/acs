@@ -39,8 +39,6 @@ import com.samysadi.acs.utility.workload.Workload;
  * <p>All implementation classes should provide a two arguments constructor
  * that defines respectively the {@link Workload}, and the {@link Config} of the task.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface Task extends Cloneable {

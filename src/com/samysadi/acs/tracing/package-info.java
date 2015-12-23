@@ -46,8 +46,6 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
  * 		<li>vm: contains virtual machine probes.
  * </ul>
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 package com.samysadi.acs.tracing;

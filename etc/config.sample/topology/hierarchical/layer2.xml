@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sample layer configuration -->
+<config>
+	<Name>Data Center</Name>
+	<NewDatacenter>1</NewDatacenter>
+
+	<Nodes>
+		<CountMin>10</CountMin>
+		<CountMax>20</CountMax>
+	</Nodes>
+
+	<Switch>
+		<Name>AGR</Name>
+		<Count>2</Count>
+		<Mtbf></Mtbf>
+		<Mttr></Mttr>
+	</Switch>
+
+	<NetworkInterface>
+		<Name></Name>
+		<Mtbf></Mtbf>
+		<Mttr></Mttr>
+		<MaxUploadBw>50</MaxUploadBw>
+		<MaxDownloadBw>50</MaxDownloadBw>
+	</NetworkInterface>
+
+	<NetworkLink>
+		<LengthMin>1000</LengthMin>
+		<LengthMax>10000</LengthMax>
+		<LossRateMin></LossRateMin>
+		<LossRateMax></LossRateMax>
+	</NetworkLink>
+</config>

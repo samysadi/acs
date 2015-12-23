@@ -33,8 +33,6 @@ import com.samysadi.acs.utility.collections.Bitmap;
 
 /**
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 class MemoryMaps extends HashMap<Object, Bitmap> {

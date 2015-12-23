@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sample CloudProvider configuration -->
+<config>
+	<Name></Name>
+
+	<STaaS>
+		<!-- set to 0 to disable most STaaS services (replication + consistency management) (if omitted, default is 1) -->
+		<Enabled>1</Enabled>
+	</STaaS>
+
+	<!-- Include the topology configuration file  -->
+	<!--<include>../topology/hierarchical.xml</include>-->
+	<include>../topology/flat.xml</include>
+
+	<User>
+		<!-- Specifies how many users to generate -->
+		<Count>1</Count>
+	</User>
+
+	<!-- Adds a user configuration -->
+	<AddUser><include>../users/user0.xml</include></AddUser>
+
+	<!-- The next lines will generate CloudEnergy trace  -->
+	<AddTrace>
+		<Probe>CpEnergy</Probe>
+		<!-- leave Output commented so the trace will be saved in the ./var folder. Or Specify your own folder. Use - for console. -->
+		<!--<Output>-</Output>-->
+	</AddTrace>
+
+	<Price_1GBBwFromCloud>0.000</Price_1GBBwFromCloud>
+	<Price_1GBBwToCloud>0.010</Price_1GBBwToCloud>
+	<Price_1GBBwFromInternet>0.000</Price_1GBBwFromInternet>
+	<Price_1GBBwToInternet>0.100</Price_1GBBwToInternet>
+	<Price_1GBStorage>0.100</Price_1GBStorage>
+</config>

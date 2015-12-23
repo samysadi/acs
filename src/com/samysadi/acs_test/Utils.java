@@ -38,8 +38,6 @@ import com.samysadi.acs.virtualization.VirtualMachine;
 /**
  * Set system property acs.config if you want to use your own configuration.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class Utils {

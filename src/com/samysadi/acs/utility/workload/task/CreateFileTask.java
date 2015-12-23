@@ -43,8 +43,6 @@ import com.samysadi.acs.utility.workload.Workload;
  * <p>The created file is set as the current active file in the 
  * workload (using {@link Workload#setStorageFile(StorageFile)}).
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class CreateFileTask extends TaskImpl {

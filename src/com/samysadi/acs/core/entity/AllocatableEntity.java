@@ -34,8 +34,6 @@ import com.samysadi.acs.core.notifications.CoreNotificationCodes;
  * <p>It offers two methods, one to check whether this entity is allocated or not,
  * and another to update that flag.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface AllocatableEntity extends Entity {

@@ -46,8 +46,6 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
  * If you need such level of accuracy you can use {@link FairProvisioner} which may be a bit slower
  * than this provisioner.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class FastFairProvisioner<OperationType extends Operation<Resource>, Resource extends LongResource> 

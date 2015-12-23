@@ -37,8 +37,6 @@ import com.samysadi.acs.utility.NotificationCodes;
  * <p>The occupied space on the parent memory unit will not decrease even if some zones are deleted.
  * The occupied space can only increase.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class VirtualMemoryUnitDynamic<Zone extends MemoryZone, Unit extends MemoryUnit<Zone>> extends VirtualMemoryUnitImpl<Zone, Unit> {

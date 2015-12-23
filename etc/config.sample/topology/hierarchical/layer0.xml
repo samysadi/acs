@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sample layer configuration -->
+<config>
+	<Name>Rack</Name>
+	<NewRack>1</NewRack>
+
+	<Nodes>
+		<CountMin>40</CountMin>
+		<CountMax>80</CountMax>
+	</Nodes>
+
+	<Switch>
+		<Name>TOR</Name>
+		<Count>2</Count>
+		<Mtbf></Mtbf>
+		<Mttr></Mttr>
+	</Switch>
+
+	<NetworkInterface>
+		<Name>Intel I350-T2</Name>
+		<Mtbf></Mtbf>
+		<Mttr></Mttr>
+		<MaxUploadBw>500</MaxUploadBw>
+		<MaxDownloadBw>500</MaxDownloadBw>
+	</NetworkInterface>
+
+	<NetworkLink>
+		<LengthMin>1</LengthMin>
+		<LengthMax>20</LengthMax>
+		<LossRateMin></LossRateMin>
+		<LossRateMax></LossRateMax>
+	</NetworkLink>
+</config>

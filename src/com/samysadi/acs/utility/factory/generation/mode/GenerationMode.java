@@ -33,8 +33,6 @@ import com.samysadi.acs.core.Config;
  * configuration candidate to be used. This interface defines methods to choose between
  * all these candidates, and to return the next configuration to be used by the factory.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface GenerationMode extends Cloneable {

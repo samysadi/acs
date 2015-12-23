@@ -32,8 +32,6 @@ package com.samysadi.acs.core.notifications;
  * <p>Prefer using {@link NotificationListener}, as it will suit most of needs.<br/>
  * Except if you have very specific usage you should not need instantaneous listeners.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class InstantNotificationListener extends NotificationListener {

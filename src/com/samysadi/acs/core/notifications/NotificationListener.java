@@ -35,8 +35,6 @@ package com.samysadi.acs.core.notifications;
  * <p>See the {@link Notifier} documentation to learn more about how you can use notifications 
  * in the simulation.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class NotificationListener {

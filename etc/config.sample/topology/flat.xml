@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sample configuration for a flat topology -->
+<config>
+	<TopologyFactory_Class>com.samysadi.acs.utility.factory.TopologyFactoryFlat</TopologyFactory_Class>
+
+	<!-- include hosts configurations -->
+	<include>hosts/all.xml</include>
+
+	<Topology>
+		<Nodes>
+			<CountMin>60000</CountMin>
+			<CountMax>100000</CountMax>
+		</Nodes>
+
+		<NodesPerRack>
+			<CountMin>40</CountMin>
+			<CountMax>80</CountMax>
+		</NodesPerRack>
+
+		<RacksPerCluster>
+			<CountMin>10</CountMin>
+			<CountMax>20</CountMax>
+		</RacksPerCluster>
+
+		<ClustersPerDatacenter>
+			<CountMin>10</CountMin>
+			<CountMax>20</CountMax>
+		</ClustersPerDatacenter>
+	</Topology>
+
+	<InternetLayer><include>default/internetlayer.xml</include></InternetLayer>
+</config>

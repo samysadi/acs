@@ -43,8 +43,6 @@ import com.samysadi.acs.user.User;
  * multiple replicas.
  * Also it may include different placement policies and replica selection policies.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface Staas extends Entity {

@@ -33,8 +33,6 @@ package com.samysadi.acs.service.vmplacement;
  * The host is chosen according to the worst fit method.<br/>
  * If none is found then a new host is powered on.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class VmPlacementPolicyWorstFit extends VmPlacementPolicyBestFit {

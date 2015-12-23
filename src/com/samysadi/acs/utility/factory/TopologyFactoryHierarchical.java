@@ -46,8 +46,6 @@ import com.samysadi.acs.utility.random.Uniform;
  * hosts (leafs of the tree) are connected to each other through a given number (and levels) of
  * switches.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class TopologyFactoryHierarchical extends TopologyFactory {
@@ -64,10 +62,8 @@ public class TopologyFactoryHierarchical extends TopologyFactory {
 		layerConfigurations.clear();
 
 		int i = 0;
-		while (true) {
-			Config cfg = getConfig().addContext(CONTEXT + i++);
-			if (cfg.isEmpty())
-				break;
+		while (getConfig().hasContext(CONTEXT, i)) {
+			Config cfg = getConfig().addContext(CONTEXT, i);
 			layerConfigurations.add(cfg);
 		}
 

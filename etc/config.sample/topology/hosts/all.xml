@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Sample host configuration file
+	############################################################################
+	LC, MC, HC, VC = low/medium/high/very high computing
+	LM, MM, HM, VM = low/medium/high/very high memory
+	LS, MS, HS, VS = low/medium/high/very high storage
+	LN, MN, HN, VN = low/medium/high/very high networking
+	LR, MR, HR, VR = low/medium/high/very high reliability
+	note:
+	   - MIPS are calculated from processor's freq by assuming that 1 instruction
+			is run by cycle (which of course, may not be accurate);
+	   - Bandwidth is measured in mebi-Bytes/s not in mega-bits/s;
+	   - Transfer rates are mesured in mebi-Bytes/s;
+	   - mtbf/mttr are measured in hours;
+	   - Put 0 for mtbf/mttr to disable failures/repairs for the device.
+	############################################################################ -->
+<config>
+	<!-- leave empty to use default generation mode -->
+	<GenerationMode_Class></GenerationMode_Class>
+
+	<AddHost>
+		<include>host0.xml</include>
+		<Frequency>1</Frequency>
+	</AddHost>
+
+	<AddHost>
+		<include>host1.xml</include>
+		<Frequency>1</Frequency>
+	</AddHost>
+
+	<AddHost>
+		<include>host2.xml</include>
+		<Frequency>1</Frequency>
+	</AddHost>
+
+	<AddHost>
+		<include>host3.xml</include>
+		<Frequency>1</Frequency>
+	</AddHost>
+</config>

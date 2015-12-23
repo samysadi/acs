@@ -36,8 +36,6 @@ import com.samysadi.acs.virtualization.job.Job;
  * Also, {@link Job} implementations must pause / start / cancel {@link RemoteOperation}s accordingly
  * if they are paused / started / canceled. Please see {@link Job} documentation for more information.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface RemoteOperation<Resource> extends Operation<Resource> {

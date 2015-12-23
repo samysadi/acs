@@ -38,8 +38,6 @@ import com.samysadi.acs.virtualization.job.Job;
  * 
  * <p>This implementation relies on {@link JobDownBwProbe} to update its value.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class JobDownBwInternetProbe extends AbstractProbe<Long> implements ModifiableProbe<Long>, DataRateProbe {

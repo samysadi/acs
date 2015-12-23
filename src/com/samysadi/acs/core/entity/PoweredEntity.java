@@ -35,8 +35,6 @@ import com.samysadi.acs.core.notifications.CoreNotificationCodes;
  * 
  * <p>Default power state when instantiating a new object which implements this class is {@link PowerState#ON}.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface PoweredEntity extends Entity {

@@ -36,8 +36,6 @@ import com.samysadi.acs.tracing.AbstractLongIntegratorProbe;
 /**
  * Probe for instant energy consumption by the whole cloud.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class CpEnergyProbe extends AbstractLongIntegratorProbe implements EnergyProbe {

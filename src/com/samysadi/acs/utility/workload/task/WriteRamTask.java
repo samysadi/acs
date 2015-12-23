@@ -43,8 +43,6 @@ import com.samysadi.acs.utility.workload.Workload;
  * Use the <i>TrySize</i> configuration instead of <i>Size</i>
  * so that this task will not try to allocate more than available Ram.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class WriteRamTask extends TaskImpl {

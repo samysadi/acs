@@ -67,8 +67,6 @@ import com.samysadi.acs.virtualization.job.Job;
  * A class containing static utility methods.<br/>
  * Most of these methods behavior depends on a given (correctly contexted) configuration.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public final class FactoryUtils {

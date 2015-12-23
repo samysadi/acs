@@ -46,8 +46,6 @@ import com.samysadi.acs.virtualization.VirtualMachine;
  * {@link Checkpoint#recover(Host, VirtualMachine)}, and {@link Checkpoint#transfer(Host)}.<br/>
  * Have a look at their respective documentation for more information.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public interface Checkpoint extends Entity {

@@ -32,8 +32,6 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
 /**
  * This provisioner always give resource promises with a value of {@link Long#MAX_VALUE}.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public abstract class InfiniteProvisioner<OperationType extends Operation<Resource>, Resource extends LongResource> 

@@ -38,8 +38,6 @@ import com.samysadi.acs.utility.NotificationCodes;
 /**
  * Probe for number of File placement failures.
  * 
- * @author Samy Sadi <samy.sadi.contact@gmail.com>
- * @author Belabbas Yagoubi <byagoubi@gmail.com>
  * @since 1.0
  */
 public class CpSfPlacementFailureCountProbe extends AbstractProbe<Long> {
