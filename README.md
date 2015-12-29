@@ -58,9 +58,9 @@ All you have to do is define your new class that implements that interface, and 
 ACS to use the new policy.
 
 Assuming your new implementation is named MyVmPlacementPolicy in the package mypackage, then
-you have to add the following configuration line (preferably in the classes.config file):
-```
-VmPlacementPolicy_Class=mypackage.MyVmPlacementPolicy
+you have to add the following configuration line (preferably in the classes.xml file):
+```xml
+<VmPlacementPolicy_Class>mypackage.MyVmPlacementPolicy</VmPlacementPolicy_Class>
 ```
 
 Regarding the implementation, note that you can use simply override the AbstractVmPlacementPolicy.
