@@ -175,6 +175,8 @@ public class WorkloadDefault extends JobDefault implements Workload {
 			((IncrementableProbe<?>) Simulator.getSimulator().
 					getProbe(SimFailedWorkloadsCountProbe.KEY)).increment();
 			break;
+		default:
+			break;
 		}
 	}
 
