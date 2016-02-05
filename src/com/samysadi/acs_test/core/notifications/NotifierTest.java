@@ -29,7 +29,7 @@ package com.samysadi.acs_test.core.notifications;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.After;
 import org.junit.Before;

@@ -1,7 +1,10 @@
 bin
+build.xml
 .classpath
 html
 javadoc.xml
+manifest.mf
+nbproject
 .project
 .settings
 TODO
