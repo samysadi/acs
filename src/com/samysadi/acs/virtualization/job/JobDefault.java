@@ -447,6 +447,57 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 		return o;
 	}
 
+	@Override
+	public NetworkOperation receiveData(Job srcJob, long dataSize,
+			NotificationListener listener) {
+		return srcJob.sendData(this, dataSize, listener);
+	}
+
+	@Override
+	public NetworkOperation receiveData(Host srcHost, long dataSize,
+			NotificationListener listener) {
+		if (getParent() == null)
+			return null;
+		VirtualMachine srcVm = newTemporaryVm(srcHost, getParent().getUser());
+		if (srcVm.canStart())
+			srcVm.doStart();
+		Job srcJob = Factory.getFactory(this).newJob(null, srcVm);
+		if (srcJob.canStart())
+			srcJob.doStart();
+
+		NetworkOperation o = Factory.getFactory(this).newNetworkOperation(null, srcJob, this, dataSize);
+		if (!o.canStart()) {
+			removeTemporaryVm(srcVm);
+			o.setParent(null);
+			return null;
+		}
+		if (listener != null)
+			o.addListener(NotificationCodes.RUNNABLE_STATE_CHANGED, listener);
+		NotificationListener n = new NotificationListener() {
+			@Override
+			protected void notificationPerformed(Notifier notifier,
+					int notification_code, Object data) {
+				NetworkOperation o = (NetworkOperation) notifier;
+				if (o.getParent() == null || o.isTerminated()) {
+					final VirtualMachine vm = o.getParent().getParent();
+					//make sure all listeners are invoked before discarding temporary vm
+					Simulator.getSimulator().schedule(1, new DispensableEventImpl() {
+						@Override
+						public void process() {
+							removeTemporaryVm(vm);
+						}
+					});
+					this.discard();
+				}
+			}
+		};
+		o.addListener(NotificationCodes.RUNNABLE_STATE_CHANGED, n);
+		o.addListener(NotificationCodes.ENTITY_PARENT_CHANGED, n);
+		o.doStart();
+			
+		return o;
+	}
+
 	/* SIGNAL OPERATIONS
 	 * ------------------------------------------------------------------------ */
 

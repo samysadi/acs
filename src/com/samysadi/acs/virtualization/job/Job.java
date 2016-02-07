@@ -197,13 +197,42 @@ public interface Job extends Entity, RunnableEntity {
 	 * Creates and starts a network operation to send the given <tt>dataSize</tt> to the given <tt>destinationHost</tt>.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
 	 * 
-	 * <p>This method will automatically create a job and a virtual machine on destination host to receive the data.<br/>
-	 * Created virtual machine is owned by the same user as the parent virtual machine of current job.<br/>
+	 * <p>This method will automatically create a job and a virtual machine on the destination host to receive the data.<br/>
+	 * Created virtual machine is owned by the same user as the parent virtual machine of the current job.<br/>
 	 * When the operation ends, the created virtual machine is discarded.
 	 * 
 	 * @see Job#sendData(Job, long, NotificationListener)
 	 */
 	public NetworkOperation sendData(Host destinationHost, long dataSize, NotificationListener listener);
+
+	/**
+	 * Creates and starts a network operation that sends data from the given <tt>srcJob</tt> to the current job.
+	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
+	 * 
+	 * <p>This method is equivalent to:
+	 * {@code srcJob.sendData(this, dataSize, listener);}
+	 * 
+	 * @param srcJob
+	 * @param dataSize
+	 * @param listener a listener that is added for the {@link NotificationCodes#RUNNABLE_STATE_CHANGED}
+	 * notification code, before the operation is started. Can be <tt>null</tt>.
+	 * @return the created operation, or <tt>null</tt>
+	 * @see NetworkOperation
+	 */
+	public NetworkOperation receiveData(Job srcJob, long dataSize, NotificationListener listener);
+
+	/**
+	 * Creates and starts a network operation on the <tt>srcHost</tt> which will send the the given <tt>dataSize</tt>
+	 * to the current job.
+	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
+	 * 
+	 * <p>This method will automatically create a job and a virtual machine on the source host to send the data.<br/>
+	 * Created virtual machine is owned by the same user as the parent virtual machine of the current job.<br/>
+	 * When the operation ends, the created virtual machine is discarded.
+	 * 
+	 * @see Job#receiveData(Job, long, NotificationListener)
+	 */
+	public NetworkOperation receiveData(Host srcHost, long dataSize, NotificationListener listener);
 
 	/**
 	 * Creates and starts a {@link TimerOperation} with the given delay.
