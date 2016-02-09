@@ -93,11 +93,6 @@ import com.samysadi.acs.utility.collections.MultiListView;
 public class Simulator extends EntityImpl {
 
 	/**
-	 * Simulation log level
-	 */
-	public static Level LOG_LEVEL = Level.ALL;
-
-	/**
 	 * A simulation time value that is always in the past.
 	 */
 	public static final long PAST_TIME = -1l;
@@ -203,6 +198,8 @@ public class Simulator extends EntityImpl {
 
 	private int lastMemoryCleanupCount = memoryCleanupCount;
 
+	private Logger logger;
+
 	private Random random;
 	protected static int RANDOM_SEEDS_COUNT = 1000;
 	private long[] randomSeeds;
@@ -234,16 +231,20 @@ public class Simulator extends EntityImpl {
 			simulators.put(this.executionThread, this);
 		}
 
-		long seed;
-		if ("auto".compareToIgnoreCase(getConfig().getString("seed", "")) == 0)
-			seed = System.currentTimeMillis();
-		else
-			seed = getConfig().getLong("seed", 0l);
-		this.random = new Random(seed);
-		this.remainingRandomSeeds = RANDOM_SEEDS_COUNT;
-		this.randomSeeds = new long[this.remainingRandomSeeds];
-		for (int i = 0; i< remainingRandomSeeds; i++)
-			this.randomSeeds[i] = this.random.nextLong();
+		logger = new Logger(getConfig().getLevel("Log.Level", Logger.DEFAULT_LEVEL));
+
+		{
+			long seed;
+			if ("auto".compareToIgnoreCase(getConfig().getString("seed", "")) == 0)
+				seed = System.currentTimeMillis();
+			else
+				seed = getConfig().getLong("seed", 0l);
+			this.random = new Random(seed);
+			this.remainingRandomSeeds = RANDOM_SEEDS_COUNT;
+			this.randomSeeds = new long[this.remainingRandomSeeds];
+			for (int i = 0; i< remainingRandomSeeds; i++)
+				this.randomSeeds[i] = this.random.nextLong();
+		}
 
 		//
 	}
@@ -436,11 +437,17 @@ public class Simulator extends EntityImpl {
 
 		getLogger().log(Level.FINE, "Simulation started.");
 
-		final long tick = System.nanoTime();
+		final Level progress_level = getConfig().getLevel("Log.Progress.Level", Level.FINER);
+		final boolean progress_level_loggable = getLogger().isLoggable(progress_level);
+		final long progress_delay = Math.round(getConfig().getDouble("Log.Progress.Delay", 10d) *
+				1000000000);
+		final int progress_accuracy = getConfig().getInt("Log.Progress.Accuracy", 9999);
 
-		long tick2 = tick; //TODO remove
+		final long tick = System.nanoTime();
+		long tick2 = tick; //used for estimating simulator speed
 
 		int next_report = 0;
+		int added_report = 0;
 		notifyNow(CoreNotificationCodes.SIMULATOR_STARTED, null);
 		while (this.isNotStopped && !Thread.currentThread().isInterrupted()
 				&& this.time < this.scheduledStop) {
@@ -465,15 +472,17 @@ public class Simulator extends EntityImpl {
 			// let's process next event
 			Event next = null;
 			while (null != (next = this.currentEntry.getValue().pollFirst())) {
-				if (next_report-- == 0) {
-					next_report = 99999;
+				if (progress_level_loggable && (next_report-- == 0)) {
+					next_report = progress_accuracy;
 					long tt = System.nanoTime();
-					long h = Math.round((1000000000d / (tt - tick2)) * (next_report+1));
-					tick2 = tt;
-					if (Logger.getGlobal().isLoggable(Level.FINER)) {
+					if (tt - tick2 > progress_delay) {
+						long h = added_report == 0 ? 0 : Math.round((1000000000d / (tt - tick2)) * (added_report+1));
+						tick2 = tt;
 						Logger.getGlobal().log(Level.FINER, "Simulation progress: remains " + this.nonDispensableEventsCount + " events and " + this.nextEvents.size() + " ticks (" + h + "e/s)");
 						Logger.getGlobal().log(Level.FINER, "Memory used: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) >> 20) + "MiB");
+						added_report = 0;
 					}
+					added_report += next_report;
 				}
 	
 				next.process();
@@ -712,7 +721,6 @@ public class Simulator extends EntityImpl {
 			this.randoms.removeLast();
 	}
 
-	private Logger logger = new Logger();
 	@Override
 	public Logger getLogger() {
 		return this.logger;

@@ -47,6 +47,7 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.Suite;
 import org.junit.runners.model.InitializationError;
 
+import com.samysadi.acs.core.Logger;
 import com.samysadi.acs.core.Simulator;
 
 /**
@@ -67,7 +68,8 @@ public final class AllTests {
 
 		@Override
 		public void run(final RunNotifier notifier) {
-			Simulator.LOG_LEVEL = Level.WARNING;
+			Logger.DEFAULT_LEVEL = Level.WARNING;
+
 			notifier.addListener(new RunListener() {
 				boolean failed;
 				@Override

@@ -38,15 +38,17 @@ import com.samysadi.acs.core.entity.Entity;
  * @since 1.0
  */
 public class Logger {
+	public static Level DEFAULT_LEVEL = Level.ALL;
+
 	private java.util.logging.Logger logger = null;
 
-	public Logger() {
+	public Logger(Level l) {
 		super();
 
 		System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s%6$s%n");
 		this.logger = java.util.logging.Logger.getAnonymousLogger();
 		this.logger.setFilter(null);
-		this.logger.setLevel(Simulator.LOG_LEVEL);
+		this.logger.setLevel(l);
 
 		for (Handler handler: this.logger.getHandlers()) {
 			this.logger.removeHandler(handler);
@@ -55,7 +57,7 @@ public class Logger {
 		this.logger.setUseParentHandlers(false);
 
 		ConsoleHandler handler = new ConsoleHandler();
-		handler.setLevel(Simulator.LOG_LEVEL);
+		handler.setLevel(l);
 		this.logger.addHandler(handler);
 	}
 
@@ -119,7 +121,7 @@ public class Logger {
 		log(Level.SEVERE, "Cannot instantiate the class " + clazz.getName(), t);
 	}
 
-	private final static Logger global = new Logger();
+	private final static Logger global = new Logger(DEFAULT_LEVEL);
 
 	/**
 	 * Returns current simulator's logger or a global logger.

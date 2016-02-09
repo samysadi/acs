@@ -676,6 +676,36 @@ public class Config {
 		}
 	}
 
+	public final Level getLevel(String configName, Level defaultValue) {
+		return getLevel(configName, defaultValue, false);
+	}
+
+	public Level getLevel(String configName, Level defaultValue, boolean recursive) {
+		Object r = getConfig(configName, defaultValue, recursive);
+		if (r == null)
+			return null;
+
+		if (r instanceof Level)
+			return (Level) r;
+
+		final String s;
+		if (r instanceof Number)
+			s = String.valueOf(((Number) r).intValue());
+		else
+			s = r.toString();
+		if (s.isEmpty())
+			return defaultValue;
+
+		try {
+			Level v = Level.parse(s);
+			setConfig(configName, v);
+			return v;
+		} catch (IllegalArgumentException e) {
+			getLogger().log(Level.WARNING, "Config value is not a correct Level: " + this.context + configName);
+			return defaultValue;
+		}
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
