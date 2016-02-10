@@ -30,7 +30,7 @@
 	<!-- <MaximumRunTime>360.0</MaximumRunTime> -->
 
 	<Log>
-		<!-- Log level, see java.utils.logging.Level for more information -->
+		<!-- Log level, see java.util.logging.Level for more information -->
 		<Level>ALL</Level>
 
 		<Progress>
@@ -41,7 +41,6 @@
 			<!-- Number of events to process before trying to display progress (set lower values for more accurate progress logging which will also induce higher overhead on the simulation)  -->
 			<!-- <Accuracy>9999</Accuracy> -->
 		</Progress>
-
 	</Log>
 
 	<!-- Random seed, give explicit seed value or set to "auto" to use a new seed per simulation (if omitted, default is 0) -->
