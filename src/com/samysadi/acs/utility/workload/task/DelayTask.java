@@ -53,7 +53,7 @@ public class DelayTask extends TaskImpl {
 		if (this.isExecuting())
 			return;
 
-		if (this.remainingDelay <= 0) {
+		if (this.isDone() || this.remainingDelay <= 0) {
 			success();
 			return;
 		}

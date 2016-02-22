@@ -37,6 +37,7 @@ import com.samysadi.acs.utility.workload.Workload;
 public abstract class TaskImpl implements Task {
 	private Workload workload;
 	private Config config;
+	private boolean done;
 
 	public TaskImpl(Workload workload, Config config) {
 		super();
@@ -44,6 +45,7 @@ public abstract class TaskImpl implements Task {
 			throw new NullPointerException();
 		this.workload = workload;
 		this.config = config;
+		this.done = false;
 	}
 
 	@Override
@@ -100,8 +102,19 @@ public abstract class TaskImpl implements Task {
 	}
 
 	protected void success() {
+		setIsDone();
 		getWorkload().notify(NotificationCodes.WORKLOAD_TASK_COMPLETED, this);
 	}
 
-	
+	protected boolean isDone() {
+		return this.done;
+	}
+
+	protected void setIsDone(boolean v) {
+		this.done = v;
+	}
+
+	protected final void setIsDone() {
+		setIsDone(true);
+	}
 }

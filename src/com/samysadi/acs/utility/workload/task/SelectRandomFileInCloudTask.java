@@ -51,6 +51,11 @@ public class SelectRandomFileInCloudTask extends TaskImpl {
 		if (this.isExecuting())
 			return;
 
+		if (this.isDone()) {
+			success();
+			return;
+		}
+
 		ShuffledIterator<User> itt = new ShuffledIterator<User>(getWorkload().getParent().getParent().getCloudProvider().getUsers());
 
 		StorageFile file = null;

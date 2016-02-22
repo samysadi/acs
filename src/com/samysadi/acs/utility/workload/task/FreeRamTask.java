@@ -48,6 +48,11 @@ public class FreeRamTask extends TaskImpl {
 		if (this.isExecuting())
 			return;
 
+		if (this.isDone()) {
+			success();
+			return;
+		}
+
 		final RamZone zone = getWorkload().getRamZone();
 		if (zone == null) {
 			success();

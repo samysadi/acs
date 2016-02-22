@@ -69,7 +69,7 @@ public class WriteFileTask extends TaskImpl {
 		if (this.isExecuting())
 			return;
 
-		if (this.remainingSize <= 0) {
+		if (this.isDone() || this.remainingSize <= 0) {
 			success();
 			return;
 		}

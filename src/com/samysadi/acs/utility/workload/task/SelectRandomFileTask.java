@@ -54,6 +54,11 @@ public class SelectRandomFileTask extends CreateFileTask {
 		if (this.isExecuting())
 			return;
 
+		if (this.isDone()) {
+			success();
+			return;
+		}
+
 		User user = getWorkload().getParent().getUser();
 		if (user == null) {
 			fail("User not found");

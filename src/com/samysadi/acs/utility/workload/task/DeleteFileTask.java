@@ -54,6 +54,11 @@ public class DeleteFileTask extends TaskImpl {
 		if (this.isExecuting())
 			return;
 
+		if (this.isDone()) {
+			success();
+			return;
+		}
+
 		StorageFile file = getWorkload().getStorageFile();
 		if (file == null) {
 			fail("There is no active file");

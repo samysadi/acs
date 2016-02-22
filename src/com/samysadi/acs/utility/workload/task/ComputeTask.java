@@ -57,7 +57,7 @@ public class ComputeTask extends TaskImpl {
 		if (this.isExecuting())
 			return;
 
-		if (this.remainingLength <= 0) {
+		if (this.isDone() || this.remainingLength <= 0) {
 			success();
 			return;
 		}

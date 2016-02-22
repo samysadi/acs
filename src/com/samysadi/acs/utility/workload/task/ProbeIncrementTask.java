@@ -45,6 +45,11 @@ public class ProbeIncrementTask extends TaskImpl {
 		if (this.isExecuting())
 			return;
 
+		if (this.isDone()) {
+			success();
+			return;
+		}
+
 		String probe_key = getConfig().getString("Probe", null);
 		if (probe_key == null) {
 			fail("Probe must be specified.");
