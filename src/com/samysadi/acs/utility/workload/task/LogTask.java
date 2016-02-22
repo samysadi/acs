@@ -35,8 +35,12 @@ import com.samysadi.acs.utility.workload.Workload;
  * @since 1.0
  */
 public class LogTask extends TaskImpl {
+	private boolean done;
+
 	public LogTask(Workload workload, Config config) {
 		super(workload, config);
+
+		this.done = false;
 	}
 
 	@Override
@@ -44,11 +48,17 @@ public class LogTask extends TaskImpl {
 		if (this.isExecuting())
 			return;
 
+		if (this.done) {
+			success();
+			return;
+		}
+
 		final String message = getConfig().getString("Message", null);
 
 		if (message != null)
 			log(message);
 
+		this.done = true;
 		success();
 	}
 
