@@ -40,6 +40,9 @@
 	<Failures>
 		<!-- Set to 0 to disable failure generation  (if omitted, default is 1) -->
 		<Enabled>1</Enabled>
+
+		<!-- Set to 1 to generate failures for hosts only -->
+		<HostsOnly>1</HostsOnly>
 	</Failures>
 
 	

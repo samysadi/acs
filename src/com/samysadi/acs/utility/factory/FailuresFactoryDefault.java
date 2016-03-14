@@ -34,8 +34,15 @@ import com.samysadi.acs.core.Simulator;
 import com.samysadi.acs.core.entity.Entity;
 import com.samysadi.acs.core.entity.FailureProneEntity;
 import com.samysadi.acs.core.entity.FailureProneEntity.FailureState;
+import com.samysadi.acs.core.entity.PoweredEntity;
+import com.samysadi.acs.core.entity.PoweredEntity.PowerState;
 import com.samysadi.acs.core.event.DispensableEventImpl;
 import com.samysadi.acs.core.event.Event;
+import com.samysadi.acs.core.notifications.NotificationListener;
+import com.samysadi.acs.core.notifications.Notifier;
+import com.samysadi.acs.hardware.Host;
+import com.samysadi.acs.service.CloudProvider;
+import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.random.Exponential;
 
 /**
@@ -46,6 +53,11 @@ import com.samysadi.acs.utility.random.Exponential;
  */
 public class FailuresFactoryDefault extends FailuresFactory {
 	private static final Object PROP_FAILURE_EVENT = new Object();
+
+	/**
+	 * Weither failures should be generated for hosts only
+	 */
+	private boolean hostsOnly;
 
 	protected abstract class FailureRepairEventImpl extends DispensableEventImpl implements FailureRepairEvent {
 		private final WeakReference<FailureProneEntity> wfp;
@@ -104,6 +116,8 @@ public class FailuresFactoryDefault extends FailuresFactory {
 
 	public FailuresFactoryDefault(Config config) {
 		super(config);
+
+		hostsOnly = false;
 	}
 
 	@Override
@@ -165,6 +179,15 @@ public class FailuresFactoryDefault extends FailuresFactory {
 			return;
 		if (!((FailureProneEntity)entity).supportsFailureStateUpdate())
 			return;
+
+		if (hostsOnly && (!(entity instanceof Host)))
+			return;
+
+		if (entity instanceof PoweredEntity) {
+			if (!entity.getListeners(NotificationCodes.POWER_STATE_CHANGED).contains(getPowerListener()))
+				entity.addListener(NotificationCodes.POWER_STATE_CHANGED, getPowerListenerSingle());
+		}
+
 		if (((FailureProneEntity)entity).getFailureState() == FailureState.FAILED)
 			enableRepairs(((FailureProneEntity)entity));
 		else
@@ -173,17 +196,42 @@ public class FailuresFactoryDefault extends FailuresFactory {
 
 	@Override
 	public void enableRec(Entity entity) {
+		if (entity instanceof PoweredEntity) {
+			entity.removeListener(NotificationCodes.POWER_STATE_CHANGED, getPowerListenerSingle());
+			entity.addListener(NotificationCodes.POWER_STATE_CHANGED, getPowerListener());
+
+			if (((PoweredEntity) entity).getPowerState() != PowerState.ON)
+				return;
+		}
+
 		enable(entity);
-		for (Entity e: entity.getEntities())
+
+		if (hostsOnly) {
+			if (entity instanceof Simulator ||
+					entity instanceof CloudProvider) {
+				//ok continue
+			} else {
+				return; //we said only hosts, and hosts are children of CloudProvider so let's return
+			}
+		}
+
+		for (Entity e: entity.getEntities()) {
 			enableRec(e);
+		}
 	}
 
 	@Override
 	public void disable(Entity entity) {
+		if (entity instanceof PoweredEntity) {
+			entity.removeListener(NotificationCodes.POWER_STATE_CHANGED, getPowerListenerSingle());
+			entity.removeListener(NotificationCodes.POWER_STATE_CHANGED, getPowerListener());
+		}
+
 		if (!(entity instanceof FailureProneEntity))
 			return;
 		if (!((FailureProneEntity)entity).supportsFailureStateUpdate())
 			return;
+
 		Event old = (Event) entity.getProperty(PROP_FAILURE_EVENT);
 		if (old != null)
 			old.cancel();
@@ -201,14 +249,64 @@ public class FailuresFactoryDefault extends FailuresFactory {
 	public Object generate() {
 		Simulator.getSimulator().setRandomGenerator(this.getClass());
 
+		hostsOnly = getConfig().getBoolean("HostsOnly", false);
+
 		if (getConfig().getBoolean("Enabled", true)) {
-			getLogger().log(Level.INFO, "Enabling failures and repairs ...");
+			getLogger().log(Level.INFO, "Enabling failures and repairs " + (hostsOnly ? "for hosts only " : "") + "...");
 			enableRec(Simulator.getSimulator());
 		} else
 			getLogger().log(Level.INFO, "Failures and repairs are disabled");
 
 		Simulator.getSimulator().restoreRandomGenerator();
 		return null;
+	}
+
+	protected class PowerStateNotificationListener extends NotificationListener {
+		@Override
+		protected void notificationPerformed(Notifier notifier,
+				int notification_code, Object data) {
+			if (notification_code == NotificationCodes.POWER_STATE_CHANGED) {
+				PoweredEntity e = (PoweredEntity) notifier;
+				if (e.getPowerState() == PowerState.ON) {
+					enableRec(e);
+				} else {
+					disableRec(e);
+					e.addListener(NotificationCodes.POWER_STATE_CHANGED, this); //re-add the listener because disableRec will remove it
+				}
+			}
+		}
+	}
+
+	private NotificationListener powerListener = null;
+	protected NotificationListener getPowerListener() {
+		if (powerListener != null)
+			return powerListener;
+		powerListener = new PowerStateNotificationListener();
+		return powerListener;
+	}
+
+	protected class PowerStateNotificationListenerSingle extends NotificationListener {
+		@Override
+		protected void notificationPerformed(Notifier notifier,
+				int notification_code, Object data) {
+			if (notification_code == NotificationCodes.POWER_STATE_CHANGED) {
+				PoweredEntity e = (PoweredEntity) notifier;
+				if (e.getPowerState() == PowerState.ON) {
+					enable(e);
+				} else {
+					disable(e);
+					e.addListener(NotificationCodes.POWER_STATE_CHANGED, this); //re-add the listener because disable will remove it
+				}
+			}
+		}
+	}
+
+	private NotificationListener powerListenerSingle = null;
+	protected NotificationListener getPowerListenerSingle() {
+		if (powerListenerSingle != null)
+			return powerListenerSingle;
+		powerListenerSingle = new PowerStateNotificationListenerSingle();
+		return powerListenerSingle;
 	}
 
 }
