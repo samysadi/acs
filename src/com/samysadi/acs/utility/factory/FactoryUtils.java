@@ -56,6 +56,7 @@ import com.samysadi.acs.user.ThinClientVirtualMachine;
 import com.samysadi.acs.user.User;
 import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.factory.generation.mode.FrequencyGenerationMode;
+import com.samysadi.acs.utility.random.Exponential;
 import com.samysadi.acs.utility.random.NumberGenerator;
 import com.samysadi.acs.utility.random.Uniform;
 import com.samysadi.acs.utility.workload.Workload;
@@ -84,6 +85,8 @@ public final class FactoryUtils {
 	 * 		<li><b>Example</b>: if set then its value is directly returned;
 	 * 		<li><b>ExampleMin</b>, <b>ExampleMax</b>: if set then the returned value is
 	 * 			computed following a uniform distribution (using the given inclusive min and max);
+	 * 		<li><b>ExampleMean</b>: if set then the returned value is
+	 * 			computed following a exponential distribution (using the given mean);
 	 * 		<li><b>Example_Class</b>: if set and the class implements {@link NumberGenerator} then
 	 * 			it is instantiated and used to generate the returned value;
 	 * 		<li>If none of the previous conditions has returned, then defaultValue is returned.
@@ -114,6 +117,12 @@ public final class FactoryUtils {
 		}
 
 		{
+			Double mean = config.getDouble(configName + "Mean", null);
+			if (mean != null)
+				return (new Exponential(mean)).nextDouble();
+		}
+
+		{
 			Class<?> clazz = config.getClassFromConfig(configName + "_Class", null, false);
 			if (clazz != null) {
 				try {
@@ -136,6 +145,8 @@ public final class FactoryUtils {
 	 * 		<li><b>Example</b>: if set then its value is directly returned;
 	 * 		<li><b>ExampleMin</b>, <b>ExampleMax</b>: if set then the returned value is
 	 * 			computed following a uniform distribution (using the given inclusive min and max);
+	 * 		<li><b>ExampleMean</b>: if set then the returned value is
+	 * 			computed following a exponential distribution (using the given mean);
 	 * 		<li><b>Example_Class</b>: if set and the class implements {@link NumberGenerator} then
 	 * 			it is instantiated and used to generate the returned value;
 	 * 		<li>If none of the previous conditions has returned, then defaultValue is returned.
@@ -166,6 +177,12 @@ public final class FactoryUtils {
 		}
 
 		{
+			Long mean = config.getLong(configName + "Mean", null);
+			if (mean != null)
+				return (new Exponential(mean)).nextLong();
+		}
+
+		{
 			Class<?> clazz = config.getClassFromConfig(configName + "_Class", null, false);
 			if (clazz != null) {
 				try {
@@ -188,6 +205,8 @@ public final class FactoryUtils {
 	 * 		<li><b>Example</b>: if set then its value is directly returned;
 	 * 		<li><b>ExampleMin</b>, <b>ExampleMax</b>: if set then the returned value is
 	 * 			computed following a uniform distribution (using the given inclusive min and max);
+	 * 		<li><b>ExampleMean</b>: if set then the returned value is
+	 * 			computed following a exponential distribution (using the given mean);
 	 * 		<li><b>Example_Class</b>: if set and the class implements {@link NumberGenerator} then
 	 * 			it is instantiated and used to generate the returned value;
 	 * 		<li>If none of the previous conditions has returned, then defaultValue is returned.
@@ -215,6 +234,12 @@ public final class FactoryUtils {
 				if (max != null)
 					return (new Uniform(min, max)).nextInt();
 			}
+		}
+
+		{
+			Integer mean = config.getInt(configName + "Mean", null);
+			if (mean != null)
+				return (new Exponential(mean)).nextInt();
 		}
 
 		{
