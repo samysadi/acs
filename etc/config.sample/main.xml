@@ -5,22 +5,10 @@
 	can also use relative paths which are resolved based on the current
 	configuration file.
 
-	Tags starting with
-	Use the reserved "context" key to define a context for next configurations.
-	All further configuration keys are assumed to be in the given context.
-	Moreover, included configuration files will be included under the given
-	context.
-	The $ symbol in context names is automatically replaced with a number which
-	is equal to 0 when the context is used for the first time, and it is
-	incremented each time the context is used again.
-	When context names starts with the @ symbol, then this symbol is replaced
-	with the current context.
-	When context names starts with the % symbol, then this symbol is replaced
-	with the parent context.
+	Tags starting with "Add" or "Remove" are special tags.
+	See the documentation of the com.samysadi.acs.core.Config class for more information on
+	the meaning of these tags.
 
-	Use the reserved "remove_config" key to remove a given configuration.
-	Use regular expressions to remove multiple configurations, or to remove
-	whole context configurations.  
 	############################################################################ -->
 <config>
 	<!-- include classes configuration file -->
