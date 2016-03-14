@@ -42,7 +42,7 @@
 		<Enabled>1</Enabled>
 
 		<!-- Set to 1 to generate failures for hosts only -->
-		<HostsOnly>1</HostsOnly>
+		<HostsOnly>0</HostsOnly>
 	</Failures>
 
 	
