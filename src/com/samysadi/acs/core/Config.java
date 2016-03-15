@@ -787,8 +787,8 @@ public class Config {
 					return false;
 				}
 
+				includeTrace.removeLast();
 				if (!loaded) {
-					includeTrace.removeLast();
 					Config.this.getLogger().log(Level.SEVERE, includeTrace.toString() +
 							"Error when loading configuration file: \"" + f.getPath() + "\".");
 					return false;
