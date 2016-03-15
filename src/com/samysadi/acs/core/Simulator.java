@@ -231,7 +231,17 @@ public class Simulator extends EntityImpl {
 			simulators.put(this.executionThread, this);
 		}
 
-		logger = new Logger(getConfig().getLevel("Log.Level", Logger.DEFAULT_LEVEL));
+		{
+			final Config logCfg = getConfig().addContext("Log");
+			logger = new Logger(logCfg.getLevel("Level", Logger.DEFAULT_LEVEL));
+
+			if (logCfg.getBoolean("DisableConsole", false))
+				getLogger().disableConsole();
+
+			String file = logCfg.getString("Output", null);
+			if (file != null && !file.isEmpty())
+				getLogger().enableOutputToFile(file);
+		}
 
 		{
 			long seed;

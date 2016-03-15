@@ -26,15 +26,19 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.core;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.SimpleFormatter;
 
 import com.samysadi.acs.core.entity.Entity;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class Logger {
@@ -56,13 +60,84 @@ public class Logger {
 
 		this.logger.setUseParentHandlers(false);
 
-		ConsoleHandler handler = new ConsoleHandler();
-		handler.setLevel(l);
-		this.logger.addHandler(handler);
+		enableConsole();
 	}
 
 	public boolean isLoggable(Level level) {
 		return this.logger.isLoggable(level);
+	}
+
+	public void enableConsole() {
+		ConsoleHandler handler = new ConsoleHandler();
+		try {
+			handler.setLevel(this.logger.getLevel());
+			handler.setFormatter(new SimpleFormatter());
+			this.logger.addHandler(handler);
+		} catch (SecurityException e) {
+			System.err.println("Cannot enable console logging");
+		}
+	}
+
+	public void disableConsole() {
+		for (Handler handler: this.logger.getHandlers()) {
+			if (handler instanceof ConsoleHandler)
+				this.logger.removeHandler(handler);
+		}
+	}
+
+	private static class MyFileHandler extends FileHandler {
+		String pattern;
+
+		public MyFileHandler(String pattern) throws IOException,
+				SecurityException {
+			super(pattern);
+
+			this.pattern = pattern;
+		}
+
+		public String getPattern() {
+			return pattern;
+		}
+	}
+
+	public void enableOutputToFile(String filename) {
+		FileHandler handler;
+		try {
+			handler = new MyFileHandler(filename);
+			handler.setFormatter(new SimpleFormatter());
+			logger.addHandler(handler);
+		} catch (SecurityException e) {
+			System.err.println("Cannot enable logging to the file: " + filename);
+		} catch (IOException e) {
+			System.err.println("Cannot enable logging to the file: " + filename);
+		}
+	}
+
+	public void disableOutputToFile(String filename) {
+		for (Handler handler: this.logger.getHandlers()) {
+			if (handler instanceof MyFileHandler) {
+				MyFileHandler fhandler = (MyFileHandler) handler;
+				if (fhandler.getPattern().equals(filename)) {
+					this.logger.removeHandler(handler);
+					continue;
+				}
+				File f1 = new File(filename);
+				File f2 = new File(fhandler.getPattern());
+				try {
+					if (f1.getCanonicalPath().equals(f2.getCanonicalPath()))
+						this.logger.removeHandler(handler);
+				} catch (SecurityException e) {
+				} catch (IOException e) {
+				}
+			}
+		}
+	}
+
+	public void disableOutputToFiles() {
+		for (Handler handler: this.logger.getHandlers()) {
+			if (handler instanceof MyFileHandler)
+				this.logger.removeHandler(handler);
+		}
 	}
 
 	public void log(Level logLevel, Entity entity, String message, Throwable thrown) {
@@ -125,9 +200,9 @@ public class Logger {
 
 	/**
 	 * Returns current simulator's logger or a global logger.
-	 * 
+	 *
 	 * <p>A global logger is returned if no simulator is accessible in the current thread.
-	 * 
+	 *
 	 * @return current simulator's logger or a global logger
 	 */
 	public static Logger getGlobal() {
