@@ -1083,6 +1083,10 @@ public class Config {
 					}
 				} else if (isTagPrefixed(tag, ADD_TAG)) {
 					tag = extractTag(tag, ADD_TAG);
+					if (tag.isEmpty()) {
+						Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "The \"" + ADD_TAG + "\" element is a special tag which needs a suffix.");
+						throw new SAXException("Malformed document");
+					}
 					ixcfa = IncludeXMLConfigFileAction.ADD;
 
 					ctx = ctx + trimContext((String) tag);
