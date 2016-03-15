@@ -83,6 +83,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * <li><b>&lt;AddFoo&gt;</b> adds a configuration named Foo in the current context. This configuration does not replace existing configurations named Foo.
  * Instead, we keep a counter internally so that when you call multiple AddFoo, we actually create Foo#0, Foo#1, ... etc.
  * If you want to create the configuration Foo, then use directly the tag &lt;Foo&gt;.
+ * <li><b>&lt;EditFoo&gt;</b> sets the context to the one defined by
+ * the id attribute and the Foo tag. This method is useful to edit configurations inside contexts created
+ * using the special &lt;AddFoo&gt; tag.
  * <li><b>&lt;RemoveFoo&gt;</b> removes the configuration named Foo (or Foo#n where n is a number) in the current context. You must give its id using the id attribute.
  * if you use the wildcard (*) value for the id attribute, then all configurations in the current context whose name starts with Foo are removed.
  * <li><b>&lt;Remove&gt;</b> same as &lt;RemoveFoo&gt; but applies for all configurations in the current context independently from their name.
@@ -831,6 +834,7 @@ public class Config {
 	public static final String ROOT_TAG = "config";
 	public static final String INCLUDE_TAG = "include";
 	public static final String ADD_TAG = "add";
+	public static final String EDIT_TAG = "edit";
 	public static final String REMOVE_TAG = "remove";
 	public static final String ID_ATTRIBUTE = "id";
 	public static final String WILDCARD_ID_ATTRIBUTE_VALUE = "*";
@@ -873,7 +877,7 @@ public class Config {
 	}
 
 	private enum IncludeXMLConfigFileAction {
-		NONE, DEFAULT, ADD, REMOVE, INCLUDE
+		NONE, DEFAULT, ADD, EDIT, REMOVE, INCLUDE
 	}
 
 	/**
@@ -1027,6 +1031,29 @@ public class Config {
 					Config.this.removeContext(key);
 			}
 
+			private String findEditContext(String tag, String id) {
+				String _ctx = loadContext + ctx;
+
+				int i = 0;
+				while (true) {
+					String tag0 = tag + CONTEXT_ARRAY_SEPARATOR + String.valueOf(i); 
+					String ctx0 = _ctx + tag0;
+					String ctx0id = ctx0 + CONTEXT_SEPARATOR + ID_ATTRIBUTE;
+					if (Config.this.config.containsKey(ctx0)) {
+						if (Config.this.config.containsKey(ctx0id)) {
+							Object _id0 = Config.this.config.get(ctx0id);
+							if (_id0 != null && _id0.toString().equals(id)) {
+								return tag0 + CONTEXT_SEPARATOR;
+							}
+						}
+					} else
+						break;
+					i++;
+				}
+
+				return null;
+			}
+
 			private Boolean isTagPrefixed(String rawTag, String pref) {
 				return pref.compareToIgnoreCase(rawTag.substring(0, Math.min(pref.length(), rawTag.length()))) == 0;
 			}
@@ -1101,6 +1128,29 @@ public class Config {
 					}
 					if (id == null)
 						id = lastId = String.valueOf(i);
+				} else if (isTagPrefixed(tag, EDIT_TAG)) {
+					tag = extractTag(tag, EDIT_TAG);
+					if (tag.isEmpty()) {
+						Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "The \"" + EDIT_TAG + "\" element is a special tag which needs a suffix.");
+						throw new SAXException("Malformed document");
+					}
+					ixcfa = IncludeXMLConfigFileAction.EDIT;
+
+					if (id == null || id.isEmpty()) {
+						Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "You need to specify the "+ ID_ATTRIBUTE +" when using the " + EDIT_TAG + " tag.");
+						throw new SAXException("Malformed document");
+					} else if (WILDCARD_ID_ATTRIBUTE_VALUE.equals(id)) {
+						Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "The wildcard value is not allowed for the "+ ID_ATTRIBUTE +" when using the " + EDIT_TAG + " tag.");
+						throw new SAXException("Malformed document");
+					}
+
+					String editCtx = findEditContext(tag, id);
+					if (editCtx == null) {
+						Config.this.getLogger().log(Level.WARNING, includeTrace.toString() + "Cannot find the specified context (<" + (tag.isEmpty() ? "?" :  tag) + " id=\"" + id + "\">).");
+						throw new SAXException("Malformed document");
+					}
+
+					ctx = ctx + editCtx;
 				} else {
 					ixcfa = IncludeXMLConfigFileAction.DEFAULT;
 					ctx = ctx + trimContext((String) tag) + CONTEXT_SEPARATOR;
@@ -1148,6 +1198,7 @@ public class Config {
 
 					break;
 				case ADD:
+				case EDIT:
 				case DEFAULT:
 					Config.this.config.put(trimContext(loadContext + ctx), value);
 				case NONE:
