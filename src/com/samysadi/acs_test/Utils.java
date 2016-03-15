@@ -45,7 +45,7 @@ public class Utils {
 	public static Simulator newSimulator() {
 		hname = 0;
 		sname = 0;
-		Simulator simulator = new Simulator(new Config(Config.DEFAULT_CONFIG_FILENAME));
+		Simulator simulator = new Simulator(new Config(null));
 		Factory.getFactory(simulator).newCloudProvider(null, simulator);
 		return simulator;
 	}
