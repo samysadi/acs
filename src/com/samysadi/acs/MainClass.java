@@ -30,19 +30,20 @@ import com.samysadi.acs.core.Simulator;
 import com.samysadi.acs.utility.factory.FactoryUtils;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class MainClass {
 	/**
 	 * Make the heap big:
 	 * -Xms512m -Xmx1024m
-	 * 
+	 *
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
 		Simulator simulator = FactoryUtils.generateSimulator();
 		simulator.start(Math.round(simulator.getConfig().getDouble("MaximumRunTime", 0d) * Simulator.SECOND));
+		simulator.free();
 	}
 
 }

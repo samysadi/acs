@@ -59,16 +59,16 @@ import com.samysadi.acs.utility.collections.MultiListView;
 /**
  * A simulator is an {@link Entity} that is the ancestor
  * of all other entities.
- * 
- * <p>This class defines methods to schedule events and to start/stop the 
+ *
+ * <p>This class defines methods to schedule events and to start/stop the
  * processing of those events based on their scheduled process time, and the order
  * when they were added (if they were scheduled at the same time).
- * 
+ *
  * <p>One simulator can be instantiated per execution thread.
  * If you instantiated a simulator on a thread then you want to to instantiate
  * a new simulator on the same thread, then you need to first discard the first simulator
  * using the {@link Simulator#free()} method.
- * 
+ *
  * <p>Static methods are offered in order to format data for various simulation units.<br/>
  * Main simulation units are as follow:
  * <ul>
@@ -84,10 +84,10 @@ import com.samysadi.acs.utility.collections.MultiListView;
  * <li><strong>Currency unit:</strong> {@link #CURRENCY_UNIT}.
  * </ul>
  * There is also other immutable values computed based on the previous values.
- * 
+ *
  * <p>If you need different precision for previous values, use {@link SimulatorUnits} methods
  * <b>before</b> loading this class.
- * 
+ *
  * @since 1.0
  */
 public class Simulator extends EntityImpl {
@@ -159,7 +159,7 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Value which is equal to one currency unit.
-	 * 
+	 *
 	 * <p>This value allows a precision of 9 digits.
 	 */
 	public static final long CURRENCY_UNIT = SimulatorUnits.getCurrencyUnit();
@@ -263,6 +263,9 @@ public class Simulator extends EntityImpl {
 		if (!this.isStopped())
 			throw new IllegalStateException("Simulator must be stopped first");
 
+		if (this.getLogger() != null)
+			this.getLogger().close();
+
 		synchronized(simulators) {
 			if (this == getSimulator())
 				simulators.remove(Thread.currentThread());
@@ -343,9 +346,9 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Returns the current simulation time.
-	 * 
+	 *
 	 * <p>Divide by {@link Simulator#SECOND} to convert to seconds.
-	 * 
+	 *
 	 * @return the current simulation time
 	 */
 	public long getTime() {
@@ -354,7 +357,7 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Returns accumulated system time in milliseconds when this simulator was running.
-	 * 
+	 *
 	 * @return accumulated system time in milliseconds when this simulator was running
 	 */
 	public long getSystemTime() {
@@ -363,11 +366,11 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Cancels the given <tt>event</tt>, and removes it from this simulator's event queue.
-	 * 
+	 *
 	 * <p>After calling this method the event is not scheduled anymore, and can be rescheduled again at another simulation time safely.
-	 * 
+	 *
 	 * <p>Prefer to use {@link Event#cancel()} which is safe even if the given event is not scheduled.
-	 *  
+	 *
 	 * @param event
 	 * @throws IllegalArgumentException if the given event is not scheduled
 	 */
@@ -380,7 +383,7 @@ public class Simulator extends EntityImpl {
 		if (isNotCurrent)
 			l = this.nextEvents.get(t);
 		else
-			l = this.currentEntry.getValue();	
+			l = this.currentEntry.getValue();
 		if (l != null && l.remove(event)) {
 			if (!(event instanceof DispensableEvent))
 				this.nonDispensableEventsCount--;
@@ -392,9 +395,9 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Schedules the given <tt>event</tt> to be processed at the current simulator time ({@link Simulator#getTime()}).
-	 * 
+	 *
 	 * <p>This method is the same as {@link Simulator#schedule(long, Event) schedule(0, Event)}.
-	 * 
+	 *
 	 * @param event the event to be scheduled
 	 */
 	public void schedule(Event event) {
@@ -404,7 +407,7 @@ public class Simulator extends EntityImpl {
 	/**
 	 * Schedules the given <tt>event</tt> to be processed after that the given <tt>delay</tt> has passed.<br/>
 	 * In other words, schedules the given <tt>event</tt> to be processed at {@code Simulator.getTime() + delay}.
-	 * 
+	 *
 	 * @param delay
 	 * @param event the event to be scheduled
 	 * @throws IllegalArgumentException if the given <tt>event</tt> is already scheduled, or if the given time is in the past
@@ -494,7 +497,7 @@ public class Simulator extends EntityImpl {
 					}
 					added_report += next_report;
 				}
-	
+
 				next.process();
 				notifyNow(CoreNotificationCodes.SIMULATOR_EVENT_PROCESSED, next);
 				next.scheduledAt(null); //next is not scheduled anymore
@@ -581,7 +584,7 @@ public class Simulator extends EntityImpl {
 					break;
 				}
 			}
-	
+
 			if (thePool == null)
 				return;
 
@@ -621,7 +624,7 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Returns currently set random generator of the simulator.
-	 * 
+	 *
 	 * @return currently set random generator of the simulator
 	 * @see Simulator#setRandomGenerator(Random)
 	 * @see Simulator#setRandomGenerator(Object)
@@ -634,11 +637,11 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Returns a random generator that matches the given key.
-	 * 
+	 *
 	 * <p>This method first tries to find an existing instance matching the given <tt>key</tt>.
 	 * If none is found one instantiated and returned and further calls to this function with the
 	 * same key will return the same instance.
-	 * 
+	 *
 	 * @param key
 	 * @return a random generator that matches the given key
 	 */
@@ -663,11 +666,11 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Updates the random generator of the simulator to the given value.
-	 * 
+	 *
 	 * <p>If given random is <tt>null</tt> then default simulator's random generator is set.
-	 * 
+	 *
 	 * <p>You can restore previous context using {@link Simulator#restoreRandomGenerator()}.
-	 * 
+	 *
 	 * @param random
 	 */
 	public void setRandomGenerator(Random random) {
@@ -678,11 +681,11 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Updates the random generator of the simulator using the given key.
-	 * 
+	 *
 	 * <p>If given key is <tt>null</tt> then default simulator's random generator is set.
-	 * 
+	 *
 	 * <p>You can restore previous context using {@link Simulator#restoreRandomGenerator()}.
-	 * 
+	 *
 	 * @param key
 	 */
 	public void setRandomGenerator(Object key) {
@@ -695,7 +698,7 @@ public class Simulator extends EntityImpl {
 	/**
 	 * Sets the simulator's random generator to the previous one and
 	 * returns the current random generator (as it was before changing it).
-	 * 
+	 *
 	 * @return old random generator
 	 */
 	public Random restoreRandomGenerator() {
@@ -711,14 +714,14 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Restores the random context as defined by the given id.
-	 * 
+	 *
 	 * <p>Random generators are usually set at the beginning of a given code block,
 	 * and when the block ends, old random generator is restored.<br/>
 	 * Though, if an exception happens before the block ends, the generator is never restored.
 	 * This is not a problem if exceptions are intended to end the simulation, which
 	 * is the most common expected behavior. Thus, we can avoid to explicitly put the code
 	 * between a try .. finally block which will unnecessarily impact simulation performances.<br/>
-	 * However, if you plan to catch the exception, you may need to restore the random generator 
+	 * However, if you plan to catch the exception, you may need to restore the random generator
 	 * before continuing. To do so, call the {@link Simulator#getRandomGeneratorId()} method before
 	 * the risky code and call this method when catching an exception.
 	 */
@@ -750,11 +753,11 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Converts the given time to a human readable string format and returns it.
-	 * 
+	 *
 	 * @param time the time to convert
 	 * @param useAlternativeUnits if <tt>false</tt> then the time is formatted using seconds only, and will
 	 * consider alternative time units (minutes, hours, days)
-	 * @param appendUnits if <tt>false</tt> then units are not appended to the returned string. If <tt>useAlternativeUnits</tt> is <tt>true</tt> 
+	 * @param appendUnits if <tt>false</tt> then units are not appended to the returned string. If <tt>useAlternativeUnits</tt> is <tt>true</tt>
 	 * then this parameter is ignored and units are always appended.
 	 * @return formatted time
 	 */
@@ -792,11 +795,11 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Converts the given size to a human readable string format and returns it.
-	 * 
+	 *
 	 * @param size the size to convert
 	 * @param useAlternativeUnits if <tt>false</tt> then the size is formatted using bytes only, and will
 	 * not consider alternative units (kilo/kibi, Mega/Mebi, Giga/Gibi etc...)
-	 * @param appendUnits if <tt>false</tt> then units are not appended to the returned string. If <tt>useAlternativeUnits</tt> is <tt>true</tt> 
+	 * @param appendUnits if <tt>false</tt> then units are not appended to the returned string. If <tt>useAlternativeUnits</tt> is <tt>true</tt>
 	 * then this parameter is ignored and units are always appended.
 	 * @param si if <tt>true</tt> then use International System 1000-based units (ie: kilo, Mega, Giga etc...).<br/>
 	 * If <tt>false</tt> then use usual 1024-based units (ie: kibi, Mebi, Gibi etc...).
@@ -858,7 +861,7 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Converts the given price to human readable string format and returns it.
-	 * 
+	 *
 	 * @param price the price to convert
 	 * @param precision how many decimal digits will be displayed
 	 * @param appendUnits if <tt>false</tt> then units are not appended to the returned string
@@ -892,7 +895,7 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Converts the given mi (millions of instructions) to human readable string format and returns it.
-	 * 
+	 *
 	 * @param mi the mi to convert
 	 * @param appendUnits if <tt>false</tt> then units are not appended to the returned string
 	 * @return formatted mi
@@ -913,7 +916,7 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Converts the given mips (millions of instructions per second) to human readable string format and returns it.
-	 * 
+	 *
 	 * @param mips the mips to convert
 	 * @param appendUnits if <tt>false</tt> then units are not appended to the returned string
 	 * @return formatted mips
@@ -934,11 +937,11 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Converts the given power to human readable string format and returns it.
-	 * 
+	 *
 	 * @param power the power to convert
 	 * @param useAlternativeUnits if <tt>false</tt> then the power is formatted using watts only, and will
 	 * not consider alternative units (kilo, Mega, Giga etc...)
-	 * @param appendUnits if <tt>false</tt> then units are not appended to the returned string. If <tt>useAlternativeUnits</tt> is <tt>true</tt> 
+	 * @param appendUnits if <tt>false</tt> then units are not appended to the returned string. If <tt>useAlternativeUnits</tt> is <tt>true</tt>
 	 * then this parameter is ignored and units are always appended
 	 * @return formatted power
 	 */
@@ -977,7 +980,7 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Converts the given power to human readable string format and returns it.
-	 * 
+	 *
 	 * @param energy the energy to convert
 	 * @param useAlternativeUnits if <tt>false</tt> then the energy is formatted using watt-hour unit only, and will
 	 * not consider alternative units (kilo, Mega, Giga etc...)

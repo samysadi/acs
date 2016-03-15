@@ -26,6 +26,7 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.core;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -41,7 +42,7 @@ import com.samysadi.acs.core.entity.Entity;
  *
  * @since 1.0
  */
-public class Logger {
+public class Logger implements Closeable {
 	public static Level DEFAULT_LEVEL = Level.ALL;
 
 	private java.util.logging.Logger logger = null;
@@ -137,6 +138,16 @@ public class Logger {
 		for (Handler handler: this.logger.getHandlers()) {
 			if (handler instanceof MyFileHandler)
 				this.logger.removeHandler(handler);
+		}
+	}
+
+	@Override
+	public void close() {
+		for (Handler handler: this.logger.getHandlers()) {
+			if (handler instanceof MyFileHandler) {
+				this.logger.removeHandler(handler);
+				handler.close();
+			}
 		}
 	}
 
