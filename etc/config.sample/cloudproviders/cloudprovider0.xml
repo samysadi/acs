@@ -8,9 +8,11 @@
 		<Enabled>1</Enabled>
 	</STaaS>
 
-	<!-- Include the topology configuration file  -->
-	<!--<include>../topology/hierarchical.xml</include>-->
-	<include>../topology/flat.xml</include>
+	<Topology>
+		<!-- Include the topology configuration file  -->
+		<!--<include>../topology/hierarchical.xml</include>-->
+		<include>../topology/flat.xml</include>
+	</Topology>
 
 	<User>
 		<!-- Specifies how many users to generate -->

@@ -67,7 +67,7 @@ import com.samysadi.acs.virtualization.job.Job;
 /**
  * A class containing static utility methods.<br/>
  * Most of these methods behavior depends on a given (correctly contexted) configuration.
- * 
+ *
  * @since 1.0
  */
 public final class FactoryUtils {
@@ -78,8 +78,8 @@ public final class FactoryUtils {
 
 	/**
 	 * Generates and returns a Double based on given arguments.
-	 * 
-	 * <p>This method will check these next configurations sequentially in order to 
+	 *
+	 * <p>This method will check these next configurations sequentially in order to
 	 * compute the returned double (examples given assuming {@code configName == "Example"}):
 	 * <ul>
 	 * 		<li><b>Example</b>: if set then its value is directly returned;
@@ -91,7 +91,7 @@ public final class FactoryUtils {
 	 * 			it is instantiated and used to generate the returned value;
 	 * 		<li>If none of the previous conditions has returned, then defaultValue is returned.
 	 * </ul>
-	 * 
+	 *
 	 * @param configName
 	 * @param config the configuration object, may be <tt>null</tt>
 	 * @param defaultValue
@@ -138,8 +138,8 @@ public final class FactoryUtils {
 
 	/**
 	 * Generates and returns a Long based on given arguments.
-	 * 
-	 * <p>This method will check these next configurations sequentially in order to 
+	 *
+	 * <p>This method will check these next configurations sequentially in order to
 	 * compute the returned long (examples given assuming {@code configName == "Example"}):
 	 * <ul>
 	 * 		<li><b>Example</b>: if set then its value is directly returned;
@@ -151,7 +151,7 @@ public final class FactoryUtils {
 	 * 			it is instantiated and used to generate the returned value;
 	 * 		<li>If none of the previous conditions has returned, then defaultValue is returned.
 	 * </ul>
-	 * 
+	 *
 	 * @param configName
 	 * @param config the configuration object, may be <tt>null</tt>
 	 * @param defaultValue
@@ -198,8 +198,8 @@ public final class FactoryUtils {
 
 	/**
 	 * Generates and returns a Integer based on given arguments.
-	 * 
-	 * <p>This method will check these next configurations sequentially in order to 
+	 *
+	 * <p>This method will check these next configurations sequentially in order to
 	 * compute the returned integer (examples given assuming {@code configName == "Example"}):
 	 * <ul>
 	 * 		<li><b>Example</b>: if set then its value is directly returned;
@@ -211,7 +211,7 @@ public final class FactoryUtils {
 	 * 			it is instantiated and used to generate the returned value;
 	 * 		<li>If none of the previous conditions has returned, then defaultValue is returned.
 	 * </ul>
-	 * 
+	 *
 	 * @param configName
 	 * @param config the configuration object, may be <tt>null</tt>
 	 * @param defaultValue
@@ -265,7 +265,7 @@ public final class FactoryUtils {
 		return generateInt("Count", config, defaultCount);
 	}
 
-	private static final DecimalFormat percentFormat = new DecimalFormat("0.00"); 
+	private static final DecimalFormat percentFormat = new DecimalFormat("0.00");
 	public static void logAdvancement(String s, int total, double percent) {
 		if (!Logger.getGlobal().isLoggable(Level.FINER))
 			return;
@@ -305,7 +305,7 @@ public final class FactoryUtils {
 				.generate();
 	}
 
-	public static final String NetworkInterface_CONTEXT		= "NetworkInterface"; 
+	public static final String NetworkInterface_CONTEXT		= "NetworkInterface";
 	public static final String NetworkLink_CONTEXT			= "NetworkLink";
 
 
@@ -313,7 +313,7 @@ public final class FactoryUtils {
 
 	/**
 	 * This calls {@link FactoryUtils#linkDevices(Config, NetworkDevice, NetworkDevice, long, long, long, double)}
-	 * such that <b>linkUpBw</b> and <b>linkDownBw</b> are gotten from the device0 configuration contexted with 
+	 * such that <b>linkUpBw</b> and <b>linkDownBw</b> are gotten from the device0 configuration contexted with
 	 * {@link FactoryUtils#NetworkInterface_CONTEXT} (default is {@code 100MiB/s}).
 	 */
 	public static NetworkInterface[] linkDevices(
@@ -358,10 +358,10 @@ public final class FactoryUtils {
 		Config c0 = device0.getConfigRec().addContext(NetworkInterface_CONTEXT);
 		Config c1 = device1.getConfigRec().addContext(NetworkInterface_CONTEXT);
 		final NetworkInterface[] ni = Factory.getFactory(config).linkDevices(
-				device0, device1, 
+				device0, device1,
 				Factory.getFactory(c0).getNetworkInterfaceClass(),
-				Factory.getFactory(c1).getNetworkInterfaceClass(), 
-				Factory.getFactory(lConfig).getNetworkLinkClass(), 
+				Factory.getFactory(c1).getNetworkInterfaceClass(),
+				Factory.getFactory(lConfig).getNetworkLinkClass(),
 				Factory.getFactory(lConfig).getNetworkProvisionerClass(),
 				linkUpBw, linkDownBw,
 				linkLatency, linkLossRate
@@ -405,7 +405,7 @@ public final class FactoryUtils {
 	}
 
 	/**
-	 * This methods instantiates a factory using the given <tt>config</tt> and then 
+	 * This methods instantiates a factory using the given <tt>config</tt> and then
 	 * calls {@link Factory#connectToInternet(NetworkDevice, Class, Class, Class, long, long, long, double)}
 	 * <ul>
 	 * <li>networkInterfaceClass: is gotten from networkDevice configuration contexted with {@link FactoryUtils#NetworkInterface_CONTEXT};
@@ -423,9 +423,9 @@ public final class FactoryUtils {
 		Factory.getFactory(c).connectToInternet(
 				networkDevice,
 				Factory.getFactory(c).getNetworkInterfaceClass(),
-				Factory.getFactory(lConfig).getNetworkLinkClass(), 
+				Factory.getFactory(lConfig).getNetworkLinkClass(),
 				Factory.getFactory(lConfig).getNetworkProvisionerClass(),
-				linkUpBw, linkDownBw, 
+				linkUpBw, linkDownBw,
 				linkLatency, linkLossRate
 			);
 	}
@@ -434,9 +434,9 @@ public final class FactoryUtils {
 
 	/**
 	 * Generates and returns a new Host based on the given configuration.
-	 * 
+	 *
 	 * <p>Default state of the host is {@link PowerState#OFF} unless otherwise specified.
-	 * 
+	 *
 	 * @param config contexted configuration
 	 * @param parent
 	 * @return the generated host
@@ -490,7 +490,7 @@ public final class FactoryUtils {
 
 	/**
 	 * Generates and returns a new {@link Switch}.
-	 * 
+	 *
 	 * @param config contexted configuration
 	 * @param parent
 	 * @return generated {@link Switch}
@@ -509,7 +509,7 @@ public final class FactoryUtils {
 
 	/**
 	 * Generate and returns a new thin client for the given user, and connects it to the Internet.
-	 * 
+	 *
 	 * @param config contexted configuration
 	 * @param parent
 	 * @return generated {@link ThinClient}
@@ -532,7 +532,7 @@ public final class FactoryUtils {
 				config.addContext(FactoryUtils.NetworkLink_CONTEXT).getLong("LengthMax", 0l)
 			);
 
-		FactoryUtils.connectToInternet(config, 
+		FactoryUtils.connectToInternet(config,
 				h,
 				distanceGenerator.nextLong() * Simulator.LATENCY_PER_KILOMETER / 1000, //distance in meters
 				lossRateGenerator.nextDouble()
@@ -554,7 +554,7 @@ public final class FactoryUtils {
 
 	/**
 	 * Generates and returns a virtual machine (but does not place it).
-	 * 
+	 *
 	 * @param config contexted configuation
 	 * @param user
 	 * @return generated {@link VirtualMachine}
@@ -565,7 +565,7 @@ public final class FactoryUtils {
 
 	/**
 	 * Generates and returns a virtual machine after placing it using the cloud provider's placement policy.
-	 * 
+	 *
 	 * @param config contexted configuation
 	 * @param cloudProvider
 	 * @param user
@@ -576,7 +576,7 @@ public final class FactoryUtils {
 				.generate();
 	}
 
-	public static final String Topology_CONTEXT				= "";
+	public static final String Topology_CONTEXT				= "Topology";
 
 	public static void generateTopology(Config config, CloudProvider cloudProvider) {
 		Factory.getFactory(config).newTopologyFactory(null, config, cloudProvider)
@@ -594,7 +594,7 @@ public final class FactoryUtils {
 
 	/**
 	 * Generates and returns a new {@link Trace}.
-	 * 
+	 *
 	 * @param config contexted configuation
 	 * @param parent
 	 * @return generated {@link Trace}
@@ -618,7 +618,7 @@ public final class FactoryUtils {
 
 	/**
 	 * Generates and returns a new {@link Job}.
-	 * 
+	 *
 	 * @param config contexted configuation
 	 * @return generated {@link Job}
 	 */
