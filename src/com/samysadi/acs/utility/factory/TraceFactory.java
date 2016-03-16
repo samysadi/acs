@@ -31,11 +31,15 @@ import com.samysadi.acs.core.tracing.Probed;
 import com.samysadi.acs.core.tracing.Trace;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class TraceFactory extends Factory {
 	public static boolean IS_TRACING_DISABLED = false;
+	/**
+	 * Extension for trace files created by this factory
+	 */
+	public static final String Trace_Ext = ".trace";
 
 	private Probed probed;
 
@@ -50,7 +54,7 @@ public abstract class TraceFactory extends Factory {
 
 	/**
 	 * Generates a trace and returns it.
-	 * 
+	 *
 	 * @return the generated trace
 	 */
 	@Override

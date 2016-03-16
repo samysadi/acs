@@ -51,7 +51,7 @@ import com.samysadi.acs.tracing.CustomProbe;
 import com.samysadi.acs.utility.NotificationCodes;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class TraceFactoryDefault extends TraceFactory {
@@ -60,12 +60,11 @@ public class TraceFactoryDefault extends TraceFactory {
 		super(config, probed);
 	}
 
-	private static final String Trace_Ext = ".trace";
 	private static final Object Simulator_Traces_Output_Key = new Object();
 
 	/**
 	 * Returns a list containing traces filenames.
-	 * 
+	 *
 	 * @return a list containing traces filenames
 	 */
 	private static HashMap<Trace<?>, String> getSimulatorTracesOutput() {
@@ -79,7 +78,7 @@ public class TraceFactoryDefault extends TraceFactory {
 
 			Simulator.getSimulator().addListener(NotificationCodes.SIMULATOR_STOPPED, n);
 		}
-		
+
 		return h;
 	}
 
@@ -179,10 +178,10 @@ public class TraceFactoryDefault extends TraceFactory {
 			filename = getConfig().getString("Output", null);
 			if (filename != null) {
 				File ff = new File(filename.toString());
-	
+
 				if (!ff.isAbsolute())
 					ff = new File(var_directory, ff.getPath());
-	
+
 				try {
 					ff = ff.getCanonicalFile();
 					filename = ff.getAbsolutePath();
