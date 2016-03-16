@@ -38,7 +38,7 @@ import com.samysadi.acs.utility.random.Uniform;
 /**
  * This TopologyFactory can be used to generated a given number of hosts that are all
  * interconnected.
- * 
+ *
  * @since 1.0
  */
 public class TopologyFactoryFlat extends TopologyFactory {
@@ -50,7 +50,7 @@ public class TopologyFactoryFlat extends TopologyFactory {
 	public Object generate() {
 		Simulator.getSimulator().setRandomGenerator(this.getClass());
 
-		Config cfg = getConfig().addContext("Topology");
+		final Config cfg = getConfig();
 
 		final int nodes_count = FactoryUtils.generateCount(cfg.addContext("Nodes"), 50);
 
@@ -137,7 +137,7 @@ public class TopologyFactoryFlat extends TopologyFactory {
 					lossRateGenerator.nextDouble()
 				);
 		}
-		
+
 		FactoryUtils.logAdvancement("Hosts", nodes_count, 100d);
 
 		Simulator.getSimulator().restoreRandomGenerator();
