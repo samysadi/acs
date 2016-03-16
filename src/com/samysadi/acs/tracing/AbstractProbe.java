@@ -36,7 +36,7 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class AbstractProbe<ValueType> extends ProbeImpl<ValueType> {
@@ -56,11 +56,32 @@ public abstract class AbstractProbe<ValueType> extends ProbeImpl<ValueType> {
 
 	/**
 	 * Returns the listener at the given index as returned by {@link AbstractProbe#registeredListener(NotificationListener)}.
-	 * 
+	 *
 	 * @return the listener at the given index
 	 */
 	protected NotificationListener getRegisteredListener(int index) {
+		if (this.registeredListeners == null)
+			throw new IndexOutOfBoundsException();
 		return this.registeredListeners.get(index);
+	}
+
+	/**
+	 * Returns the first listener that is an instance of the given <tt>clazz</tt> or <tt>null</tt> if
+	 * none does.
+	 *
+	 * @param clazz
+	 * @return the first listener that is an instance of <tt>clazz</tt> or <tt>null</tt>
+	 */
+	@SuppressWarnings("unchecked")
+	protected <T extends NotificationListener> T getRegisteredListener(Class<T> clazz) {
+		if (clazz==null)
+			throw new NullPointerException();
+		if (this.registeredListeners == null)
+			return null;
+		for (NotificationListener l : this.registeredListeners)
+			if (clazz.isAssignableFrom(l.getClass()))
+				return (T) l;
+		return null;
 	}
 
 	/**
@@ -76,9 +97,9 @@ public abstract class AbstractProbe<ValueType> extends ProbeImpl<ValueType> {
 
 	/**
 	 * Adds the given listener to an internal list and returns its index.
-	 * 
+	 *
 	 * <p>Use this method to keep track of newly added listeners in order to automatically unregister them if needed using {@link AbstractProbe#unregisterListeners()}.
-	 * 
+	 *
 	 * @param listener the listener that has been added.
 	 * @return index of the registered listener
 	 */
@@ -87,6 +108,29 @@ public abstract class AbstractProbe<ValueType> extends ProbeImpl<ValueType> {
 			this.registeredListeners = new ArrayList<NotificationListener>();
 		this.registeredListeners.add(listener);
 		return this.registeredListeners.size()-1;
+	}
+
+	/**
+	 * Removes the given listener from the internal list containing registered listeners.
+	 *
+	 * @param listener the listener to remove
+	 * @return <tt>true</tt> if the list contained the specified listener
+	 */
+	protected boolean unregisteredListener(NotificationListener listener) {
+		if (this.registeredListeners == null)
+			return false;
+		return this.registeredListeners.remove(listener);
+	}
+
+	/**
+	 * Removes the listener at the given index from the internal list containing registered listeners.
+	 *
+	 * @param index the index of the listener to remove
+	 */
+	protected NotificationListener unregisteredListener(int index) {
+		if (this.registeredListeners == null)
+			throw new IndexOutOfBoundsException();
+		return this.registeredListeners.remove(index);
 	}
 
 	@Override

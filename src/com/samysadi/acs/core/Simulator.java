@@ -44,6 +44,7 @@ import com.samysadi.acs.core.entity.EntityImpl;
 import com.samysadi.acs.core.event.DispensableEvent;
 import com.samysadi.acs.core.event.Event;
 import com.samysadi.acs.core.notifications.CoreNotificationCodes;
+import com.samysadi.acs.core.tracing.FormattableProbe;
 import com.samysadi.acs.core.tracing.Probe;
 import com.samysadi.acs.core.tracing.probetypes.DataRateProbe;
 import com.samysadi.acs.core.tracing.probetypes.DataSizeProbe;
@@ -1025,6 +1026,10 @@ public class Simulator extends EntityImpl {
 	public static String probeValueToString(Probe<?> p, Object value, boolean useAlternativeUnits, boolean appendUnits) {
 		if (value == null)
 			return "null";
+
+		if ((p instanceof FormattableProbe) && ((FormattableProbe) p).getProbeValueFormatter() != null)
+			return ((FormattableProbe) p).getProbeValueFormatter().format(value);
+
 		if (p instanceof DataRateProbe)
 			return Simulator.formatDataRate((Long)value, useAlternativeUnits, appendUnits);
 		else if (p instanceof DataSizeProbe)

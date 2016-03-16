@@ -26,16 +26,20 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.tracing;
 
+import com.samysadi.acs.core.tracing.FormattableProbe;
 import com.samysadi.acs.core.tracing.ModifiableProbe;
+import com.samysadi.acs.core.tracing.ProbeValueFormatter;
 import com.samysadi.acs.core.tracing.Probed;
 
 /**
- * 
+ *
  * @since 1.0
  */
-public class CustomProbe extends AbstractProbe<Object> implements ModifiableProbe<Object> {
+public class CustomProbe extends AbstractProbe<Object> implements ModifiableProbe<Object>, FormattableProbe {
 	public static final String CUSTOM_PROBE_PREFIX = "_";
 	private String key = null;
+
+	private ProbeValueFormatter formatter = null;
 
 	@Override
 	public void setup(Probed parent) {
@@ -54,6 +58,16 @@ public class CustomProbe extends AbstractProbe<Object> implements ModifiableProb
 		if (!this.isDiscarded())
 			throw new IllegalArgumentException("You cannot change this probe's key when it is in use.");
 		this.key = key;
+	}
+
+	@Override
+	public void setProbeValueFormatter(ProbeValueFormatter formatter) {
+		this.formatter = formatter;
+	}
+
+	@Override
+	public ProbeValueFormatter getProbeValueFormatter() {
+		return this.formatter;
 	}
 
 	@Override
