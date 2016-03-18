@@ -38,7 +38,6 @@ import com.samysadi.acs.core.Simulator;
 import com.samysadi.acs.core.notifications.CoreNotificationCodes;
 import com.samysadi.acs.core.tracing.Probe;
 import com.samysadi.acs.core.tracing.ProbedImpl;
-import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.factory.Factory;
 
 /**
@@ -207,7 +206,7 @@ public class EntityImpl extends ProbedImpl implements Entity {
 	 *
 	 * <p>Default behavior is to recursively notify, and call {@link EntityImpl#ancestorChanged(EntityImpl)} on children.
 	 *
-	 * <p>Override this method, or listen to notification ({@link NotificationCodes#ENTITY_ANCESTOR_CHANGED}) if
+	 * <p>Override this method, or listen to notification ({@link CoreNotificationCodes#ENTITY_ANCESTOR_CHANGED}) if
 	 * you want to take actions when this entity gets a new ancestor.
 	 *
 	 * @param ancestor
