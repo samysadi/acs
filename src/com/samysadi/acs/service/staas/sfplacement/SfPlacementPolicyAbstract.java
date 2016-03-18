@@ -44,7 +44,7 @@ import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.collections.ShuffledIterator;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class SfPlacementPolicyAbstract extends EntityImpl implements SfPlacementPolicy {
@@ -63,7 +63,7 @@ public abstract class SfPlacementPolicyAbstract extends EntityImpl implements Sf
 	protected void initializeEntity() {
 		super.initializeEntity();
 
-		
+
 	}
 
 	@Override
@@ -81,16 +81,16 @@ public abstract class SfPlacementPolicyAbstract extends EntityImpl implements Sf
 	/**
 	 * Computes and returns a score indicating the level of compliancy of the given <tt>storage</tt>
 	 * towards the storage file's constraints.
-	 * 
+	 *
 	 * <p>A return value of <tt>0.0d</tt> or less indicates that the host does not comply (at all). And the <tt>storageFile</tt>
 	 * cannot be placed on that storage.
-	 * 
+	 *
 	 * <p>If this method returns {@link Double#POSITIVE_INFINITY} then the given storage produces the highest matching score for the given storageFile.
-	 * 
+	 *
 	 * <p>This method takes care of the {@link FailureState} of the storage and its parent host.
-	 * 
+	 *
 	 * <p>This method <b>does not</b> take care of the {@link PowerState} of the parent host of the storage.
-	 * 
+	 *
 	 * @param storageFile
 	 * @param storage
 	 * @return computed score for placing the given storageFile on the given storage
@@ -111,9 +111,9 @@ public abstract class SfPlacementPolicyAbstract extends EntityImpl implements Sf
 
 	/**
 	 * Returns the selected storage among all given hosts' storages.
-	 * 
+	 *
 	 * <p>Override this method in order to define your policy for selecting the storage.
-	 * 
+	 *
 	 * @param storageFile
 	 * @param poweredOnHosts a list of powered on hosts. Cannot be <tt>null</tt>.
 	 * @param excludedHosts a list of excluded hosts. May be <tt>null</tt>.
@@ -123,9 +123,9 @@ public abstract class SfPlacementPolicyAbstract extends EntityImpl implements Sf
 
 	/**
 	 * Returns the selected storage among all given hosts' storages.
-	 * 
+	 *
 	 * <p>This method is used when {@link SfPlacementPolicyAbstract#_selectStorage(StorageFile)} returns <tt>null</tt>.
-	 * 
+	 *
 	 * @param storageFile
 	 * @param hosts a list of alternative hosts. Cannot be <tt>null</tt>.
 	 * @param excludedHosts a list of excluded hosts. May be <tt>null</tt>.
@@ -174,7 +174,7 @@ public abstract class SfPlacementPolicyAbstract extends EntityImpl implements Sf
 				}
 				excludedHosts = null;
 			}
-	
+
 			bestStorage = _selectStorage(storageFile, poweredOnHosts, excludedHosts);
 		}
 
@@ -202,9 +202,13 @@ public abstract class SfPlacementPolicyAbstract extends EntityImpl implements Sf
 
 	@Override
 	public boolean canPlaceStorageFile(StorageFile storageFile, Storage storage) {
+		Host host = storage.getParentHost();
+		if (host.getCloudProvider() != getParent().getParent()) {
+			//delegate to the appropriate cloud provider
+			return host.getCloudProvider().getStaas().getPlacementPolicy().canPlaceStorageFile(storageFile, storage);
+		}
 		if (storage.getFailureState() != FailureState.OK)
 			return false;
-		Host host = storage.getParentHost();
 		if (host.getFailureState() != FailureState.OK)
 			return false;
 		if (host.getPowerState() != PowerState.ON &&
@@ -215,13 +219,19 @@ public abstract class SfPlacementPolicyAbstract extends EntityImpl implements Sf
 
 	@Override
 	public void placeStorageFile(final StorageFile storageFile, final Storage storage) {
+		Host host = storage.getParentHost();
+		if (host.getCloudProvider() != getParent().getParent()) {
+			//delegate to the appropriate cloud provider
+			host.getCloudProvider().getStaas().getPlacementPolicy().placeStorageFile(storageFile, storage);
+			return;
+		}
+
 		if (storageFile.getParent() != null)
 			throw new IllegalArgumentException("The given StorageFile has already a defined parent");
 
 		if (storage.getFreeCapacity() < storageFile.getSize())
 			throw new IllegalArgumentException("Not enough space in the storage to place the file on it");
 
-		Host host = storage.getParentHost();
 		//check host power state
 		if (host.getPowerState() != PowerState.ON) {
 			final long size = storageFile.getSize();

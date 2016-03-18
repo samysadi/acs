@@ -51,7 +51,7 @@ import com.samysadi.acs.utility.factory.Factory;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class VmPlacementPolicyAbstract extends EntityImpl implements VmPlacementPolicy {
@@ -81,16 +81,16 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 	/**
 	 * Computes and returns a score indicating the level of compliancy of the given <tt>host</tt>
 	 * towards the vm's constraints.
-	 * 
+	 *
 	 * <p>A return value of <tt>0.0d</tt> or less indicates that the host does not comply (at all). And the <tt>vm</tt>
 	 * cannot be placed on that host.
-	 * 
+	 *
 	 * <p>If this method returns {@link Double#POSITIVE_INFINITY} then the given  host produces the highest matching score for current vm's constraints.
-	 * 
+	 *
 	 * <p>This method takes care of the {@link FailureState} of the host and its components.
-	 * 
+	 *
 	 * <p>This method <b>does not</b> take care of the {@link PowerState} of the host.
-	 * 
+	 *
 	 * @param vm
 	 * @param host
 	 * @return computed score for placing the given vm on the given host
@@ -139,7 +139,7 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 
 			score+= (double) host.getProcessingUnits().size() / (host.getProcessingUnits().size() - totalAllocated - totalOk + 1);
 		}
-	
+
 		//VirtualStorage
 		{
 			final long slaStorageCapacity = vmConfig.getLong("Storage_Capacity", 10000l) * Simulator.MEBIBYTE;
@@ -151,7 +151,7 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 						vm.getVirtualStorage().getCapacity() - vm.getVirtualStorage().getFreeCapacity()
 					);
 			}
-	
+
 			if (vm.getVirtualStorage() != null && neededSize < vm.getVirtualStorage().getCapacity())
 				neededSize = vm.getVirtualStorage().getCapacity();
 
@@ -184,7 +184,7 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 					sumUpBw+= ni.getUpLink().getNetworkProvisioner().getCapacity();
 					sumDownBw+= ni.getDownLink().getNetworkProvisioner().getCapacity();
 				}
-		
+
 				if ((slaUpBw != 0l && sumUpBw < slaUpBw) || (slaDownBw != 0l && sumDownBw < slaDownBw))
 					return 0.0d;
 			}
@@ -195,9 +195,9 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 
 	/**
 	 * Returns the selected host among all given hosts.
-	 * 
+	 *
 	 * <p>Override this method in order to define your policy for selecting the host.
-	 * 
+	 *
 	 * @param vm
 	 * @param poweredOnHosts a list of powered on hosts. Cannot be <tt>null</tt>.
 	 * @param excludedHosts a list of excluded hosts. May be <tt>null</tt>.
@@ -207,9 +207,9 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 
 	/**
 	 * Returns the selected host among all given hosts.
-	 * 
+	 *
 	 * <p>This method is used when {@link VmPlacementPolicyAbstract#_selectHost(VirtualMachine)} returns <tt>null</tt>.
-	 * 
+	 *
 	 * @param vm
 	 * @param hosts a list of alternative hosts. Cannot be <tt>null</tt>.
 	 * @param excludedHosts a list of excluded hosts. May be <tt>null</tt>.
@@ -222,7 +222,7 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 			if (excludedHosts != null && excludedHosts.contains(candidate))
 				continue;
 			if (candidate.getPowerState() == PowerState.ON ||
-					candidate.getCloudProvider().getPowerManager().canPowerOn(candidate)) {	
+					candidate.getCloudProvider().getPowerManager().canPowerOn(candidate)) {
 				final double s = computeHostScore(vm, candidate);
 				if (s > 0)
 					return candidate;
@@ -253,7 +253,7 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 				}
 				excludedHosts = null;
 			}
-	
+
 			bestHost = _selectHost(vm, poweredOnHosts, excludedHosts);
 		}
 
@@ -281,6 +281,10 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 
 	@Override
 	public boolean canPlaceVm(VirtualMachine vm, Host host) {
+		if (host.getCloudProvider() != getParent()) {
+			//delegate to the appropriate cloud provider
+			return host.getCloudProvider().getVmPlacementPolicy().canPlaceVm(vm, host);
+		}
 		if (host.getFailureState() != FailureState.OK)
 			return false;
 		if (host.getPowerState() != PowerState.ON &&
@@ -292,6 +296,11 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 	//TODO we need a flag/property to make distinction between VMs being placed and others (ie: be able to say: I'm already placing this vm, but I just didn't finish yet because host is not on yet). This applies for Files placement too. Does this applies for unplacing?
 	@Override
 	public void placeVm(final VirtualMachine vm, final Host host) {
+		if (host.getCloudProvider() != getParent()) {
+			//delegate to the appropriate cloud provider
+			host.getCloudProvider().getVmPlacementPolicy().placeVm(vm, host);
+			return;
+		}
 		if (vm.getParent() != null)
 			throw new IllegalArgumentException("The given VM has already a defined parent");
 
@@ -341,9 +350,9 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 
 			vm.setUsableProcessingUnits(pus);
 		}
-	
+
 		//VirtualStorage
-		{	
+		{
 			final long slaStorageCapacity = vmConfig.getLong("Storage_Capacity", 10000l) * Simulator.MEBIBYTE;
 
 			long neededSize = slaStorageCapacity;
@@ -394,10 +403,10 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 					sumUpBw+= ni.getUpLink().getNetworkProvisioner().getCapacity();
 					sumDownBw+= ni.getDownLink().getNetworkProvisioner().getCapacity();
 				}
-		
+
 				if ((slaUpBw != 0l && sumUpBw < slaUpBw) || (slaDownBw != 0l && sumDownBw < slaDownBw))
 					throw new IllegalArgumentException("Cannot place the vm on the given host: not enough Bw");
-	
+
 				vm.setUsableNetworkInterfaces(null); //all interfaces
 			}
 		}
