@@ -38,10 +38,10 @@ import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
 /**
  * This implementation will automatically
  * seek a {@link ProcessingUnit} from the parent job's VM each time it is activated.
- * 
+ *
  * <p>Make sure the parent job's VM has a non <tt>null</tt> {@link PuAllocator} or a
  * NullPointerException will be thrown whenever you try to start this operation.
- * 
+ *
  * @since 1.0
  */
 public class ComputingOperationDefault extends LongOperationImpl<ComputingResource> implements ComputingOperation, SynchronizableOperation<ComputingResource> {
@@ -49,7 +49,7 @@ public class ComputingOperationDefault extends LongOperationImpl<ComputingResour
 
 	/**
 	 * Empty constructor that creates a zero-length operation.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link ComputingOperationDefault#ComputingOperationDefault(long)} though.
 	 */

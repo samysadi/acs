@@ -31,7 +31,7 @@ import com.samysadi.acs.virtualization.job.operation.LongResource;
 import com.samysadi.acs.virtualization.job.operation.Operation;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class LongProvisionerImpl<OperationType extends Operation<Resource>, Resource extends LongResource>
@@ -50,14 +50,14 @@ public abstract class LongProvisionerImpl<OperationType extends Operation<Resour
 
 	/**
 	 * Returns the total capacity of this provisioner.
-	 * 
+	 *
 	 * @return the total capacity of this provisioner
 	 */
 	protected abstract long getCapacity();
 
 	/**
 	 * Returns a new resource based on the given parameter.
-	 * 
+	 *
 	 * @param val
 	 * @return a new resource based on the given parameter
 	 */

@@ -32,7 +32,7 @@ import java.util.Map;
 import com.samysadi.acs.utility.collections.Bitmap;
 
 /**
- * 
+ *
  * @since 1.0
  */
 class MemoryMaps extends HashMap<Object, Bitmap> {

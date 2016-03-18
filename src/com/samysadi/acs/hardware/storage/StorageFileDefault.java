@@ -35,7 +35,7 @@ import com.samysadi.acs.user.User;
 import com.samysadi.acs.utility.NotificationCodes;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class StorageFileDefault extends MemoryZoneImpl implements StorageFile {
@@ -49,7 +49,7 @@ public class StorageFileDefault extends MemoryZoneImpl implements StorageFile {
 
 	/**
 	 * Empty constructor that creates an empty file (with size = 0).
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link StorageFileDefault#StorageFileDefault(long)} though.
 	 */
@@ -137,7 +137,7 @@ public class StorageFileDefault extends MemoryZoneImpl implements StorageFile {
 			if (toAllocate > 0)
 				setSize(getSize() + toAllocate);
 		}
-	
+
 		if (operation.getType() == StorageOperationType.APPEND || operation.getType() == StorageOperationType.WRITE)
 			writersCount++;
 		else if (operation.getType() == StorageOperationType.READ)

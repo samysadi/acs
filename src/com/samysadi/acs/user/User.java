@@ -37,7 +37,7 @@ import com.samysadi.acs.virtualization.VirtualMachine;
 /**
  * A user is a simulation entity that utilizes Cloud resources.<br/>
  * It owns a set of VMs and storage Files.
- * 
+ *
  * @since 1.0
  */
 public interface User extends Entity {
@@ -51,25 +51,25 @@ public interface User extends Entity {
 
 	/**
 	 * Returns a list of VirtualMachine that are owned by this user.
-	 * 
+	 *
 	 * <p>The returned virtual machines are not actual children of this User entity, and the list is kept updated
 	 * indirectly through listening to {@link NotificationCodes#USER_VM_ATTACHED} and
 	 * {@link NotificationCodes#USER_VM_DETACHED}.
-	 * 
+	 *
 	 * <p>The returned list should not include {@link ThinClientVirtualMachine}s. Use {@link User#getThinClients()}
 	 * to get {@link ThinClient}s first if you want to list those.
-	 * 
+	 *
 	 * @return a list of VirtualMachine that are owned by this user
 	 */
 	public List<VirtualMachine> getVirtualMachines();
 
 	/**
 	 * Returns a list of files that are owned by this user.
-	 * 
+	 *
 	 * <p>The returned files are not actual children of this User entity, and the list is kept updated
 	 * indirectly through listening to {@link NotificationCodes#USER_STORAGEFILE_ATTACHED} and
 	 * {@link NotificationCodes#USER_STORAGEFILE_DETACHED}.
-	 * 
+	 *
 	 * @return a list of files that are owned by this user
 	 */
 	public List<StorageFile> getStorageFiles();

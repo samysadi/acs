@@ -36,7 +36,7 @@ import com.samysadi.acs.utility.factory.generation.flow.GenerationFlowInfo;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class UserFactoryDefault extends UserFactory {
@@ -63,9 +63,9 @@ public class UserFactoryDefault extends UserFactory {
 				if (i < 2) //0: vms generated but not yet placed, 1: powering on hosts, 2: vms placed we can proceed to launch jobs
 					return CONTINUE;
 				Simulator.getSimulator().setRandomGenerator(UserFactoryDefault.this.getClass());
-				
+
 				generateWorkloads(user, FactoryUtils.generateCount(getConfig().addContext(FactoryUtils.Workload_CONTEXT), 0));
-				
+
 				Simulator.getSimulator().restoreRandomGenerator();
 				return STOP;
 			}
@@ -146,7 +146,7 @@ public class UserFactoryDefault extends UserFactory {
 				Simulator.getSimulator().restoreRandomGenerator();
 			}
 		});
-		
+
 	}
 
 }

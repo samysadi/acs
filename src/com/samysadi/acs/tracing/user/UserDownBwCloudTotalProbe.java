@@ -33,11 +33,11 @@ import com.samysadi.acs.tracing.AbstractLongIntegratorProbe;
 import com.samysadi.acs.user.User;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class UserDownBwCloudTotalProbe extends AbstractLongIntegratorProbe implements DataSizeProbe {
-	public static final String KEY = UserDownBwCloudTotalProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = UserDownBwCloudTotalProbe.class.getSimpleName().substring(0,
 									UserDownBwCloudTotalProbe.class.getSimpleName().length() - 5);
 
 	@Override

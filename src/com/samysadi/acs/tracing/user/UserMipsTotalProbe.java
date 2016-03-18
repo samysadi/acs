@@ -33,11 +33,11 @@ import com.samysadi.acs.tracing.AbstractLongIntegratorProbe;
 import com.samysadi.acs.user.User;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class UserMipsTotalProbe extends AbstractLongIntegratorProbe implements MiProbe {
-	public static final String KEY = UserMipsTotalProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = UserMipsTotalProbe.class.getSimpleName().substring(0,
 									UserMipsTotalProbe.class.getSimpleName().length() - 5);
 
 	@Override

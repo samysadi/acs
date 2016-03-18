@@ -36,7 +36,7 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  * Probe for number of VM placement failures.
- * 
+ *
  * @since 1.0
  */
 public class CpVmPlacementFailureCountProbe extends AbstractProbe<Long> {
@@ -61,7 +61,7 @@ public class CpVmPlacementFailureCountProbe extends AbstractProbe<Long> {
 		}
 	}
 
-	public static final String KEY = CpVmPlacementFailureCountProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = CpVmPlacementFailureCountProbe.class.getSimpleName().substring(0,
 									CpVmPlacementFailureCountProbe.class.getSimpleName().length() - 5);
 
 	protected int getNotificationCode() {

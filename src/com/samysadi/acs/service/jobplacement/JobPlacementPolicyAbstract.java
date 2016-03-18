@@ -37,7 +37,7 @@ import com.samysadi.acs.virtualization.VirtualMachine;
 import com.samysadi.acs.virtualization.job.Job;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class JobPlacementPolicyAbstract extends EntityImpl implements JobPlacementPolicy {
@@ -66,14 +66,14 @@ public abstract class JobPlacementPolicyAbstract extends EntityImpl implements J
 	/**
 	 * Computes and returns a score indicating the level of compliancy of the given <tt>vm</tt>
 	 * towards the job's constraints.
-	 * 
+	 *
 	 * <p>A return value of <tt>0.0d</tt> or less indicates that the given vm does not comply (at all). And the <tt>job</tt>
 	 * cannot be placed on that vm.
-	 * 
+	 *
 	 * <p>If this method returns {@link Double#POSITIVE_INFINITY} then the given vm produces the highest matching score for the current job's constraints.
-	 * 
+	 *
 	 * <p>This method <b>does not</b> take care of the runnable state of the vm.
-	 * 
+	 *
 	 * @param job
 	 * @param vm
 	 * @return computed score for placing the given job on the given vm
@@ -89,9 +89,9 @@ public abstract class JobPlacementPolicyAbstract extends EntityImpl implements J
 
 	/**
 	 * Returns the selected vm among all given vms.
-	 * 
+	 *
 	 * <p>Override this method in order to define your policy for selecting the vm.
-	 * 
+	 *
 	 * @param job
 	 * @param vms
 	 * @return the selected vm among all given vms

@@ -37,7 +37,7 @@ import com.samysadi.acs.core.notifications.NotificationListener;
 import com.samysadi.acs.core.notifications.Notifier;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class TraceDefault<T> implements Trace<T> {
@@ -206,7 +206,7 @@ public class TraceDefault<T> implements Trace<T> {
 	}
 
 	/**
-	 * This methods adds the given <tt>value</tt> to the list of values returned by {@link Trace#getValues()} 
+	 * This methods adds the given <tt>value</tt> to the list of values returned by {@link Trace#getValues()}
 	 * and verifies that the {@link Trace} contract is respected.
 	 */
 	protected boolean addValue(long time, T value) {
@@ -269,7 +269,7 @@ public class TraceDefault<T> implements Trace<T> {
 		};
 		Simulator.getSimulator().addListener(CoreNotificationCodes.SIMULATOR_TICK_PASSED, this.tickListener);
 	}
-	
+
 	@Override
 	public String toString() {
 		if (this.getParent() == null)

@@ -35,19 +35,19 @@ import com.samysadi.acs.core.Config;
 /**
  * A {@link AbstractGenerationMode} subclass that selects next candidate
  * configuration accordingly to a given frequency.
- * 
+ *
  * <p>Each configuration frequency is given through its <tt>Frequency</tt> configuration value. If it is
  * not set then <tt>1</tt> is assumed.
- * 
+ *
  * <p>The frequency of each configuration indicates the number of times it is chosen. The higher it is
  * the more frequent that configuration is chosen.
- * 
+ *
  * <p>For example, if there is two configurations the first with a frequency set to 1 and the second
  * with a frequency set to 3, then the second configuration is chosen 3 times more than the first configuration.
- * 
+ *
  * <p>More formally, if there is <math><mi>n</mi></math> configuration candidates so that, for each
  * <math><mi>i</mi><mo>&isin;</mo><mo>{</mo><mn>0</mn><mo>..</mo><mn>n-1</mn><mo>}</mo></math>,
- * the frequency of each candidates is 
+ * the frequency of each candidates is
  * <math><msub><mi>f</mi><mi>i</mi></msub></math>
  * and the number of times the <math><mi>i</mi><sup>th</sup></math> configuration is selected is
  * <math><msub><mi>t</mi><mi>i</mi></msub></math>
@@ -68,7 +68,7 @@ import com.samysadi.acs.core.Config;
  * 		</mrow>
  * 	</mfrac>
  * </math>
- * 
+ *
  * @since 1.0
  */
 public class FrequencyGenerationMode extends AbstractGenerationMode {

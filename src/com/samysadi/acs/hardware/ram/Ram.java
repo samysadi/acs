@@ -34,7 +34,7 @@ import com.samysadi.acs.hardware.misc.MemoryUnit;
 /**
  * All implementation classes should provide a constructor with one argument
  * of <tt>long</tt> type that specifies the Ram's capacity.
- * 
+ *
  * @since 1.0
  */
 public interface Ram extends MemoryUnit<RamZone> {

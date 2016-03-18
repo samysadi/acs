@@ -37,7 +37,7 @@ import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
  * Set system property acs.config if you want to use your own configuration.
- * 
+ *
  * @since 1.0
  */
 public class Utils {
@@ -56,7 +56,7 @@ public class Utils {
 
 	/**
 	 * Returns old value.
-	 * 
+	 *
 	 * @param b
 	 * @return old value
 	 */
@@ -69,7 +69,7 @@ public class Utils {
 
 	/**
 	 * Very simple Topology.
-	 * 
+	 *
 	 * <p>3 hosts -- switch<br/>
 	 * up/down link = 100 mb/s<br/>
 	 * link latency = 0<br/>
@@ -103,13 +103,13 @@ public class Utils {
 		cfg.setString("Name", "H"); //need to set something in that context to enable it
 
 		cfg.setBoolean("PowerState", true);
-		
+
 		return cfg;
 	}
 
 	/**
 	 * Hierarchical Topology.
-	 * 
+	 *
 	 * <p><table style="text-align:center; width:400px;">
 	 * <tr><td colspan="4">switch0</td></tr>
 	 * <tr><td>switch1</td><td>switch2</td><td>switch3</td><td>switch4</td></tr>
@@ -132,7 +132,7 @@ public class Utils {
 		simulator.getConfig().setInt("Trace.Count", 0);
 
 		Switch s0 = FactoryUtils.generateSwitch(simulator.getConfig().addContext(FactoryUtils.Switch_CONTEXT), cloudProvider); s0.setName("S" + (sname++));
-		
+
 		generateTopology0(simulator);
 		generateTopology0(simulator);
 		generateTopology0(simulator);
@@ -155,7 +155,7 @@ public class Utils {
 	/**
 	 * Fat Topology.<br/>
 	 * same as {@link Utils#generateTopology1(Simulator)} + a link for h0 directly to switch 0
-	 * 
+	 *
 	 * <p>up/down link = 100 mb/s | 300 mb/s switch to switch<br/>
 	 * link latency = 0<br/>
 	 * link loss rate = 0
@@ -168,7 +168,7 @@ public class Utils {
 		quiet = true;
 
 		CloudProvider cloudProvider = simulator.getCloudProviders().get(0);
-		
+
 		generateTopology1(simulator);
 
 		Host h0 = cloudProvider.getHosts().get(0);

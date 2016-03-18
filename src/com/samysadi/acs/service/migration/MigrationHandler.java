@@ -35,16 +35,16 @@ import com.samysadi.acs.virtualization.VirtualMachine;
 /**
  * A migration handler defines methods for handling migration of a virtual machine
  * from one host to another.
- * 
- * <p>Depending on the implementations you should check the value returned by the 
+ *
+ * <p>Depending on the implementations you should check the value returned by the
  * {@link MigrationHandler#supportsLiveMigration()} method  to
  * see if the migration process is live or cold.<br/>
  * Likewise you should check the value returned by the {@link MigrationHandler#supportsStorageMigration()}
  * to see if the storage is also copied during the migration or not.
- * 
- * <p><b>Note</b> you cannot migrate a virtual machine that is already being migrated, 
+ *
+ * <p><b>Note</b> you cannot migrate a virtual machine that is already being migrated,
  * if you try to do so an IllegalArgumentException is thrown.
- * 
+ *
  * @since 1.0
  */
 public interface MigrationHandler extends Entity {
@@ -56,9 +56,9 @@ public interface MigrationHandler extends Entity {
 
 	/**
 	 * Returns <tt>true</tt> if this entity supports live migration.
-	 * 
+	 *
 	 * <p>This method returns <tt>false</tt> if this entity only supports cold migration.
-	 * 
+	 *
 	 * @return <tt>true</tt> if this entity supports live migration
 	 */
 	public boolean supportsLiveMigration();
@@ -67,10 +67,10 @@ public interface MigrationHandler extends Entity {
 	 * Returns <tt>true</tt> if the storage is also copied during the migration.
 	 * This method returns <tt>false</tt> if the storage is not copied during the migration process,
 	 * so that the migrated VM will continue to use its old storage.
-	 * 
+	 *
 	 * <p>You probably want to use a migration handler that does not support storage migration if the storage is a SAN storage
 	 * that is accessible from the new host.
-	 * 
+	 *
 	 * @return <tt>true</tt> if the storage is also copied during the migration
 	 */
 	public boolean supportsStorageMigration();
@@ -79,13 +79,13 @@ public interface MigrationHandler extends Entity {
 	 * Migrates the given virtual machine <tt>vm</tt> to the destination host.<br/>
 	 * The virtual machine may remain running for some time when it is being transmitted to destination
 	 * host.
-	 * 
+	 *
 	 * <p>A {@link NotificationCodes#MIGRATION_SUCCESS} notification is thrown if the virtual machine was successfully migrated.<br/>
 	 * A {@link NotificationCodes#MIGRATION_ERROR} notification is thrown if an error happens when the virtual machine is being migrated.
-	 * 
+	 *
 	 * <p>Additionally, the given <tt>vm</tt> is notified using a {@link NotificationCodes#VM_MIGRATED} notification to let it know
-	 * that it was migrated. 
-	 * 
+	 * that it was migrated.
+	 *
 	 * @param vm the {@link VirtualMachine} that will be migrated
 	 * @param destinationHost the {@link Host} that will receive the new <tt>vm</tt>
 	 * @throws IllegalArgumentException if the given <tt>vm</tt> is already being migrated

@@ -39,11 +39,11 @@ import com.samysadi.acs.virtualization.job.Job;
 import com.samysadi.acs.virtualization.job.operation.Operation;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class JobMipsProbe extends AbstractProbe<Long> implements MipsProbe {
-	public static final String KEY = JobMipsProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = JobMipsProbe.class.getSimpleName().substring(0,
 									JobMipsProbe.class.getSimpleName().length() - 5);
 
 	@Override

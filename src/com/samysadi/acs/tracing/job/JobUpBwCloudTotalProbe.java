@@ -33,11 +33,11 @@ import com.samysadi.acs.tracing.AbstractLongIntegratorProbe;
 import com.samysadi.acs.virtualization.job.Job;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class JobUpBwCloudTotalProbe extends AbstractLongIntegratorProbe implements DataSizeProbe {
-	public static final String KEY = JobUpBwCloudTotalProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = JobUpBwCloudTotalProbe.class.getSimpleName().substring(0,
 									JobUpBwCloudTotalProbe.class.getSimpleName().length() - 5);
 
 	@Override

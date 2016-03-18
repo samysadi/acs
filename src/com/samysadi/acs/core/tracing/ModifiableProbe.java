@@ -31,20 +31,20 @@ import com.samysadi.acs.core.notifications.CoreNotificationCodes;
 /**
  * This interface defines a modifiable {@link Probe}.<br/>
  * Such probes' value can be updated through other objects.
- * 
+ *
  * <p>Unlike other {@link Probe}s, you don't need to register listeners
  * to update this probe's value. But you can instead rely on updates
  * from other Probes for instance.
- * 
+ *
  * @since 1.0
  */
 public interface ModifiableProbe<ValueType> extends Probe<ValueType> {
 
 	/**
 	 * Updates the probe's value.
-	 * 
+	 *
 	 * <p>A {@link CoreNotificationCodes#PROBE_VALUE_CHANGED} is thrown.
-	 * 
+	 *
 	 * @param value
 	 * @throws IllegalStateException if the probe is discarded
 	 * @see Probe#isDiscarded()

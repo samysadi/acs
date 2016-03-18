@@ -31,7 +31,7 @@ import com.samysadi.acs.utility.workload.Workload;
 
 /**
  * Logs a message to output.
- * 
+ *
  * @since 1.0
  */
 public class LogTask extends TaskImpl {

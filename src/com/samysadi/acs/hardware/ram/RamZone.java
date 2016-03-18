@@ -31,7 +31,7 @@ import com.samysadi.acs.hardware.misc.MemoryZone;
 /**
  * All implementation classes should provide a constructor with one argument
  * of <tt>long</tt> type that specifies the RamZone's size.
- * 
+ *
  * @since 1.0
  */
 public interface RamZone extends MemoryZone {

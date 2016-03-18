@@ -31,10 +31,10 @@ import com.samysadi.acs.core.Simulator;
 /**
  * Events are processed by the simulator after they are scheduled when the simulation
  * time is equal to the event's scheduled time.
- * 
+ *
  * <p>If multiple events are scheduled at the same time, then they are processed in the order they
  * were scheduled.
- * 
+ *
  * @see EventChain
  * @since 1.0
  */
@@ -44,7 +44,7 @@ public interface Event extends Cloneable {
 
 	/**
 	 * Returns the simulation time when this event will be processed or <tt>null</tt> if this event was not scheduled.
-	 * 
+	 *
 	 * @return the simulation time when this event will be processed or <tt>null</tt>
 	 */
 	public Long getScheduledAt();
@@ -52,25 +52,25 @@ public interface Event extends Cloneable {
 	/**
 	 * Returns <tt>true</tt> if this event was scheduled and put in the simulation's event queue.
 	 * <tt>false</tt> is returned if this event was not scheduled, or if it was canceled.
-	 * 
+	 *
 	 * @return <tt>true</tt> if this event was scheduled
 	 */
 	public boolean isScheduled();
 
 	/**
 	 * This method is called by the simulator after that this event is scheduled.
-	 * 
+	 *
 	 * <p><b>Note</b> that you should not need to call this method, instead use {@link Simulator#schedule(Event)}.
-	 * 
+	 *
 	 * @param time the scheduled simulation time when this event will be processed
 	 */
 	public void scheduledAt(Long time);
 
 	/**
 	 * Cancels this event, and removes it from the simulator events queue.
-	 * 
+	 *
 	 * <p>This method is a helper which calls the simulator's {@link Simulator#cancel(Event)} on this event.
-	 * 
+	 *
 	 * <p>Nothing happens if this event is not scheduled.
 	 */
 	public void cancel();

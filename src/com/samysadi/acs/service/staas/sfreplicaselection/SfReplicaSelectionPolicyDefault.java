@@ -37,7 +37,7 @@ import com.samysadi.acs.service.staas.Staas;
 import com.samysadi.acs.utility.collections.ShuffledIterator;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class SfReplicaSelectionPolicyDefault extends EntityImpl implements SfReplicaSelectionPolicy {
@@ -56,7 +56,7 @@ public class SfReplicaSelectionPolicyDefault extends EntityImpl implements SfRep
 	protected void initializeEntity() {
 		super.initializeEntity();
 
-		
+
 	}
 
 	@Override

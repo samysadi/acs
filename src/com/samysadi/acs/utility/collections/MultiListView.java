@@ -29,7 +29,7 @@ package com.samysadi.acs.utility.collections;
 import java.util.List;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class MultiListView<E> extends AbstractMultiListView<E>{

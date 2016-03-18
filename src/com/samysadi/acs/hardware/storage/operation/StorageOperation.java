@@ -34,23 +34,23 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
 
 /**
  * This interface defines methods to simulate a storage operation on a given {@link StorageFile}.
- * 
- * <p>When starting a storage operation, it seeks transfer rate resource from the parent storage of its {@link StorageFile} and 
+ *
+ * <p>When starting a storage operation, it seeks transfer rate resource from the parent storage of its {@link StorageFile} and
  * stays activated until its entire length is processed (read, written or appended), until a failure happens or until it is explicitly stopped (using appropriate method).
- * 
+ *
  * <p>A storage operation can be created for a local file that is located in the same
  * host with the operation, or for a remote file that is located on another host (ex: SAN storages).<br/>
  * If the file is remote, then a {@link NetworkOperation} is also instantiated to handle
  * the data transmission between the remote host and the local host. This operation is
  * transparently synchronized with the network operation to run at the same speed and to be paused
  * or to fail accordingly.
- * 
+ *
  * <p>You must ensure that the parent Job is started in order to start this operation, otherwise an IllegalStateException is thrown.<br/>
  * If you start this operation while it has a <tt>null</tt> parent then a NullPointerException is thrown.
- * 
- * <p>If your try to start this operation, while its {@link StorageFile} has a <tt>null</tt> storage parent or if that storage has <tt>null</tt> provisioner then a NullPointerException 
+ *
+ * <p>If your try to start this operation, while its {@link StorageFile} has a <tt>null</tt> storage parent or if that storage has <tt>null</tt> provisioner then a NullPointerException
  * is thrown when star.
- * 
+ *
  * <p>Implementations have to listen and automatically deactivate the operation when:<ul>
  * 		<li> {@link NotificationCodes#OPERATION_RESOURCE_INVALIDATED}
  * 			The allocated TR for the operation changed;
@@ -61,7 +61,7 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
  * The first specifies the {@link StorageFile}. The second specifies the {@link StorageOperationType}.
  * The third of <tt>long</tt> type specifies file position at which the operation will start.
  * And the fourth specifies the operation length.
- * 
+ *
  * @since 1.0
  */
 public interface StorageOperation extends Operation<StorageResource> {
@@ -80,9 +80,9 @@ public interface StorageOperation extends Operation<StorageResource> {
 
 	/**
 	 * Updates the {@link StorageFile} of this operation. The operation continues (and does not restart) on the new file.
-	 * 
+	 *
 	 * <p>A {@link NotificationCodes#SO_SF_CHANGED} is also thrown.
-	 * 
+	 *
 	 * @param storageFile
 	 * @throws NullPointerException if the given file is <tt>null</tt>
 	 * @throws IllegalArgumentException if the operation cannot continue on the given file for any reason
@@ -96,14 +96,14 @@ public interface StorageOperation extends Operation<StorageResource> {
 
 	/**
 	 * Returns the size in bytes (number of {@link Simulator#BYTE}s) of this operation.
-	 * 
+	 *
 	 * @return the size of this operation
 	 */
 	public long getLength();
 
 	/**
 	 * Returns the maximum usable Transfer Rate (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) for this operation.
-	 * 
+	 *
 	 * @return the maximum usable Transfer Rate
 	 */
 	public long getResourceMax();
@@ -115,7 +115,7 @@ public interface StorageOperation extends Operation<StorageResource> {
 
 	/**
 	 * Returns the minimum needed Transfer Rate (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) by the operation to be activated.
-	 * 
+	 *
 	 * @return the minimum needed Transfer Rate
 	 */
 	public long getResourceMin();
@@ -127,9 +127,9 @@ public interface StorageOperation extends Operation<StorageResource> {
 
 	/**
 	 * Returns the completed length in bytes (number of {@link Simulator#BYTE}s) until last activation of this operation.
-	 * 
+	 *
 	 * <p>This must not include current active completed length (if this operation is active right now).
-	 * 
+	 *
 	 * @return the completed length until last activation
 	 */
 	public long getCompletedLength();

@@ -35,13 +35,13 @@ import com.samysadi.acs.virtualization.job.Job;
  * An operation is {@link RunnableEntity} that needs a certain amount
  * of running time in order to be completed.<br/>
  * The needed running time directly depends on the allocated resource for the operation.
- * 
+ *
  * <p>As any other {@link RunnableEntity} you need to listen to the
- * {@link NotificationCodes#RUNNABLE_STATE_CHANGED} notification to know when the operation 
+ * {@link NotificationCodes#RUNNABLE_STATE_CHANGED} notification to know when the operation
  * stops / is completed.
- * 
+ *
  * <p>See {@link RunnableEntity} for more information on runnable entities.
- * 
+ *
  * @since 1.0
  */
 public interface Operation<Resource> extends Entity, RunnableEntity {
@@ -51,7 +51,7 @@ public interface Operation<Resource> extends Entity, RunnableEntity {
 
 	/**
 	 * Returns parent job which also owns this operation.
-	 * 
+	 *
 	 * @return the parent job
 	 */
 	@Override
@@ -60,23 +60,23 @@ public interface Operation<Resource> extends Entity, RunnableEntity {
 	/**
 	 * Returns the current allocated resources for this operation or <tt>null</tt>
 	 * if no resource is allocated for this operation.
-	 * 
+	 *
 	 * @return the current allocated resources for this operation or <tt>null</tt>
 	 */
 	public Resource getAllocatedResource();
 
 	/**
 	 * Returns the delay remaining until the end of this operation using the current allocated resources.
-	 * 
+	 *
 	 * <p>If the operation is running, the returned value takes into account the progress made during current activation.
-	 * 
+	 *
 	 * @return the delay remaining until the end of this operation using the current allocated resources
 	 */
 	public long getRemainingDelay();
 
 	/**
 	 * Returns the total accumulated simulation time when this operation was running.
-	 * 
+	 *
 	 * @return the total accumulated simulation time when this operation was running
 	 */
 	public long getTotalRunningTime();

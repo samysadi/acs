@@ -36,13 +36,13 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  * Probe for instant power consumption by the whole cloud.<br/>
- * This includes power usage by the hosts and also the power usage for 
+ * This includes power usage by the hosts and also the power usage for
  * cooling, lighting, networking etc...
- * 
+ *
  * @since 1.0
  */
 public class CpPowerProbe extends AbstractProbe<Long> implements PowerProbe {
-	public static final String KEY = CpPowerProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = CpPowerProbe.class.getSimpleName().substring(0,
 									CpPowerProbe.class.getSimpleName().length() - 5);
 
 	@Override

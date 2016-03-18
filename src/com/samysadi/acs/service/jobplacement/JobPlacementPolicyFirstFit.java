@@ -36,7 +36,7 @@ import com.samysadi.acs.virtualization.job.Job;
  * A placement policy that chooses the vm that has enough resources for the job
  * among all given user's vms.<br/>
  * The vm is chosen according to the first fit method.
- * 
+ *
  * @since 1.0
  */
 public class JobPlacementPolicyFirstFit extends JobPlacementPolicyAbstract {

@@ -35,7 +35,7 @@ import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.virtualization.job.operation.LongOperationImpl;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class OpLongProbe extends AbstractProbe<Long> {

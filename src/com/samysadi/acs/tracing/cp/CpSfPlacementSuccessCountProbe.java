@@ -30,11 +30,11 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  * Probe for number of success VM placements.
- * 
+ *
  * @since 1.0
  */
 public class CpSfPlacementSuccessCountProbe extends CpSfPlacementFailureCountProbe {
-	public static final String KEY = CpSfPlacementSuccessCountProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = CpSfPlacementSuccessCountProbe.class.getSimpleName().substring(0,
 									CpSfPlacementSuccessCountProbe.class.getSimpleName().length() - 5);
 
 	@Override

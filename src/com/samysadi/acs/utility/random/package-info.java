@@ -26,7 +26,7 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * This package contains definitions for number generators.
- * 
+ *
  * @since 1.0
  */
 package com.samysadi.acs.utility.random;

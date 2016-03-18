@@ -34,7 +34,7 @@ import com.samysadi.acs.service.staas.Staas;
 import com.samysadi.acs.utility.NotificationCodes;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public interface SfReplicationManager extends Entity {
@@ -48,47 +48,47 @@ public interface SfReplicationManager extends Entity {
 	/**
 	 * Registers the given <tt>storageFile</tt> for replication by
 	 * the current entity.
-	 * 
+	 *
 	 * <p>If the given <tt>storageFile</tt> or one of its replicas is already registered for replication
 	 * by this entity, nothing is done and this method returns silently.
-	 * 
+	 *
 	 * <p>After successful call to this method, calling {@link SfReplicationManager#getReplicas(StorageFile)} with
 	 * the given <tt>storageFile</tt> will return the file and all of its replicas.
-	 * 
+	 *
 	 * <p>A {@link NotificationCodes#SFRM_REGISTERED} notification is thrown.
-	 * 
+	 *
 	 * <p><b>Note:</b> implementations need not to effectively copy the <tt>storageFile</tt> to its replica (by creating
 	 * needed operations).<br/>
 	 * This task should be delegated to the consistency manager.
-	 * 
+	 *
 	 * @param storageFile
 	 */
 	public void register(StorageFile storageFile);
 
 	/**
 	 * Unregisters the given <tt>storageFile</tt> and stops replicating it.<br/>
-	 * The already created replicas are not deleted, as they may still be used 
+	 * The already created replicas are not deleted, as they may still be used
 	 * by other entities.
-	 * 
+	 *
 	 * <p>Calling {@link SfReplicationManager#getReplicas(StorageFile)} after this method returns,
 	 * will return a one item list that contains the given <tt>storageFile</tt>.
-	 * 
+	 *
 	 * <p>If neither the given <tt>storageFile</tt> nor any of its replicas is registered
 	 * for replication by this entity, then nothing is done and this methods
 	 * returns silently.
-	 * 
+	 *
 	 * <p>A {@link NotificationCodes#SFRM_UNREGISTERED} notification is thrown.
-	 * 
+	 *
 	 * @param storageFile
 	 */
 	public void unregister(StorageFile storageFile);
 
 	/**
 	 * Returns a list containing all replicas of the given <tt>storageFile</tt> including itself.
-	 * 
+	 *
 	 * <p>If the given <tt>storageFile</tt> is not replicated then an one item list that contains the given <tt>storageFile</tt>
 	 * is returned.
-	 * 
+	 *
 	 * @param storageFile
 	 * @return a list containing all replicas of the given <tt>storageFile</tt> including itself
 	 */

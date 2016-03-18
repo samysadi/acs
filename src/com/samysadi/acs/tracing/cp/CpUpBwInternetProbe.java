@@ -39,13 +39,13 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  * Probe for instant outgoing BW (ie: upload BW to outside of the cloud) consumption by the whole cloud.
- * 
+ *
  * <p>This implementation relies on {@link HostUpBwInternetProbe} to update its value.
- * 
+ *
  * @since 1.0
  */
 public class CpUpBwInternetProbe extends AbstractProbe<Long> implements ModifiableProbe<Long>, DataRateProbe {
-	public static final String KEY = CpUpBwInternetProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = CpUpBwInternetProbe.class.getSimpleName().substring(0,
 									CpUpBwInternetProbe.class.getSimpleName().length() - 5);
 
 	@Override

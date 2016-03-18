@@ -37,7 +37,7 @@ import com.samysadi.acs.virtualization.job.Job;
  * Creates a job and places it
  * in one of the current user's VMs.<br/>
  * The created job is defined as the current workload's remote job.
- * 
+ *
  * @since 1.0
  */
 public class CreateJobTask extends TaskImpl {

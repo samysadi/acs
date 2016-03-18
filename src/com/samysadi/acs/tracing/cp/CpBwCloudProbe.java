@@ -39,13 +39,13 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  * Probe for instant BW (only traffic inside the cloud) consumption by the whole cloud.
- * 
+ *
  * <p>This implementation relies on {@link HostUpBwCloudProbe} to update its value.
- * 
+ *
  * @since 1.0
  */
 public class CpBwCloudProbe extends AbstractProbe<Long> implements ModifiableProbe<Long>, DataRateProbe {
-	public static final String KEY = CpBwCloudProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = CpBwCloudProbe.class.getSimpleName().substring(0,
 									CpBwCloudProbe.class.getSimpleName().length() - 5);
 
 	@Override

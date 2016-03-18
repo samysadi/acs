@@ -38,7 +38,7 @@ import com.samysadi.acs.virtualization.job.Job;
 
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class OperationImpl<Resource> extends RunnableEntityImpl implements Operation<Resource> {
@@ -121,7 +121,7 @@ public abstract class OperationImpl<Resource> extends RunnableEntityImpl impleme
 	 * 	<li>Updates total completed length, and sets the operation state to {@link com.samysadi.acs.core.entity.RunnableEntity.RunnableState#COMPLETED} if needed.
 	 * </ul>
 	 * The new Operation state is set to {@link com.samysadi.acs.core.entity.RunnableEntity.RunnableState#PAUSED} or to {@link com.samysadi.acs.core.entity.RunnableEntity.RunnableState#COMPLETED}.
-	 * 
+	 *
 	 * <p>
 	 * @throws IllegalStateException if the operation is not in {@link com.samysadi.acs.core.entity.RunnableEntity.RunnableState#RUNNING} state.
 	 */
@@ -134,11 +134,11 @@ public abstract class OperationImpl<Resource> extends RunnableEntityImpl impleme
 	/**
 	 * Activate the current operation. These basic steps are taken:<ul>
 	 * 	<li>Allocates the wanted resource on each Provisioner that is related to this operation;
-	 * 	<li>Updates this operation state and schedules an event for the end of operation 
+	 * 	<li>Updates this operation state and schedules an event for the end of operation
 	 * to automatically deactivate it when it is completed.
 	 * </ul>
 	 * The new operation state is set to {@link com.samysadi.acs.core.entity.RunnableEntity.RunnableState#RUNNING} if successful or to {@link com.samysadi.acs.core.entity.RunnableEntity.RunnableState#FAILED} if the operation cannot be activated (example: not enough resources).
-	 * 
+	 *
 	 * @throws IllegalStateException if the operation is terminated (see {@link Operation#isTerminated()}) or if it is already running.
 	 */
 	@Override
@@ -156,7 +156,7 @@ public abstract class OperationImpl<Resource> extends RunnableEntityImpl impleme
 
 	/**
 	 * Returns the listener at the given index as returned by {@link OperationImpl#registeredListener(NotificationListener)}.
-	 * 
+	 *
 	 * @param index
 	 * @return the listener at the given index
 	 */
@@ -167,12 +167,12 @@ public abstract class OperationImpl<Resource> extends RunnableEntityImpl impleme
 	/**
 	 * Adds and registers listeners for this operation in order to keep it consistent with other entities in the simulator
 	 * and returns <tt>true</tt> on success.
-	 * 
+	 *
 	 * <p>For example, to deactivate the operation in case of a failure of a device that is related to it.
-	 * 
+	 *
 	 * <p>This method is called during activation of this operation, and {@link OperationImpl#unregisterListeners()} should
 	 * be called during deactivation.
-	 * 
+	 *
 	 * @return <tt>true</tt> if listeners were registered successfully and operation activation should continue
 	 * and <tt>false</tt> if an error occurred and you want to stop operation activation
 	 */
@@ -191,9 +191,9 @@ public abstract class OperationImpl<Resource> extends RunnableEntityImpl impleme
 
 	/**
 	 * Adds the given listener to an internal list and returns its index.
-	 * 
+	 *
 	 * <p>Use this method to keep track of newly added listeners in order to automatically unregister them if needed using {@link OperationImpl#unregisterListeners()}.
-	 * 
+	 *
 	 * @param listener the listener that has been registered.
 	 * @return index of the registered listener
 	 */
@@ -212,7 +212,7 @@ public abstract class OperationImpl<Resource> extends RunnableEntityImpl impleme
 	/**
 	 * Updates the allocated resource for this operation.<br/>
 	 * A notification {@link NotificationCodes#OPERATION_RESOURCE_CHANGED} is thrown.
-	 * 
+	 *
 	 * @param resource
 	 */
 	protected void setAllocatedResource(Resource resource) {

@@ -31,7 +31,7 @@ package com.samysadi.acs.service.jobplacement;
  * A placement policy that chooses the vm that has enough resources for the job
  * among all given user's vms.<br/>
  * The vm is chosen according to the worst fit method.
- * 
+ *
  * @since 1.0
  */
 public class JobPlacementPolicyWorstFit extends JobPlacementPolicyBestFit {

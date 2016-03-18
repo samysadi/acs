@@ -33,7 +33,7 @@ import com.samysadi.acs.utility.factory.generation.flow.GenerationFlow;
 import com.samysadi.acs.utility.factory.generation.mode.GenerationMode;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class UserFactory extends Factory {
@@ -92,7 +92,7 @@ public abstract class UserFactory extends Factory {
 
 	/**
 	 * Generates a User and returns it.
-	 * 
+	 *
 	 * @return generated {@link User}
 	 */
 	@Override

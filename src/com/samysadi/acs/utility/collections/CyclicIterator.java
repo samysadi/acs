@@ -30,15 +30,15 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * This iterator will return elements in the same order as they are in the underlying list starting from a given 
+ * This iterator will return elements in the same order as they are in the underlying list starting from a given
  * index. When reaching the end of the list, this iterator will return remaining elements starting from the beginning
- * of the list. 
- * 
+ * of the list.
+ *
  * <p>For example, if the list has 10 elements and the initial index is set to 4, then this iterator will return the
  * elements in the following order: {@code 4,5,6,7,8,9,0,1,2,3}.
- * 
+ *
  * <p>A ConcurrentModificationException is thrown if the underlying list is modified during the iteration.
- * 
+ *
  * @since 1.0
  */
 public class CyclicIterator<T> implements Iterator<T> {

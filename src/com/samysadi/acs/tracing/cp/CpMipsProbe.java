@@ -39,13 +39,13 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  * Probe for instant mips consumption by the whole cloud.
- * 
+ *
  * <p>This implementation relies on {@link HostMipsProbe} to update its value.
- * 
+ *
  * @since 1.0
  */
 public class CpMipsProbe extends AbstractProbe<Long> implements ModifiableProbe<Long>, MipsProbe {
-	public static final String KEY = CpMipsProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = CpMipsProbe.class.getSimpleName().substring(0,
 									CpMipsProbe.class.getSimpleName().length() - 5);
 
 	@Override

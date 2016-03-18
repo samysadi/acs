@@ -32,26 +32,26 @@ import com.samysadi.acs.utility.workload.Workload;
 /**
  * A task defines a sequence of operations to be executed
  * by a {@link Workload}.
- * 
+ *
  * <p>The task notifies the {@link Workload} when it ends using
  * {@link NotificationCodes#WORKLOAD_TASK_COMPLETED} or {@link NotificationCodes#WORKLOAD_TASK_FAILED}.
- * 
+ *
  * <p>All implementation classes should provide a two arguments constructor
  * that defines respectively the {@link Workload}, and the {@link Config} of the task.
- * 
+ *
  * @since 1.0
  */
 public interface Task extends Cloneable {
 	/**
 	 * Creates and returns a clone of current task.
-	 * 
+	 *
 	 * <p>The clone should not rely on any of the current task's workload resources.
-	 * 
+	 *
 	 * <p>The clone should be defined so that executing it will continue at the
 	 * same point the current task was when the clone was created.<br/>
-	 * However, if this is not possible, the clone should then restart the whole 
+	 * However, if this is not possible, the clone should then restart the whole
 	 * task from the beginning.
-	 * 
+	 *
 	 * @param workload the workload of the newly created clone
 	 * @return the current task's clone
 	 * @throws IllegalStateException if the task is discarded
@@ -61,21 +61,21 @@ public interface Task extends Cloneable {
 	/**
 	 * Returns the task's workload.
 	 * This value may not be available after discarding the task.
-	 * 
+	 *
 	 * @return the task's workload
 	 */
 	public Workload getWorkload();
 
 	/**
 	 * Returns the task's {@link Config}.
-	 * 
+	 *
 	 * @return the task's {@link Config}
 	 */
 	public Config getConfig();
 
 	/**
 	 * Runs / continues the task execution.
-	 * 
+	 *
 	 * @throws IllegalStateException if the task is discarded
 	 */
 	public void execute();

@@ -32,7 +32,7 @@ import com.samysadi.acs.utility.random.Exponential;
 import com.samysadi.acs.utility.random.NumberGenerator;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class GenerationFlowDefault implements GenerationFlow {

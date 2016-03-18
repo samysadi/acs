@@ -34,7 +34,7 @@ import com.samysadi.acs.virtualization.job.operation.provisioner.Provisioner;
 /**
  * All implementation classes should provide a constructor with one argument
  * of <tt>long</tt> type that specifies the provisioner's capacity.
- * 
+ *
  * @since 1.0
  */
 public interface StorageProvisioner extends Provisioner<StorageOperation, StorageResource> {
@@ -44,7 +44,7 @@ public interface StorageProvisioner extends Provisioner<StorageOperation, Storag
 
 	/**
 	 * Returns the total transfer rate (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) capacity of the storage.
-	 * 
+	 *
 	 * @return the total transfer rate (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) capacity of the storage
 	 */
 	public long getCapacity();

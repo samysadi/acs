@@ -39,7 +39,7 @@ import com.samysadi.acs.virtualization.VirtualMachine;
  * among all available and powered on hosts.<br/>
  * The host is chosen according to the random fit method.<br/>
  * If none is found then a new host is powered on.
- * 
+ *
  * @since 1.0
  */
 public class VmPlacementPolicyRandomFit extends VmPlacementPolicyAbstract {

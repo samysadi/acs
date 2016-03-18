@@ -31,14 +31,14 @@ package com.samysadi.acs.core.event;
  * <b>if</b> there are only dispensable events remaining in the simulator queue.<br/>
  * In other words, simulation can be stopped if only dispensable events remain in the
  * simulator's events queue.
- * 
+ *
  * <p><b>Use case example:</b> You can use dispensable events, to schedule future device failures. Such failures are
  * important to the simulation only if there are operations that depend on it. So if only
  * failure events remain in the simulator's event queue, there is no need to process them and simulation
  * can be terminated.
- * 
+ *
  * <p>Make your events implement this interface if you want to make them dispensable.
- * 
+ *
  * @since 1.0
  */
 public interface DispensableEvent extends Event {

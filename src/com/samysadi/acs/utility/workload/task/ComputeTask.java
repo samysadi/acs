@@ -38,7 +38,7 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
 
 /**
  * Computes for the given <i>Length</i> in {@link Simulator#MI}.
- * 
+ *
  * @since 1.0
  */
 public class ComputeTask extends TaskImpl {

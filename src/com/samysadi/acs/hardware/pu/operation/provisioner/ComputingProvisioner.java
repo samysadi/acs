@@ -34,7 +34,7 @@ import com.samysadi.acs.virtualization.job.operation.provisioner.Provisioner;
 /**
  * All implementation classes should provide a constructor with one argument
  * of <tt>long</tt> type that specifies the provisioner's capacity.
- * 
+ *
  * @since 1.0
  */
 public interface ComputingProvisioner extends Provisioner<ComputingOperation, ComputingResource> {
@@ -44,7 +44,7 @@ public interface ComputingProvisioner extends Provisioner<ComputingOperation, Co
 
 	/**
 	 * Returns the total mips (number of {@link Simulator#MI} per one {@link Simulator#SECOND}) capacity of the processing unit.
-	 * 
+	 *
 	 * @return the total mips (number of {@link Simulator#MI} per one {@link Simulator#SECOND}) capacity of the processing unit
 	 */
 	public long getCapacity();

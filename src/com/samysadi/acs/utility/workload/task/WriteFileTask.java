@@ -43,12 +43,12 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
  * starting at the given <i>Pos</i> (ie: offset in {@link Simulator#MEBIBYTE})
  * in the workload's active file.<br/>
  * If the size / offset overflows then the overflowing size is ignored.
- * 
+ *
  * <p>This will look for best file's replica using the cloud provider STaaS.
- * 
+ *
  * <p>You need to define the file to write, and the remote job that will write the file
  * using appropriate tasks.
- * 
+ *
  * @since 1.0
  */
 public class WriteFileTask extends TaskImpl {

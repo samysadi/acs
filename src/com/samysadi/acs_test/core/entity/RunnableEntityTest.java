@@ -39,7 +39,7 @@ import com.samysadi.acs.service.CloudProvider;
 import com.samysadi.acs_test.Utils;
 
 /**
- * 
+ *
  * @since 1.0
  */
 @SuppressWarnings("unused")
@@ -73,7 +73,7 @@ public abstract class RunnableEntityTest {
 			public void process() {
 				final RunnableEntity r0 = startRunnableEntity();
 				r0.doPause();
-				
+
 				final RunnableEntity c0 = startChildForRunnableEntity(r0);
 			}
 		});
@@ -94,7 +94,7 @@ public abstract class RunnableEntityTest {
 			@Override
 			public void process() {
 				final RunnableEntity r0 = startRunnableEntity();
-				
+
 				final RunnableEntity c0 = startChildForRunnableEntity(r0);
 
 				simulator.schedule(1, new EventImpl() {
@@ -124,7 +124,7 @@ public abstract class RunnableEntityTest {
 			@Override
 			public void process() {
 				final RunnableEntity r0 = startRunnableEntity();
-				
+
 				final RunnableEntity c0 = startChildForRunnableEntity(r0);
 
 				simulator.schedule(1, new EventImpl() {
@@ -154,7 +154,7 @@ public abstract class RunnableEntityTest {
 			@Override
 			public void process() {
 				final RunnableEntity r0 = startRunnableEntity();
-				
+
 				final RunnableEntity c0 = startChildForRunnableEntity(r0);
 
 				simulator.schedule(1, new EventImpl() {
@@ -184,7 +184,7 @@ public abstract class RunnableEntityTest {
 			@Override
 			public void process() {
 				final RunnableEntity r0 = startRunnableEntity();
-				
+
 				final RunnableEntity c0 = startChildForRunnableEntity(r0);
 
 				simulator.schedule(1, new EventImpl() {
@@ -215,7 +215,7 @@ public abstract class RunnableEntityTest {
 			@Override
 			public void process() {
 				final RunnableEntity r0 = startRunnableEntity();
-				
+
 				final RunnableEntity c0 = startChildForRunnableEntity(r0);
 
 				simulator.schedule(1, new EventImpl() {

@@ -33,7 +33,7 @@ import com.samysadi.acs.hardware.pu.operation.provisioner.ComputingProvisioner;
 import com.samysadi.acs.utility.NotificationCodes;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class ProcessingUnitDefault extends FailureProneEntityImpl implements ProcessingUnit {

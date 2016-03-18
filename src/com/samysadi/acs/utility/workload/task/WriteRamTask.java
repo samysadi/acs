@@ -38,11 +38,11 @@ import com.samysadi.acs.utility.workload.Workload;
  * in the Ram.<br/>
  * The <i>Pos</i> configuration can be omitted, in which case it is assumed to be the last
  * modified index from last call to this method (or <tt>0</tt> if it's the first call, or if the end of the ram is reached).
- * 
+ *
  * <p>If the size cannot be allocated (not enough ram) then this task fails.<br/>
  * Use the <i>TrySize</i> configuration instead of <i>Size</i>
  * so that this task will not try to allocate more than available Ram.
- * 
+ *
  * @since 1.0
  */
 public class WriteRamTask extends TaskImpl {

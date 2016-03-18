@@ -31,14 +31,14 @@ import com.samysadi.acs.utility.NotificationCodes;
 /**
  * Use this class to simulate virtual memory units whose size grows and shrinks depending on the size allocated
  * to children zones.
- * 
+ *
  * <p>Initially this virtual memory unit will not occupy any space on the parent memory unit. When creating new zones
  * the occupied size grows up, and it decreases when those zones are deleted. Anyhow, the occupied size cannot
  * increase more than the initial given capacity.
- * 
- * <p>This implementation is different from {@link VirtualMemoryUnitDynamic} in the fact that the occupied size on 
+ *
+ * <p>This implementation is different from {@link VirtualMemoryUnitDynamic} in the fact that the occupied size on
  * the parent memory unit can decrease.
- * 
+ *
  * @since 1.0
  */
 public abstract class VirtualMemoryUnitElastic<Zone extends MemoryZone, Unit extends MemoryUnit<Zone>> extends VirtualMemoryUnitImpl<Zone, Unit> {
@@ -46,7 +46,7 @@ public abstract class VirtualMemoryUnitElastic<Zone extends MemoryZone, Unit ext
 	 * Creates a new VirtualMemoryUnit which size can grow up to the maximum given <tt>capacity</tt>, but can also
 	 * decrease when zones are freed.<br/>
 	 * Its initial size is {@code 0l}.
-	 * 
+	 *
 	 * @param capacity the maximum capacity of this Virtual Memory Unit
 	 */
 	public VirtualMemoryUnitElastic(long capacity) {

@@ -44,10 +44,10 @@ import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
 /**
  * This implementation will automatically
  * find a new {@link Route} using the {@link RoutingProtocol} on the host of the parent job's VM each time it is activated.
- * 
+ *
  * <p>Make sure that the {@link RoutingProtocol} on the host of the parent job's VM is not <tt>null</tt> or a
  * NullPointerException will be thrown whenever you try to start this operation.
- * 
+ *
  * @since 1.0
  */
 public class NetworkOperationDefault extends LongOperationImpl<NetworkResource> implements NetworkOperation, SynchronizableOperation<NetworkResource> {
@@ -61,7 +61,7 @@ public class NetworkOperationDefault extends LongOperationImpl<NetworkResource> 
 
 	/**
 	 * Empty constructor that creates a zero-length operation with a <tt>null</tt> destination job.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link NetworkOperationDefault#NetworkOperationDefault(Job, long)} though.
 	 */
@@ -176,7 +176,7 @@ public class NetworkOperationDefault extends LongOperationImpl<NetworkResource> 
 		if (this.remainingLatencyForRoute < 0)
 			this.remainingLatencyForRoute = this.getAllocatedResource().getLatency();
 		total += this.remainingLatencyForRoute;
-		
+
 		total += Math.round(Math.ceil(((double) remainingLength * getAllocatedResource().getUnitOfTime() * (1.0d + (isRetransmitOnError() ? getAllocatedResource().getLossRate() : 0.0d))) / getAllocatedResource().getBw()));
 
 		total += this.getSynchronizationTimeAdjust();
@@ -258,7 +258,7 @@ public class NetworkOperationDefault extends LongOperationImpl<NetworkResource> 
 					NetworkOperationDefault.this.activate0();
 				}
 			}; registeredListener(resendListener);
-	
+
 			getAllocatedRoute().registerListenerForRoutingUpdates(resendListener);
 
 			//the destination device fails (not covered by above method)
@@ -285,7 +285,7 @@ public class NetworkOperationDefault extends LongOperationImpl<NetworkResource> 
 		if (getDestinationJob() != null) {
 			final NetworkDevice source = getParent().getParent().getParent();
 			final NetworkDevice dest = getDestinationJob().getParent().getParent();
-	
+
 			//let's try to find a route for this data
 			routeInfo = source.getRoutingProtocol().findRoute(dest, null);
 		}

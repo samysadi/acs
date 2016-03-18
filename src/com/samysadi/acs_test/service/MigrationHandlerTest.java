@@ -51,7 +51,7 @@ import com.samysadi.acs_test.Utils;
 
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class MigrationHandlerTest {
@@ -109,7 +109,7 @@ public class MigrationHandlerTest {
 	@Test
 	public void test0() {
 		simulator.schedule(0, new EventChain() {
-			
+
 			@Override
 			public boolean processStage(int stageNum) {
 				if (stageNum < 10)
@@ -138,7 +138,7 @@ public class MigrationHandlerTest {
 				return STOP;
 			}
 		});
-	
+
 		simulator.schedule(5 * Simulator.SECOND, new EventImpl() {
 			@Override
 			public void process() {

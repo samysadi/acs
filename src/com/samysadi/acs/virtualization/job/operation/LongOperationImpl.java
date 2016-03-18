@@ -40,7 +40,7 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  * This class defines a Operation that uses a {@link LongResource}.
- * 
+ *
  * @since 1.0
  */
 public abstract class LongOperationImpl<Resource extends LongResource> extends OperationImpl<Resource> {
@@ -60,7 +60,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 
 	/**
 	 * Empty constructor that creates a zero-length operation.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.
 	 * You should use {@link LongOperationImpl#LongOperationImpl(long)} though.
 	 */
@@ -69,7 +69,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	}
 
 	/**
-	 * 
+	 *
 	 * @param operationLength a long value indicating the length of this operation,
 	 * needs to be strictly positive
 	 */
@@ -105,7 +105,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 
 	/**
 	 * Returns the length of this operation.
-	 * 
+	 *
 	 * @return the length of this operation
 	 */
 	public long getLength() {
@@ -118,15 +118,15 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 
 	/**
 	 * Returns the maximum resource value that this operation can use (inclusive).
-	 * 
-	 * <p>On activation, this operation will ask the provisioner to grant at most a value equals to this value, even if this operation receives 
+	 *
+	 * <p>On activation, this operation will ask the provisioner to grant at most a value equals to this value, even if this operation receives
 	 * a promise greater than this value.
-	 * 
+	 *
 	 * <p><b>Default</b> is {@code Long.MAX_VALUE}.
-	 * 
+	 *
 	 * <p>For resources that needs a unit of time (to represent bandwidth, transfer rates etc..), the value returned here
 	 * is assumed to be the maximum length that can be operated in one {@link Simulator#SECOND}.
-	 * 
+	 *
 	 * @return the maximum resource value that this operation can use (inclusive)
 	 */
 	public long getResourceMax() {
@@ -135,10 +135,10 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 
 	/**
 	 * Updates the maximum resource that can be granted for this operation.
-	 * 
+	 *
 	 * <p>For resources that needs a unit of time (to represent bandwidth, transfer rates etc..), the value set here
 	 * is assumed to be the maximum length that can be operated in one {@link Simulator#SECOND}.
-	 * 
+	 *
 	 * @param resourceMax
 	 * @throws IllegalStateException if this operation is activated
 	 */
@@ -152,14 +152,14 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 
 	/**
 	 * Returns the minimum resource value that this operation needs for activation (inclusive).
-	 * 
+	 *
 	 * <p>On activation, if this operation receives a smaller promise than this value from the provisioner, then the activation fails.
-	 * 
+	 *
 	 * <p><b>Default</b> is {@code 1l}.
-	 * 
+	 *
 	 * <p>For resources that needs a unit of time (to represent bandwidth, transfer rates etc..), the value returned here
 	 * is assumed to be the minimum length that can be operated in one {@link Simulator#SECOND}.
-	 * 
+	 *
 	 * @return the minimum resource value that this operation needs for activation (inclusive)
 	 */
 	public long getResourceMin() {
@@ -168,10 +168,10 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 
 	/**
 	 * Updates the minimum resource that has to be granted for this operation on activation.
-	 * 
+	 *
 	 * <p>For resources that needs a unit of time (to represent bandwidth, transfer rates etc..), the value set here
 	 * is assumed to be the minimum length that can be operated in one {@link Simulator#SECOND}.
-	 * 
+	 *
 	 * @param resourceMin
 	 * @throws IllegalStateException if this operation is activated
 	 */
@@ -193,9 +193,9 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 
 	/**
 	 * Returns the completed length of this operation.
-	 * If this operation is active then this does not include 
+	 * If this operation is active then this does not include
 	 * the completed length since last activation.
-	 * 
+	 *
 	 * @return the completed length of this operation
 	 */
 	public long getCompletedLength() {
@@ -204,7 +204,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 
 	/**
 	 * Returns the simulation time when this operation was activated if it is running, or {@code Long.MAX_VALUE} if it is not running.
-	 * 
+	 *
 	 * @return the simulation time when this operation was activated if it is running, or {@code Long.MAX_VALUE} if it is not running
 	 */
 	protected long getLastActivated() {
@@ -213,10 +213,10 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 
 	/**
 	 * Updates the completed length.
-	 * 
+	 *
 	 * <p>Will also set the operation state to {@link OperationState#COMPLETED} if the completed length is greater or equal
 	 * to the the operation length.
-	 * 
+	 *
 	 * @param completedLength
 	 */
 	protected void setCompletedLength(long completedLength) {
@@ -260,7 +260,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	/**
 	 * Returns the length completed after computing for the given <tt>delay</tt> using the
 	 * current allocated resource. This should <b>not</b> include old Completed Length if any.
-	 * 
+	 *
 	 * @param delay
 	 * @return the length completed after computing for the given <tt>delay</tt>
 	 */
@@ -281,15 +281,15 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	/**
 	 * Checks the given resource promise for validity, and if it is not valid
 	 * this method first tries to return a valid value for it, otherwise it returns <tt>null</tt>.
-	 * 
+	 *
 	 * <p>If the given promise's value is greater than the value returned by {@link LongOperationImpl#getResourceMax()}, then
 	 * this function returns a new resource with that value. Because, if the provisioner promised a value greater than {@link LongOperationImpl#getResourceMax()}, then
 	 * we can safely grant a lesser value.
-	 * 
+	 *
 	 * <p>If the given promise is lesser than the value returned by {@link LongOperationImpl#getResourceMin()}, then
 	 * this function returns <tt>null</tt>. Because, there is no guarantee that the provisioner can grant {@link LongOperationImpl#getResourceMin()} if
 	 * we returned that value.
-	 * 
+	 *
 	 * @param r
 	 * @return the new validated resource or <tt>null</tt>
 	 */
@@ -315,9 +315,9 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	/**
 	 * Returns the promise as given by the provisioner, or <tt>null</tt> if no provisioner was assigned to the operation or
 	 * if <tt>null</tt> was returned by {@link LongOperationImpl#validateResourcePromise(LongResource)}.
-	 * 
+	 *
 	 * <p>Implementations should validate the promised resource using {@link LongOperationImpl#validateResourcePromise(LongResource)}.
-	 * 
+	 *
 	 * @return the promise as given by the provisioner, or <tt>null</tt>
 	 */
 	protected abstract Resource getProvisionerPromise();
@@ -358,7 +358,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 					}
 				}
 			}; registeredListener(vListener);
-		
+
 			addListener(NotificationCodes.OPERATION_RESOURCE_INVALIDATED, vListener);
 		}
 		//*********************************************************************
@@ -394,7 +394,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 			}; registeredListener(pListener);
 		}
 		//*********************************************************************
-		
+
 
 		//add a failure dependency to fail if the machine that contains the source job's VM, fails
 		if (!addFailureDependency(getParent().getParent().getParent()))
@@ -411,13 +411,13 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	 * Returns <tt>true</tt> if a listener was successfully added.
 	 * <tt>false</tt> is returned if the given entity is already in failed state, and that no
 	 * listener is added.
-	 * 
+	 *
 	 * <p>This method first checks that the given <tt>e</tt> is not failed (if so the operation fails), and also adds a listener so
 	 * that when the given <tt>e</tt> fails, this operation will be deactivated.
-	 * 
-	 * <p>You must first call {@link LongOperationImpl#registerListeners()} before calling this 
+	 *
+	 * <p>You must first call {@link LongOperationImpl#registerListeners()} before calling this
 	 * method.
-	 * 
+	 *
 	 * @param e
 	 * @return <tt>true</tt> if a listener was successfully added
 	 */
@@ -426,7 +426,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 			getLogger().log(LongOperationImpl.this, "Failed because a device (" + e + ") has failed.");
 			return false;
 		}
-			
+
 		e.addListener(NotificationCodes.FAILURE_STATE_CHANGED, getRegisteredListener(1));
 		return true;
 	}
@@ -435,13 +435,13 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	 * Returns <tt>true</tt> if a listener was successfully added.
 	 * <tt>false</tt> is returned if the given entity is not powered on, and that no
 	 * listener is added.
-	 * 
+	 *
 	 * <p>This method first checks that the given <tt>e</tt> is powered-on (if not the operation fails), and also adds a listener so
 	 * that when the given <tt>e</tt> is powered-off, this operation will be deactivated.
-	 * 
-	 * <p>You must first call {@link LongOperationImpl#registerListeners()} before calling this 
+	 *
+	 * <p>You must first call {@link LongOperationImpl#registerListeners()} before calling this
 	 * method.
-	 * 
+	 *
 	 * @param e
 	 * @return if <tt>false</tt> that means that the entity is powered-off and no listener is added
 	 */
@@ -450,16 +450,16 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 			getLogger().log(LongOperationImpl.this, "Failed because a device (" + e + ") is powered-off.");
 			return false;
 		}
-			
+
 		e.addListener(NotificationCodes.POWER_STATE_CHANGED, getRegisteredListener(2));
 		return true;
 	}
 
 	/**
 	 * Activates the operation after the provisioner is ready and returns <tt>true</tt> on success.
-	 * 
+	 *
 	 * <p>This activation method does not throw notification unlike {@link Operation#activate()} does.
-	 * 
+	 *
 	 * @return <tt>true</tt> if the operation was successfully activate
 	 * and <tt>false</tt> if the operation was not activated
 	 */
@@ -492,14 +492,14 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 
 		this.lastActivated = Simulator.getSimulator().getTime();
 		setRunnableState(RunnableState.RUNNING);
-			
+
 		return true;
 	}
 
 	/**
 	 * Deactivates the operation silently without throwing notifications unlike {@link Operation#deactivate()} does
 	 * and returns <tt>true</tt> on success.
-	 * 
+	 *
 	 * @return <tt>true</tt> if the operation was successfully deactivated
 	 * and <tt>false</tt> if the operation was not deactivated
 	 */
@@ -531,7 +531,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 
 	/**
 	 * For use by subclasses to prepare resources before starting the operation.
-	 * 
+	 *
 	 * <p>Exceptions may be thrown.
 	 */
 	protected abstract void prepareActivation();
@@ -566,9 +566,9 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 
 	/**
 	 * This method is used for synchronization.
-	 * 
+	 *
 	 * <p>This method assumes that the operation is not running.
-	 * 
+	 *
 	 * @return the resource value to use in order to finish after the given <tt>delay</tt>
 	 */
 	protected abstract Resource computeSynchronizedResource(long delay);

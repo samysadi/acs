@@ -47,11 +47,11 @@ import com.samysadi.acs.utility.Pair;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class UserBillingProbe extends AbstractProbe<Long> implements PriceProbe {
-	public static final String KEY = UserBillingProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = UserBillingProbe.class.getSimpleName().substring(0,
 									UserBillingProbe.class.getSimpleName().length() - 5);
 
 	private ArrayList<Pair<Probe<?>, Long>> lastTime;

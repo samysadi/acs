@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * 
+ *
  * @since 1.0
  */
 abstract class MyArrayList<E> extends ArrayList<E> {
@@ -130,16 +130,16 @@ abstract class MyArrayList<E> extends ArrayList<E> {
 	/**
 	 * Returns a mod count that changes every time a child at the given level
 	 * or lesser level is modified.
-	 * 
+	 *
 	 * <p>Level 0 contains direct child elements and level 1 contains grandchildren.
-	 * 
+	 *
 	 * <p>Basically, every time a child is modified, it notifies its parent, which in turn notifies its own parents and so forth.<br/>
 	 * So if you call this method with a level of 2, then the returned mod_count will only reflect modifications that were done on children
 	 * at level 0, 1 and 2. If a child is modified at level 3 or more, this mod_count should not change.
-	 * 
+	 *
 	 * <p><b>Note</b> this is a best effort mod_count that you may use to detect concurrent modifications on children
 	 * elements (ie: modification on the elements themselves, not the structure of this list). But you should not rely on this.
-	 * 
+	 *
 	 * @param level
 	 * @return current mod count
 	 */
@@ -156,5 +156,5 @@ abstract class MyArrayList<E> extends ArrayList<E> {
 	protected int getChildModCount() {
 		return childModCount;
 	}
-	
+
 }

@@ -35,13 +35,13 @@ import com.samysadi.acs.virtualization.job.Job;
 /**
  * Probe for instant job upload bandwidth of which destination host is not in the
  * same cloud provider as the job's parent host.
- * 
+ *
  * <p>This implementation relies on {@link JobUpBwProbe} to update its value.
- * 
+ *
  * @since 1.0
  */
 public class JobUpBwInternetProbe extends AbstractProbe<Long> implements ModifiableProbe<Long>, DataRateProbe {
-	public static final String KEY = JobUpBwInternetProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = JobUpBwInternetProbe.class.getSimpleName().substring(0,
 			JobUpBwInternetProbe.class.getSimpleName().length() - 5);
 
 	@Override

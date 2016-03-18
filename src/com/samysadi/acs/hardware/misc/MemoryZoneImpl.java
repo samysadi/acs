@@ -32,7 +32,7 @@ import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.collections.Bitmap;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class MemoryZoneImpl extends EntityImpl implements MemoryZone {
@@ -42,7 +42,7 @@ public abstract class MemoryZoneImpl extends EntityImpl implements MemoryZone {
 
 	/**
 	 * Creates a new Memory Zone and allocates its initial size in the memory unit.
-	 * 
+	 *
 	 * @param parent the ram
 	 * @param size the initial size of this zone
 	 */

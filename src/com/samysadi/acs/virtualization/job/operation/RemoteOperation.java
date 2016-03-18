@@ -31,11 +31,11 @@ import com.samysadi.acs.virtualization.job.Job;
 
 /**
  * This interface describes an {@link Operation} that has also a destination {@link Job}.
- * 
+ *
  * <p>{@link RemoteOperation}s cannot be started if their destination job is not running.<br/>
  * Also, {@link Job} implementations must pause / start / cancel {@link RemoteOperation}s accordingly
  * if they are paused / started / canceled. Please see {@link Job} documentation for more information.
- * 
+ *
  * @since 1.0
  */
 public interface RemoteOperation<Resource> extends Operation<Resource> {
@@ -45,21 +45,21 @@ public interface RemoteOperation<Resource> extends Operation<Resource> {
 
 	/**
 	 * Returns the destination job where the operation's data will be sent.
-	 * 
+	 *
 	 * @return the destination job
 	 */
 	public Job getDestinationJob();
 
 	/**
 	 * Sets the new destinationJob.
-	 * 
+	 *
 	 * <p>A {@link NotificationCodes#OPERATION_DEST_JOB_CHANGED} is thrown.<br/>
 	 * The old destinationJob is notified using {@link NotificationCodes#JOB_DEST_OPERATION_REMOVED}.<br/>
 	 * The new destinationJob is notified using {@link NotificationCodes#JOB_DEST_OPERATION_ADDED}.
-	 * 
+	 *
 	 * @param destinationJob the new destinationJob
 	 * @throws IllegalStateException if this operation is already running
 	 */
 	public void setDestinationJob(Job destinationJob);
-	
+
 }

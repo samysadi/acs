@@ -42,11 +42,11 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
 
 /**
  * Instant job upload bandwidth.
- * 
+ *
  * @since 1.0
  */
 public class JobUpBwProbe extends AbstractProbe<Long> implements DataRateProbe {
-	public static final String KEY = JobUpBwProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = JobUpBwProbe.class.getSimpleName().substring(0,
 									JobUpBwProbe.class.getSimpleName().length() - 5);
 
 	@Override
@@ -98,7 +98,7 @@ public class JobUpBwProbe extends AbstractProbe<Long> implements DataRateProbe {
 				if (((NetworkOperation) op).getDestinationJob() != null &&
 						((NetworkOperation) op).getDestinationJob().hasParentRec() &&
 						((Job)this.getParent()).hasParentRec() &&
-						!(((NetworkOperation) op).getDestinationJob().getParent().getParent() instanceof ThinClient) && 
+						!(((NetworkOperation) op).getDestinationJob().getParent().getParent() instanceof ThinClient) &&
 						((NetworkOperation) op).getDestinationJob().getParent().getParent().getCloudProvider() == ((Job)this.getParent()).getParent().getParent().getCloudProvider())
 					vCloud+= currentValue;
 			}

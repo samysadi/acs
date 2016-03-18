@@ -40,11 +40,11 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  * Does not include virtual storages.
- * 
+ *
  * @since 1.0
  */
 public class UserFilesSizeProbe extends AbstractProbe<Long> implements DataSizeProbe {
-	public static final String KEY = UserFilesSizeProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = UserFilesSizeProbe.class.getSimpleName().substring(0,
 									UserFilesSizeProbe.class.getSimpleName().length() - 5);
 
 	@Override

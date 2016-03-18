@@ -29,7 +29,7 @@ package com.samysadi.acs.hardware.network.operation;
 import com.samysadi.acs.virtualization.job.operation.LongResource;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class NetworkResource extends LongResource {

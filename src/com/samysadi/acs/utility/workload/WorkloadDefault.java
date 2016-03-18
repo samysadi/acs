@@ -58,7 +58,7 @@ import com.samysadi.acs.virtualization.job.JobDefault;
 import com.samysadi.acs.virtualization.job.operation.Operation;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class WorkloadDefault extends JobDefault implements Workload {
@@ -149,7 +149,7 @@ public class WorkloadDefault extends JobDefault implements Workload {
 			this.taskGenerationCount = 0;
 		} else {
 			this.taskGenerationMode = Factory.getFactory(getConfig()).newGenerationMode(null, FactoryUtils.Workload_TASK_CONTEXT);
-			
+
 			this.taskGenerationCount = FactoryUtils.generateCount(getConfig().addContext(FactoryUtils.Workload_TASK_CONTEXT), -1);
 			if (this.taskGenerationCount == -1 && (getTaskGenerationMode() instanceof AbstractGenerationMode))
 				this.taskGenerationCount = ((AbstractGenerationMode)getTaskGenerationMode()).getConfigurations().size();
@@ -443,7 +443,7 @@ public class WorkloadDefault extends JobDefault implements Workload {
 
 		if (l.size() == 0)
 			return;
-			
+
 		Host h = l.get((new Uniform(0, l.size() - 1)).nextInt());
 
 		VirtualMachine vm = newTemporaryVm(h, getParent().getUser());

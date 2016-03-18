@@ -32,9 +32,9 @@ import com.samysadi.acs.hardware.pu.ProcessingUnit;
 import com.samysadi.acs.hardware.pu.operation.ComputingOperation;
 
 /**
- * The strategy employed is to choose the {@link ProcessingUnit} that gives a 
+ * The strategy employed is to choose the {@link ProcessingUnit} that gives a
  * higher promise (ie: the less used PU).
- * 
+ *
  * @since 1.0
  */
 public class PuAllocatorDefault extends EntityImpl implements PuAllocator {

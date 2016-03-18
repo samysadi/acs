@@ -33,13 +33,13 @@ import com.samysadi.acs.tracing.AbstractProbe;
 
 /**
  * Probe for counting the total of submitted workloads.
- * 
+ *
  * <p>This probe relies on the Workload implementation to update its value.
- * 
+ *
  * @since 1.0
  */
 public class SimSubmittedWorkloadsCountProbe extends AbstractProbe<Long> implements IncrementableProbe<Long> {
-	public static final String KEY = SimSubmittedWorkloadsCountProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = SimSubmittedWorkloadsCountProbe.class.getSimpleName().substring(0,
 									SimSubmittedWorkloadsCountProbe.class.getSimpleName().length() - 5);
 
 	@Override

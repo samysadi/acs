@@ -29,10 +29,10 @@ package com.samysadi.acs.core.tracing;
 import com.samysadi.acs.core.notifications.NotifierImpl;
 
 /**
- * This abstract class implements some methods of the 
+ * This abstract class implements some methods of the
  * {@link Probe} interface, and offers protected methods
  * in order to ease subclass implementations.
- * 
+ *
  * @since 1.0
  */
 public abstract class ProbeImpl<ValueType> extends NotifierImpl implements Probe<ValueType> {

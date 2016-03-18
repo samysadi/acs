@@ -33,11 +33,11 @@ import com.samysadi.acs.tracing.AbstractLongIntegratorProbe;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class VmUpBwInternetTotalProbe extends AbstractLongIntegratorProbe implements DataSizeProbe {
-	public static final String KEY = VmUpBwInternetTotalProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = VmUpBwInternetTotalProbe.class.getSimpleName().substring(0,
 									VmUpBwInternetTotalProbe.class.getSimpleName().length() - 5);
 
 	@Override

@@ -39,7 +39,7 @@ import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
  * Deploys (ie: creates and places) the given <i>Count</i> of {@link VirtualMachine}s.
- * 
+ *
  * @since 1.0
  */
 public class DeployVmTask extends TaskImpl {

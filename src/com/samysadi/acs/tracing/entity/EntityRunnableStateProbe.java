@@ -35,11 +35,11 @@ import com.samysadi.acs.tracing.AbstractProbe;
 import com.samysadi.acs.utility.NotificationCodes;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class EntityRunnableStateProbe extends AbstractProbe<RunnableState> {
-	public static final String KEY = EntityRunnableStateProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = EntityRunnableStateProbe.class.getSimpleName().substring(0,
 									EntityRunnableStateProbe.class.getSimpleName().length() - 5);
 
 	@Override

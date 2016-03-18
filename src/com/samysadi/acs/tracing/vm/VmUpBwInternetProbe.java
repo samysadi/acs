@@ -38,11 +38,11 @@ import com.samysadi.acs.virtualization.VirtualMachine;
 import com.samysadi.acs.virtualization.job.Job;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class VmUpBwInternetProbe extends AbstractProbe<Long> implements DataRateProbe {
-	public static final String KEY = VmUpBwInternetProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = VmUpBwInternetProbe.class.getSimpleName().substring(0,
 									VmUpBwInternetProbe.class.getSimpleName().length() - 5);
 
 	@Override

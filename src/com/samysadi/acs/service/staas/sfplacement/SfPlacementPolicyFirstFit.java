@@ -37,7 +37,7 @@ import com.samysadi.acs.hardware.storage.StorageFile;
 /**
  * A placement policy that chooses the storage that has enough capacity for the storage file.<br/>
  * The storage is chosen according to the first fit method.
- * 
+ *
  * @since 1.0
  */
 public class SfPlacementPolicyFirstFit extends SfPlacementPolicyAbstract {

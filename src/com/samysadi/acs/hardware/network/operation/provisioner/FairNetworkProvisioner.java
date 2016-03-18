@@ -32,10 +32,10 @@ import com.samysadi.acs.hardware.network.operation.NetworkResource;
 import com.samysadi.acs.virtualization.job.operation.provisioner.FairProvisioner;
 
 /**
- * 
+ *
  * @since 1.0
  */
-public class FairNetworkProvisioner extends FairProvisioner<NetworkOperation, NetworkResource> 
+public class FairNetworkProvisioner extends FairProvisioner<NetworkOperation, NetworkResource>
 	implements NetworkProvisioner {
 	private long capacity;
 	private long latency;
@@ -43,7 +43,7 @@ public class FairNetworkProvisioner extends FairProvisioner<NetworkOperation, Ne
 
 	/**
 	 * Empty constructor that creates a provisioner with zero capacity, latency and lossRate.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link FairNetworkProvisioner#FairNetworkProvisioner(long, long, double)} though.
 	 */

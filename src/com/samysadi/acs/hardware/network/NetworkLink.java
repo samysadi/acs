@@ -32,10 +32,10 @@ import com.samysadi.acs.hardware.network.operation.provisioner.NetworkProvisione
 /**
  * A network link connects two network interfaces and contains
  * a {@link NetworkProvisioner}.
- * 
+ *
  * <p>All implementation classes should provide a constructor with two {@link NetworkInterface} arguments
  * that defines the link's end points.
- * 
+ *
  * @since 1.0
  */
 public interface NetworkLink extends Entity {

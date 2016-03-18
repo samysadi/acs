@@ -45,7 +45,7 @@ import com.samysadi.acs.utility.random.Uniform;
  * This TopologyFactory can be used to generate a hierarchical tree topology, where
  * hosts (leafs of the tree) are connected to each other through a given number (and levels) of
  * switches.
- * 
+ *
  * @since 1.0
  */
 public class TopologyFactoryHierarchical extends TopologyFactory {
@@ -136,7 +136,7 @@ public class TopologyFactoryHierarchical extends TopologyFactory {
 				FactoryUtils.logAdvancement("Hosts", total_hosts, total_adv/ 100d);
 		}
 
-		final IpAddress firstIp = IpAddress.newIpAddress(); 
+		final IpAddress firstIp = IpAddress.newIpAddress();
 
 		//generate sub layers
 		//#####################################################################
@@ -159,7 +159,7 @@ public class TopologyFactoryHierarchical extends TopologyFactory {
 				getCloudProvider().addRack();
 		}
 
-		final IpAddress lastIp = IpAddress.newIpAddress(); 
+		final IpAddress lastIp = IpAddress.newIpAddress();
 
 		//link each generated device with topLayerDevices
 		//#####################################################################
@@ -172,7 +172,7 @@ public class TopologyFactoryHierarchical extends TopologyFactory {
 					topLayerCfg.addContext(FactoryUtils.NetworkLink_CONTEXT).getLong("LengthMin", 0l),
 					topLayerCfg.addContext(FactoryUtils.NetworkLink_CONTEXT).getLong("LengthMax", 0l)
 				);
-	
+
 			for (NetworkDevice device: generatedDevices) {
 				for (NetworkDevice topDevice: topLayerDevices) {
 					NetworkInterface[] ni = FactoryUtils.linkDevices(

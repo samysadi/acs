@@ -36,12 +36,12 @@ import com.samysadi.acs.utility.NotificationCodes;
 /**
  * Abstract probe to compute the integral of a given probe's value
  * over time.
- * 
- * <p>If the value of the probe you want to integrate is 
+ *
+ * <p>If the value of the probe you want to integrate is
  * <math><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>, then
  * the value of this probe is:<br/>
  * <math><mi>F</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mo>&int;</mo><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>&dd;</mo><mi>t</mi></math>
- * 
+ *
  * @since 1.0
  */
 public abstract class AbstractLongIntegratorProbe extends AbstractProbe<Long> {
@@ -67,7 +67,7 @@ public abstract class AbstractLongIntegratorProbe extends AbstractProbe<Long> {
 					Probe<?> p = getWatchedProbe();
 
 					long newTime = Simulator.getSimulator().getTime();
-					double total = ((double) (newTime - AbstractLongIntegratorProbe.this.lastTime) * 
+					double total = ((double) (newTime - AbstractLongIntegratorProbe.this.lastTime) *
 							AbstractLongIntegratorProbe.this.lastValue / getUnitOfTime());
 					AbstractLongIntegratorProbe.this.lastTime = newTime;
 					AbstractLongIntegratorProbe.this.lastValue = ((Long)p.getValue()).longValue();

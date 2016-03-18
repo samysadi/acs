@@ -52,7 +52,7 @@ import com.samysadi.acs.core.Simulator;
 
 /**
  * Run with <tt>junit</tt>.
- * 
+ *
  * @since 1.0
  */
 @RunWith(AllTests.Runner.class)

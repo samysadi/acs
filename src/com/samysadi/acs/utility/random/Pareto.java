@@ -33,7 +33,7 @@ import com.samysadi.acs.core.Simulator;
 
 /**
  * For more details on the implementation, refer to the cumulative distribution function in <a href="http://en.wikipedia.org/wiki/Pareto_distribution">wikipedia</a>.
- * 
+ *
  * @since 1.0
  */
 public class Pareto extends AbstractRandom {
@@ -53,7 +53,7 @@ public class Pareto extends AbstractRandom {
 
 	/**
 	 * Creates a new instance based on the current simulator's random generator.
-	 * 
+	 *
 	 * @see Pareto#Pareto(double, double, Random)
 	 */
 	public Pareto(double xm, double alpha) {
@@ -64,6 +64,6 @@ public class Pareto extends AbstractRandom {
 	public double nextDouble() {
 		double v;
         while ((v = 1.0d - getGenerator().nextDouble()) == 0.0d);
-        return this.xm / Math.pow(v, this.invAlpha); 
+        return this.xm / Math.pow(v, this.invAlpha);
 	}
 }

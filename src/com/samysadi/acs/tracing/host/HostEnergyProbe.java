@@ -35,11 +35,11 @@ import com.samysadi.acs.tracing.AbstractLongIntegratorProbe;
 
 /**
  * Probe for instant energy consumption by a host.
- * 
+ *
  * @since 1.0
  */
 public class HostEnergyProbe extends AbstractLongIntegratorProbe implements EnergyProbe {
-	public static final String KEY = HostEnergyProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = HostEnergyProbe.class.getSimpleName().substring(0,
 									HostEnergyProbe.class.getSimpleName().length() - 5);
 
 	@Override

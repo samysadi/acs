@@ -39,7 +39,7 @@ import com.samysadi.acs.utility.collections.MultiListView;
 
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class StorageDefault extends MemoryUnitImpl<StorageFile> implements Storage {
@@ -47,7 +47,7 @@ public class StorageDefault extends MemoryUnitImpl<StorageFile> implements Stora
 
 	/**
 	 * Empty constructor that creates a storage with zero capacity.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link StorageDefault#StorageDefault(long)} though.
 	 */

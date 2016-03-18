@@ -41,9 +41,9 @@ import java.util.NoSuchElementException;
  * This list provides best effort access to its elements, in the sense that if you
  * are iterating over the list and an element has been garbage-collected, then the
  * iterator will not fail, and will just skip those elements.
- * 
+ *
  * <p>This implementation is not synchronized.
- * 
+ *
  * @since 1.0
  */
 public class WeakLinkedList<E> extends AbstractSequentialList<E> implements

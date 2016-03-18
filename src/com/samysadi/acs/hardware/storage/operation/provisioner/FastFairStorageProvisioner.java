@@ -32,17 +32,17 @@ import com.samysadi.acs.hardware.storage.operation.StorageResource;
 import com.samysadi.acs.virtualization.job.operation.provisioner.FastFairProvisioner;
 
 /**
- * 
+ *
  * @since 1.0
  */
-public class FastFairStorageProvisioner extends FastFairProvisioner<StorageOperation, StorageResource> 
+public class FastFairStorageProvisioner extends FastFairProvisioner<StorageOperation, StorageResource>
 	implements StorageProvisioner {
 
 	private long capacity;
 
 	/**
 	 * Empty constructor that creates a provisioner with zero capacity.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link FastFairStorageProvisioner#FastFairStorageProvisioner(long)} though.
 	 */

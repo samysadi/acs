@@ -41,7 +41,7 @@ import com.samysadi.acs.utility.collections.MultiListView;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class UserDefault extends EntityImpl implements User {

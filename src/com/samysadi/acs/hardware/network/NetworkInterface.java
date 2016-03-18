@@ -31,7 +31,7 @@ import com.samysadi.acs.core.entity.FailureProneEntity;
 import com.samysadi.acs.utility.IpAddress;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public interface NetworkInterface extends Entity, FailureProneEntity {
@@ -46,41 +46,41 @@ public interface NetworkInterface extends Entity, FailureProneEntity {
 
 	/**
 	 * Returns <tt>null</tt> or the remote interface that is connected to this interface through up-link or down-link.
-	 * 
+	 *
 	 * @return <tt>null</tt> or the remote interface that is connected to this interface through up-link or down-link
  	 */
 	public NetworkInterface getRemoteNetworkInterface();
 
 	/**
 	 * Returns the up-link that is associated with this interface.
-	 * 
+	 *
 	 * <p>This link is used when uploading (ie: sending data) to the remote interface.
-	 * 
+	 *
 	 * @return the up-link that is associated with this interface
-	 * 
+	 *
 	 */
 	public NetworkLink getUpLink();
 
 	/**
 	 * Update the <tt>up-link</tt> associated with this interface.<br/>
 	 * This link is used when uploading (ie: sending data) to the remote interface.
-	 * 
+	 *
 	 * <p>Will also ensure that the down-link of the remote network interface is the same as this interface's up-link. Thus,
 	 * you don't need to call {@link NetworkInterface#setDownLink(NetworkLink)} on the remote interface after calling this.
-	 * 
+	 *
 	 * @param link
-	 * 
+	 *
 	 * @throws IllegalArgumentException if the given <tt>link</tt> cannot be assigned to this interface either because this interface
-	 * is not one of the end-points of the <tt>link</tt>, or if the the remote interface of the down-link is not the same as the one 
+	 * is not one of the end-points of the <tt>link</tt>, or if the the remote interface of the down-link is not the same as the one
 	 * that is specified in the given <tt>link</tt>
 	 */
 	public void setUpLink(NetworkLink link);
 
 	/**
 	 * Returns the down-link that is associated with this interface.
-	 * 
+	 *
 	 * <p>This link is used when downloading (ie: receiving data) from the remote interface.
-	 * 
+	 *
 	 * @return the down-link that is associated with this interface
 	 */
 	public NetworkLink getDownLink();
@@ -88,21 +88,21 @@ public interface NetworkInterface extends Entity, FailureProneEntity {
 	/**
 	 * Update the <tt>down-link</tt> associated with this interface.<br/>
 	 * This link is used when downloading (ie: receiving data) from the remote interface.
-	 * 
+	 *
 	 * <p>Will also ensure that the up-link of the remote network interface is the same as this interface's down-link. Thus,
 	 * you don't need to call {@link NetworkInterface#setUpLink(NetworkLink)} on the remote interface after calling this.
-	 * 
+	 *
 	 * @param link
-	 * 
+	 *
 	 * @throws IllegalArgumentException if the given <tt>link</tt> cannot be assigned to this interface either because this interface
-	 * is not one of the end-points of the <tt>link</tt>, or if the the remote interface of the up-link is not the same as the one 
+	 * is not one of the end-points of the <tt>link</tt>, or if the the remote interface of the up-link is not the same as the one
 	 * that is specified in the given <tt>link</tt>
 	 */
 	public void setDownLink(NetworkLink link);
 
 	/**
 	 * Returns the IP address of this networkInterface or <tt>null</tt> if no IP is set for this interface.
-	 * 
+	 *
 	 * @return the IP address of this networkInterface or <tt>null</tt>
 	 */
 	public IpAddress getIp();

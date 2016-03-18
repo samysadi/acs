@@ -29,7 +29,7 @@ package com.samysadi.acs.hardware.storage;
 import com.samysadi.acs.hardware.misc.VirtualMemoryUnit;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public interface VirtualStorage extends VirtualMemoryUnit<StorageFile, Storage>, Storage, StorageFile {

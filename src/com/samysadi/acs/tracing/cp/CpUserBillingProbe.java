@@ -38,13 +38,13 @@ import com.samysadi.acs.user.User;
 import com.samysadi.acs.utility.NotificationCodes;
 
 /**
- * This probe contains the total bills generated for all users inside 
+ * This probe contains the total bills generated for all users inside
  * parent cloud provider.
- * 
+ *
  * @since 1.0
  */
 public class CpUserBillingProbe extends AbstractProbe<Long> implements ModifiableProbe<Long>, PriceProbe {
-	public static final String KEY = CpUserBillingProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = CpUserBillingProbe.class.getSimpleName().substring(0,
 									CpUserBillingProbe.class.getSimpleName().length() - 5);
 
 	@Override

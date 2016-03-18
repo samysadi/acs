@@ -32,17 +32,17 @@ import com.samysadi.acs.hardware.network.operation.NetworkResource;
 import com.samysadi.acs.virtualization.job.operation.provisioner.InfiniteProvisioner;
 
 /**
- * 
+ *
  * @since 1.0
  */
-public class InfiniteNetworkProvisioner extends InfiniteProvisioner<NetworkOperation, NetworkResource> 
+public class InfiniteNetworkProvisioner extends InfiniteProvisioner<NetworkOperation, NetworkResource>
 	implements NetworkProvisioner {
 	private long latency;
 	private double lossRate;
 
 	/**
 	 * Empty constructor that creates a provisioner with infinite capacity and zero latency and lossRate.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link InfiniteNetworkProvisioner#InfiniteNetworkProvisioner(long, long, double)} though.
 	 */
@@ -52,9 +52,9 @@ public class InfiniteNetworkProvisioner extends InfiniteProvisioner<NetworkOpera
 
 	/**
 	 * Creates a provisioner with infinite capacity.
-	 * 
+	 *
 	 * <p><tt>bwCapacity</tt> is not taken into consideration and this provisioner will always have infinite capacity.
-	 * 
+	 *
 	 * @param bwCapacity
 	 * @param latency
 	 * @param lossRate

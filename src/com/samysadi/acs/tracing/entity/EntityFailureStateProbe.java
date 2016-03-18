@@ -35,11 +35,11 @@ import com.samysadi.acs.tracing.AbstractProbe;
 import com.samysadi.acs.utility.NotificationCodes;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class EntityFailureStateProbe extends AbstractProbe<FailureState> {
-	public static final String KEY = EntityFailureStateProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = EntityFailureStateProbe.class.getSimpleName().substring(0,
 									EntityFailureStateProbe.class.getSimpleName().length() - 5);
 
 	@Override

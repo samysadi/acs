@@ -32,7 +32,7 @@ import com.samysadi.acs.core.Config;
  * When generating new entities by a given factory, there maybe more than one
  * configuration candidate to be used. This interface defines methods to choose between
  * all these candidates, and to return the next configuration to be used by the factory.
- * 
+ *
  * @since 1.0
  */
 public interface GenerationMode extends Cloneable {

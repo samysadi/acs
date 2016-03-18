@@ -29,7 +29,7 @@ package com.samysadi.acs.virtualization.job.operation;
 
 /**
  * Used by {@link TimerOperation}.
- * 
+ *
  * @since 1.0
  */
 public final class TimeResource extends LongResource {

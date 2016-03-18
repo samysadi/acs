@@ -31,7 +31,7 @@ import java.util.Random;
 import com.samysadi.acs.core.Simulator;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class AbstractRandom implements NumberGenerator {

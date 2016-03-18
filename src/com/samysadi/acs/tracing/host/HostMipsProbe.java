@@ -41,11 +41,11 @@ import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class HostMipsProbe extends AbstractProbe<Long> implements MipsProbe {
-	public static final String KEY = HostMipsProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = HostMipsProbe.class.getSimpleName().substring(0,
 									HostMipsProbe.class.getSimpleName().length() - 5);
 
 	@Override

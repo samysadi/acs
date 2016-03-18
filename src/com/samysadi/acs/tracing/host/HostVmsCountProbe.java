@@ -35,7 +35,7 @@ import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class HostVmsCountProbe extends AbstractProbe<Long> {

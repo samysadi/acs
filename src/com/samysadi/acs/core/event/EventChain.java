@@ -33,18 +33,18 @@ import com.samysadi.acs.core.entity.Entity;
  * This class extends the {@link Event} class and can be used if you want
  * to schedule multiple events at a given moment of the simulation, and make sure
  * that each event is <u>processed</u> before the next event is <u>scheduled</u>.
- * 
+ *
  * <p>More precisely after scheduling this event, the {@link EventChain#processStage(int)} method is
  * scheduled and called repetitively as long as it returns {@link EventChain#CONTINUE}.<br/>
  * At the first call, the {@link EventChain#processStage(int)} method is called with the <tt>0</tt> parameter using
  * current event. Then, if that method returns {@link EventChain#CONTINUE}, this event
  * is cloned and scheduled to run at the same simulation time, but with a <tt>1</tt> parameter. The parameter
  * keeps incrementing and the method is re-called as long as it returns the {@link EventChain#CONTINUE} value.
- * 
+ *
  * <p>This class is particularly useful if you need to call multiple {@link Entity}'s methods in a sequential order,
  * and make sure the generated notifications when calling each of these methods will be processed <b>before</b> the next
  * method is run.
- * 
+ *
  * @since 1.0
  */
 public abstract class EventChain extends EventImpl {
@@ -67,9 +67,9 @@ public abstract class EventChain extends EventImpl {
 	 * This method is repetitively called with an incremented <tt>stageNum</tt>, starting from <tt>0</tt>, as
 	 * long as it returns <tt>true</tt>.<br/>
 	 * This is done by transparently scheduling a clone of this event after each stage.
-	 * 
+	 *
 	 * <p><b>Note</b> make sure that this method can return <tt>false</tt> or the simulator will be stuck in a dead loop.
-	 * 
+	 *
 	 * @param stageNum
 	 * @return {@link EventChain#CONTINUE} if this event has to be re-scheduled and this method recalled.
 	 * {@link EventChain#STOP} otherwise.

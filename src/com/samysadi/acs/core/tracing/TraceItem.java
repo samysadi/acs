@@ -31,7 +31,7 @@ import com.samysadi.acs.core.Simulator;
 /**
  * This class defines a pair that contains a traced value,
  * and the time when the traced value was taken.
- * 
+ *
  * @since 1.0
  */
 public class TraceItem<T> {
@@ -54,7 +54,7 @@ public class TraceItem<T> {
 
 	@Override
 	public String toString() {
-		return "[" + Simulator.formatTime(this.time) + "," + 
+		return "[" + Simulator.formatTime(this.time) + "," +
 				(this.value == null ? "null" : this.value.toString()) + "]";
 	}
 }

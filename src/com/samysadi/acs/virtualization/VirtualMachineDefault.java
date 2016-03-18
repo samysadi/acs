@@ -57,7 +57,7 @@ import com.samysadi.acs.virtualization.job.Job;
 
 /**
  * This implementation will only set parent for its VirtualRam when it is started.
- * 
+ *
  * @since 1.0
  */
 public class VirtualMachineDefault extends RunnableEntityImpl implements VirtualMachine {
@@ -99,7 +99,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 		super();
 
 		this.flag = 0;
-		this.notificationsBufferEpoch = 0; 
+		this.notificationsBufferEpoch = 0;
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 		this.networkProvisioner = null;
 
 		this.usableProcessingUnits = null;
-		this.usableProcessingUnitsAllocated = false; 
+		this.usableProcessingUnitsAllocated = false;
 		this.usableNetworkInterfaces = null;
 
 		this.virtualRam = null;
@@ -459,7 +459,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 	public void setUsableProcessingUnits(List<ProcessingUnit> processingUnits, boolean allocatePu) {
 		if (this.usableProcessingUnits == processingUnits)
 			return;
-	
+
 		if (this.isRunning())
 			throw new IllegalStateException("Not allowed when the VM is running");
 
@@ -500,7 +500,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 	public void setUsableNetworkInterfaces(List<NetworkInterface> networkInterfaces) {
 		if (this.usableNetworkInterfaces == networkInterfaces)
 			return;
-	
+
 		if (this.isRunning())
 			throw new IllegalStateException("Not allowed when the VM is running");
 
@@ -517,7 +517,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 	public void setVirtualRam(VirtualRam v) {
 		if (v == this.virtualRam)
 			return;
-	
+
 		if (this.isRunning())
 			throw new IllegalStateException("Not allowed when the VM is running");
 
@@ -546,7 +546,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 	public void setVirtualStorage(VirtualStorage v) {
 		if (v == this.virtualStorage)
 			return;
-	
+
 		if (this.isRunning())
 			throw new IllegalStateException("Not allowed when the VM is running");
 
@@ -711,7 +711,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 				getLogger().log(VirtualMachineDefault.this, "Failed because a device (" + e + ") has stopped.");
 				return false;
 			}
-				
+
 			e.addListener(NotificationCodes.FAILURE_STATE_CHANGED, this);
 			return true;
 		}
@@ -736,7 +736,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 				getLogger().log(VirtualMachineDefault.this, "Failed because a device (" + e + ") is powered-off.");
 				return false;
 			}
-				
+
 			e.addListener(NotificationCodes.POWER_STATE_CHANGED, this);
 			return true;
 		}

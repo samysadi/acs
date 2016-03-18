@@ -33,7 +33,7 @@ import com.samysadi.acs.core.entity.FailureProneEntity;
 import com.samysadi.acs.core.event.Event;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class FailuresFactory extends Factory {
@@ -68,7 +68,7 @@ public abstract class FailuresFactory extends Factory {
 	/**
 	 * Returns the next scheduled event for the entity for handling failures/repairs.
 	 * The event can either be scheduled to simulate a failure or a repair.
-	 * 
+	 *
 	 * @param entity
 	 * @return the next scheduled event for the entity for handling failures/repairs
 	 */
@@ -76,7 +76,7 @@ public abstract class FailuresFactory extends Factory {
 
 	/**
 	 * Disables simulation of the failures/repairs for the given <tt>entity</tt> if enabled.
-	 * 
+	 *
 	 * @param entity
 	 */
 	public abstract void disable(Entity entity);
@@ -84,31 +84,31 @@ public abstract class FailuresFactory extends Factory {
 	/**
 	 * Disables simulation of the failures/repairs for the given <tt>entity</tt> and all of its children
 	 * if enabled.
-	 * 
+	 *
 	 * @param entity
 	 */
 	public abstract void disableRec(Entity entity);
 
 	/**
-	 * Enables simulation of the failures/repairs (if not already) for the given <tt>entity</tt> 
+	 * Enables simulation of the failures/repairs (if not already) for the given <tt>entity</tt>
 	 * if {@link FailureProneEntity#supportsFailureStateUpdate()} returns <tt>true</tt>.
-	 * 
+	 *
 	 * @param entity
 	 */
 	public abstract void enable(Entity entity);
 
 	/**
 	 * Enables simulation of the failures/repairs (if not already) for the given <tt>entity</tt> and all of its children
-	 * which extend {@link FailureProneEntity} and 
+	 * which extend {@link FailureProneEntity} and
 	 * if {@link FailureProneEntity#supportsFailureStateUpdate()} returns <tt>true</tt>.
-	 * 
+	 *
 	 * @param entity
 	 */
 	public abstract void enableRec(Entity entity);
 
 	/**
 	 * Enables failures/repairs simulation for the current Simulator and all of its children and returns <tt>null</tt>.
-	 * 
+	 *
 	 * @return <tt>null</tt>
 	 */
 	@Override

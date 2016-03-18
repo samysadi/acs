@@ -39,7 +39,7 @@ import com.samysadi.acs.core.Simulator;
 import com.samysadi.acs.core.event.EventImpl;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class NotifierImpl implements Notifier, Cloneable {
@@ -158,7 +158,7 @@ public class NotifierImpl implements Notifier, Cloneable {
 	private Collection<NotificationListener> removeAllListeners(Integer notification_code) {
 		if (notificationListeners == null)
 			return Collections.emptyList();
-	
+
 		return removeNotificationsList(notification_code);
 	}
 

@@ -31,10 +31,10 @@ import com.samysadi.acs.hardware.pu.ProcessingUnit;
 import com.samysadi.acs.hardware.pu.operation.ComputingOperation;
 
 /**
- * This interface defines the strategy to use when a new {@link ComputingOperation} is 
+ * This interface defines the strategy to use when a new {@link ComputingOperation} is
  * being activated in order to select a {@link ProcessingUnit} among all available ones
  * inside the VM.
- * 
+ *
  * @since 1.0
  */
 public interface PuAllocator extends Entity {
@@ -47,7 +47,7 @@ public interface PuAllocator extends Entity {
 
 	/**
 	 * Returns the best ProcessingUnit that should be used for the given computing operation.
-	 * 
+	 *
 	 * @return the best ProcessingUnit that should be used for the given computing operation
 	 */
 	public ProcessingUnit chooseProcessingUnit(ComputingOperation com);

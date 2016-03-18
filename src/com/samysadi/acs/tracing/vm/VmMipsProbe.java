@@ -38,11 +38,11 @@ import com.samysadi.acs.virtualization.VirtualMachine;
 import com.samysadi.acs.virtualization.job.Job;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class VmMipsProbe extends AbstractProbe<Long> implements MipsProbe {
-	public static final String KEY = VmMipsProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = VmMipsProbe.class.getSimpleName().substring(0,
 									VmMipsProbe.class.getSimpleName().length() - 5);
 
 	@Override

@@ -42,7 +42,7 @@ import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.factory.Factory;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class EntityImpl extends ProbedImpl implements Entity {
@@ -81,7 +81,7 @@ public class EntityImpl extends ProbedImpl implements Entity {
 		}
 
 		this.notify(CoreNotificationCodes.ENTITY_CLONED, clone);
-		
+
 		return clone;
 	}
 
@@ -157,9 +157,9 @@ public class EntityImpl extends ProbedImpl implements Entity {
 
 	/**
 	 * This method is called before this entity gets a new parent.
-	 * 
+	 *
 	 * <p>Use {@link Entity#getParent()} to get the old parent.
-	 * 
+	 *
 	 * @param newParent
 	 */
 	protected void beforeSetParent(Entity newParent) {
@@ -169,9 +169,9 @@ public class EntityImpl extends ProbedImpl implements Entity {
 	/**
 	 * This method is called after this entity gets a new parent (and before it is notified).<br/>
 	 * You can also listen to the appropriate notification.
-	 * 
+	 *
 	 * <p>Use {@link Entity#getParent()} to get the new parent.
-	 * 
+	 *
 	 * @param oldParent
 	 */
 	protected void afterSetParent(Entity oldParent) {
@@ -204,12 +204,12 @@ public class EntityImpl extends ProbedImpl implements Entity {
 
 	/**
 	 * This method is called when an ancestor of this entity changes.
-	 * 
+	 *
 	 * <p>Default behavior is to recursively notify, and call {@link EntityImpl#ancestorChanged(EntityImpl)} on children.
-	 * 
-	 * <p>Override this method, or listen to notification ({@link NotificationCodes#ENTITY_ANCESTOR_CHANGED}) if 
+	 *
+	 * <p>Override this method, or listen to notification ({@link NotificationCodes#ENTITY_ANCESTOR_CHANGED}) if
 	 * you want to take actions when this entity gets a new ancestor.
-	 * 
+	 *
 	 * @param ancestor
 	 */
 	protected void ancestorChanged(EntityImpl ancestor) {

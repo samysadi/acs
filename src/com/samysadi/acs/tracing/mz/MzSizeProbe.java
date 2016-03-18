@@ -36,11 +36,11 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  * Probe for used size by a memory zone.
- * 
+ *
  * @since 1.0
  */
 public class MzSizeProbe extends AbstractProbe<Long> implements DataSizeProbe {
-	public static final String KEY = MzSizeProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = MzSizeProbe.class.getSimpleName().substring(0,
 									MzSizeProbe.class.getSimpleName().length() - 5);
 
 	@Override

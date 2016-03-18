@@ -40,7 +40,7 @@ public class VirtualRamFixedSize extends VirtualMemoryUnitFixedSize<RamZone, Ram
 
 	/**
 	 * Empty constructor that creates a ram with zero capacity.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link VirtualRamFixedSize#VirtualRamFixedSize(long)} though.
 	 */

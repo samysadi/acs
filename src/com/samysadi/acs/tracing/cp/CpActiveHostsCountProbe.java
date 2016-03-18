@@ -39,11 +39,11 @@ import com.samysadi.acs.utility.NotificationCodes;
 /**
  * Probe for number of active (not powered off and not failed) hosts
  * in the Cloud.
- * 
+ *
  * @since 1.0
  */
 public class CpActiveHostsCountProbe extends AbstractProbe<Long> {
-	public static final String KEY = CpActiveHostsCountProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = CpActiveHostsCountProbe.class.getSimpleName().substring(0,
 									CpActiveHostsCountProbe.class.getSimpleName().length() - 5);
 
 	@Override

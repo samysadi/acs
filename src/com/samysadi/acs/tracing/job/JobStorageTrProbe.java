@@ -39,11 +39,11 @@ import com.samysadi.acs.virtualization.job.Job;
 import com.samysadi.acs.virtualization.job.operation.Operation;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class JobStorageTrProbe extends AbstractProbe<Long> implements DataRateProbe {
-	public static final String KEY = JobStorageTrProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = JobStorageTrProbe.class.getSimpleName().substring(0,
 									JobStorageTrProbe.class.getSimpleName().length() - 5);
 
 	@Override

@@ -32,7 +32,7 @@ import com.samysadi.acs.core.Simulator;
 
 /**
  * For more details on the implementation, refer to the cumulative distribution function in <a href="http://en.wikipedia.org/wiki/Geometric_distribution">wikipedia</a>.
- * 
+ *
  * @since 1.0
  */
 public class Geometric extends AbstractRandom {
@@ -49,7 +49,7 @@ public class Geometric extends AbstractRandom {
 
 	/**
 	 * Creates a new instance based on the current simulator's random generator.
-	 * 
+	 *
 	 * @see Geometric#Geometric(double, Random)
 	 */
 	public Geometric(double p) {

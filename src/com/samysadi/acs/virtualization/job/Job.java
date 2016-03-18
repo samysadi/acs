@@ -45,14 +45,14 @@ import com.samysadi.acs.virtualization.job.operation.TimerOperation;
 
 /**
  * A {@link Job} is a {@link RunnableEntity} that runs on top of a {@link VirtualMachine}.
- * 
+ *
  * <p>A job may own a variable amount of children {@link Operation}s. It may also have
  * a variable of {@link RemoteOperation}s where it is defined as their <i>destination job</i>.<br/>
  * You can use {@link Job#getOperations()} and {@link Job#getRemoteOperations()} to list them.
- * 
+ *
  * <p>Accordingly to the {@link RunnableEntity} contract children {@link Operation} must be paused / started / terminated
  * if their parent job's state is updated.<br/>
- * Following the same logic and regarding {@link RemoteOperation}s (which have defined a given job 
+ * Following the same logic and regarding {@link RemoteOperation}s (which have defined a given job
  * as their <i>destination job</i>), implementations of this interface must also apply these next rules:<ul>
  * <li>when the job is paused, then the {@link RemoteOperation}s are paused;<li>
  * <li>when the job is started, then the {@link RemoteOperation}s are started (if they can be);<li>
@@ -73,14 +73,14 @@ public interface Job extends Entity, RunnableEntity {
 
 	/**
 	 * Returns a list containing children operations of this job.
-	 * 
+	 *
 	 * @return a list containing children operations
 	 */
 	public List<Operation<?>> getOperations();
 
 	/**
 	 * Returns a list containing operations that have defined this job as their destination job.
-	 * 
+	 *
 	 * @return a list containing operations that have defined this job as their destination job
 	 * @see RemoteOperation
 	 */
@@ -88,20 +88,20 @@ public interface Job extends Entity, RunnableEntity {
 
 	/**
 	 * Returns current job priority.
-	 * 
+	 *
 	 * <p>Default value is <tt>0</tt>.
-	 * 
+	 *
 	 * @return current job priority
 	 */
 	public int getPriority();
 
 	/**
 	 * Updates the job's priority.
-	 * 
+	 *
 	 * <p>The job needs to be in a non running state.
-	 * 
+	 *
 	 * <p>A {@link NotificationCodes#JOB_PRIORITY_CHANGED} notification is thrown.
-	 * 
+	 *
 	 * @param priority
 	 * @throws IllegalStateException if the job is running
 	 */
@@ -113,7 +113,7 @@ public interface Job extends Entity, RunnableEntity {
 	/**
 	 * Creates and starts a new {@link ComputingOperation} with the given length in MI.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
-	 * 
+	 *
 	 * @param lengthInMi
 	 * @param listener a listener that is added for the {@link NotificationCodes#RUNNABLE_STATE_CHANGED}
 	 * notification code, before the operation is started. Can be <tt>null</tt>.
@@ -124,7 +124,7 @@ public interface Job extends Entity, RunnableEntity {
 	/**
 	 * Creates and returns a new {@link RamZone} after putting it inside the VirtualRam of the parent's VM.
 	 * <tt>null</tt> can be returned if the parent VM has no virtual ram or not enough space.
-	 * 
+	 *
 	 * @param size
 	 * @return the created {@link RamZone}, or <tt>null</tt>
 	 */
@@ -133,16 +133,16 @@ public interface Job extends Entity, RunnableEntity {
 	/**
 	 * Creates and returns a new {@link StorageFile} after putting it inside the VirtualStorage of the parent's VM.
 	 * <tt>null</tt> can be returned if the parent VM has no virtual storage or not enough space.
-	 * 
+	 *
 	 * @param size
-	 * @return the created {@link StorageFile}, or <tt>null</tt> 
+	 * @return the created {@link StorageFile}, or <tt>null</tt>
 	 */
 	public StorageFile createFile(long size);
 
 	/**
 	 * Creates and starts a read operation on the given file.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
-	 * 
+	 *
 	 * @param file
 	 * @param filePos 0 or the position where to start to read from.
 	 * @param size maximum size to read (if not EOF)
@@ -156,7 +156,7 @@ public interface Job extends Entity, RunnableEntity {
 	/**
 	 * Creates and starts a write operation on the given file.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
-	 * 
+	 *
 	 * @param file
 	 * @param filePos 0 or the position where to start to write from.
 	 * @param size maximum size to write (if not EOF)
@@ -170,7 +170,7 @@ public interface Job extends Entity, RunnableEntity {
 	/**
 	 * Creates and starts an append operation on the given file.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
-	 * 
+	 *
 	 * @param file
 	 * @param size the size to append to the given file.
 	 * @param listener a listener that is added for the {@link NotificationCodes#RUNNABLE_STATE_CHANGED}
@@ -183,7 +183,7 @@ public interface Job extends Entity, RunnableEntity {
 	/**
 	 * Creates and starts a network operation to send the given <tt>dataSize</tt> to the given <tt>destinationJob</tt>.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
-	 * 
+	 *
 	 * @param destinationJob
 	 * @param dataSize
 	 * @param listener a listener that is added for the {@link NotificationCodes#RUNNABLE_STATE_CHANGED}
@@ -196,11 +196,11 @@ public interface Job extends Entity, RunnableEntity {
 	/**
 	 * Creates and starts a network operation to send the given <tt>dataSize</tt> to the given <tt>destinationHost</tt>.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
-	 * 
+	 *
 	 * <p>This method will automatically create a job and a virtual machine on the destination host to receive the data.<br/>
 	 * Created virtual machine is owned by the same user as the parent virtual machine of the current job.<br/>
 	 * When the operation ends, the created virtual machine is discarded.
-	 * 
+	 *
 	 * @see Job#sendData(Job, long, NotificationListener)
 	 */
 	public NetworkOperation sendData(Host destinationHost, long dataSize, NotificationListener listener);
@@ -208,10 +208,10 @@ public interface Job extends Entity, RunnableEntity {
 	/**
 	 * Creates and starts a network operation that sends data from the given <tt>srcJob</tt> to the current job.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
-	 * 
+	 *
 	 * <p>This method is equivalent to:
 	 * {@code srcJob.sendData(this, dataSize, listener);}
-	 * 
+	 *
 	 * @param srcJob
 	 * @param dataSize
 	 * @param listener a listener that is added for the {@link NotificationCodes#RUNNABLE_STATE_CHANGED}
@@ -225,11 +225,11 @@ public interface Job extends Entity, RunnableEntity {
 	 * Creates and starts a network operation on the <tt>srcHost</tt> which will send the the given <tt>dataSize</tt>
 	 * to the current job.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
-	 * 
+	 *
 	 * <p>This method will automatically create a job and a virtual machine on the source host to send the data.<br/>
 	 * Created virtual machine is owned by the same user as the parent virtual machine of the current job.<br/>
 	 * When the operation ends, the created virtual machine is discarded.
-	 * 
+	 *
 	 * @see Job#receiveData(Job, long, NotificationListener)
 	 */
 	public NetworkOperation receiveData(Host srcHost, long dataSize, NotificationListener listener);
@@ -237,11 +237,11 @@ public interface Job extends Entity, RunnableEntity {
 	/**
 	 * Creates and starts a {@link TimerOperation} with the given delay.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
-	 * 
+	 *
 	 * @param delay
 	 * @param listener a listener that is added for the {@link NotificationCodes#RUNNABLE_STATE_CHANGED}
 	 * notification code, before the operation is started. Can be <tt>null</tt>.
-	 * @return the created {@link TimerOperation}, or <tt>null</tt> 
+	 * @return the created {@link TimerOperation}, or <tt>null</tt>
 	 */
 	public TimerOperation scheduleSignal(long delay, NotificationListener listener);
 }

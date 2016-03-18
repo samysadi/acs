@@ -27,7 +27,7 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 package com.samysadi.acs.utility.factory.generation.flow;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class GenerationFlowInfo {
@@ -45,5 +45,5 @@ public class GenerationFlowInfo {
 
 	public int getCount() {
 		return count;
-	}		
+	}
 }

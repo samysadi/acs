@@ -35,20 +35,20 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
 
 
 /**
- * This provisioner gives promises that are equal to the average capacity computed 
+ * This provisioner gives promises that are equal to the average capacity computed
  * by considering all active operations that use this provisioner.<br/>
  * When resources are granted (or revoked) for (from) a operation, then other active operations are
- * notified that they can use more (or less) resources (see 
+ * notified that they can use more (or less) resources (see
  * {@link NotificationCodes#OPERATION_RESOURCE_INVALIDATED}).
- * 
+ *
  * <p>Note that this provisioner will always reserve a average amount of resource for each operation, even
  * if this operation uses less than that average. So, this provisioner may not be accurate.<br/>
  * If you need such level of accuracy you can use {@link FairProvisioner} which may be a bit slower
  * than this provisioner.
- * 
+ *
  * @since 1.0
  */
-public abstract class FastFairProvisioner<OperationType extends Operation<Resource>, Resource extends LongResource> 
+public abstract class FastFairProvisioner<OperationType extends Operation<Resource>, Resource extends LongResource>
 	extends LongProvisionerImpl<OperationType, Resource> {
 
 	protected HashSet<OperationType> operations;
@@ -84,7 +84,7 @@ public abstract class FastFairProvisioner<OperationType extends Operation<Resour
 		int count = operations.size();
 		if (!operations.contains(operation))
 			count++;
-		long avg = Math.round(Math.floor((double)c/count));	
+		long avg = Math.round(Math.floor((double)c/count));
 		return makeResource(avg);
 	}
 

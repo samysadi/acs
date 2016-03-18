@@ -47,7 +47,7 @@ import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
  * is located in a remote host, a {@link OperationSynchronizer} in order to synchronize this storage operation with
  * the network operation.<br/>
  * When a remote job is needed, it is created under a new VM or, if the remote host is a {@link ThinClient}, using its main vm.
- * 
+ *
  * @since 1.0
  */
 public class StorageOperationDefault extends LongOperationImpl<StorageResource> implements StorageOperation, SynchronizableOperation<StorageResource> {
@@ -63,7 +63,7 @@ public class StorageOperationDefault extends LongOperationImpl<StorageResource> 
 
 	/**
 	 * Empty constructor that creates a zero-length operation with a <tt>null</tt> storage file.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link StorageOperationDefault#StorageOperationDefault(StorageFile, com.samysadi.acs.hardware.storage.operation.StorageOperation.StorageOperationType, long, long)} though.
 	 */
@@ -73,18 +73,18 @@ public class StorageOperationDefault extends LongOperationImpl<StorageResource> 
 
 	/**
 	 * Creates a read, write or append operation on the given <tt>file</tt>.
-	 * 
+	 *
 	 * <p>If the <tt>type</tt> of the operation is APPEND,
 	 * then <tt>filePos</tt> is always assumed to be equal to the size of the given <tt>file</tt>.
 	 * In other words, you can only append data to the end of the file.
 	 * Also, a total of <tt>size</tt> is appended to the given <tt>file</tt> after the operation ends.
-	 * 
+	 *
 	 * <p>If the <tt>type</tt> of the operation is READ or WRITE, then you must ensure that <tt>filePos</tt> and the
 	 * the <tt>file</tt>'s size demarcates a valid file zone (ie: a zone inside the bounds of the given file).<br/>
 	 * More formally, the given <tt>filePos</tt> must be greater than or equal to <tt>0</tt> and lesser than or equal to the given <tt>file</tt>'s size.<br/>
 	 * Also, if {@code filePos+size>file.getSize()} then an IllegalArgumentException exception is thrown (ie: you cannot read or write
 	 * outside the <tt>file</tt>'s bounds).
-	 * 
+	 *
 	 * @param file
 	 * @param type
 	 * @param filePos
@@ -347,7 +347,7 @@ public class StorageOperationDefault extends LongOperationImpl<StorageResource> 
 	private void prepareOperationSynchronizer() {
 		if (this.operationSynchronizer != null)
 			return;
-	
+
 		if (this.getStorageFile() == null)
 			return;
 
@@ -381,12 +381,12 @@ public class StorageOperationDefault extends LongOperationImpl<StorageResource> 
 
 	/**
 	 * Returns <tt>true</tt> if the operation is writing or appending data.
-	 * 
+	 *
 	 * <p>In other words, this method returns <tt>true</tt> if we need to send the data
-	 * to the remote host. And returns </tt>false</tt> if we are receiving the data from the remote host. 
-	 * 
+	 * to the remote host. And returns </tt>false</tt> if we are receiving the data from the remote host.
+	 *
 	 * <p>This method is used when the file is on a remote host.
-	 * 
+	 *
 	 * @return <tt>true</tt> if the operation is writing or appending data
 	 */
 	protected boolean isSendingData() {

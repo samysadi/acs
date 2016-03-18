@@ -33,7 +33,7 @@ import com.samysadi.acs.hardware.storage.operation.StorageOperation;
 import com.samysadi.acs.service.staas.Staas;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public interface SfReplicaSelectionPolicy extends Entity {
@@ -48,13 +48,13 @@ public interface SfReplicaSelectionPolicy extends Entity {
 	 * Selects the best replica of the given <tt>storageFile</tt> and returns it.<br/>
 	 * The selection is done, considering the replica will be accessed from the given
 	 * <tt>host</tt>, and for the given <tt>operationType</tt>.
-	 * 
+	 *
 	 * @param storageFile
 	 * @param operationType
 	 * @param host
 	 * @return the selected replica
 	 */
-	public StorageFile selectBestReplica(StorageFile storageFile, 
+	public StorageFile selectBestReplica(StorageFile storageFile,
 			StorageOperation.StorageOperationType operationType,
 			Host host);
 

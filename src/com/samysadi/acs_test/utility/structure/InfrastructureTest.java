@@ -47,7 +47,7 @@ import com.samysadi.acs.utility.collections.infrastructure.RackImpl;
 
 
 /**
- * 
+ *
  * @since 1.0
  */
 @SuppressWarnings("unused")
@@ -93,7 +93,7 @@ public class InfrastructureTest {
 			Assert.assertEquals(DATACENTER * CLUSTER, _cl.getClusters().size());
 			Assert.assertEquals(DATACENTER * CLUSTER * RACK, _cl.getRacks().size());
 			Assert.assertEquals(DATACENTER * CLUSTER * RACK * HOST, _cl.getHosts().size());
-	
+
 			_d = (DatacenterImpl) _cl.get(0);
 			Assert.assertEquals(CLUSTER, _d.size());
 			Assert.assertEquals(CLUSTER * RACK, _d.getRacks().size());
@@ -101,7 +101,7 @@ public class InfrastructureTest {
 
 			Assert.assertEquals(RACK, _d.get(0).size());
 			Assert.assertEquals(RACK * HOST, _d.get(0).getHosts().size());
-	
+
 			Assert.assertEquals(HOST, _d.get(0).get(0).size());
 		}
 	}

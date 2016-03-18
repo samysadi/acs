@@ -35,7 +35,7 @@ import com.samysadi.acs.virtualization.job.Job;
 
 /**
  * Probe for instant count of operations of which destination job is a given job.
- * 
+ *
  * @since 1.0
  */
 public class JobROpsCountProbe extends AbstractProbe<Long> {

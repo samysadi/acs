@@ -28,7 +28,7 @@ package com.samysadi.acs.utility;
 
 /**
  * This generic class defines a pair containing two Objects.
- * 
+ *
  * @since 1.0
  */
 public class Pair<O1, O2> {
@@ -82,10 +82,10 @@ public class Pair<O1, O2> {
 
 	@Override
 	public String toString() {
-		return '{' + 
+		return '{' +
 				((getValue1() != null) ? getValue1().toString() : "null") + ',' +
 				((getValue2() != null) ? getValue2().toString() : "null") +
 				'}';
 	}
-	
+
 }

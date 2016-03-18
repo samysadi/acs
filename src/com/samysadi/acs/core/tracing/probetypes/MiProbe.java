@@ -29,7 +29,7 @@ package com.samysadi.acs.core.tracing.probetypes;
 import com.samysadi.acs.core.tracing.Probe;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public interface MiProbe extends Probe<Long> {

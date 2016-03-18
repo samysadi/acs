@@ -50,7 +50,7 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
 import com.samysadi.acs_test.Utils;
 
 /**
- * 
+ *
  * @since 1.0
  */
 @SuppressWarnings("unused")
@@ -472,7 +472,7 @@ public class NetworkOperationTest {
 
 		final long lat0 = 100; final long lat1 = 500;
 		final double loss0 = 0.1; final double loss1 = 0.5;
-		
+
 		Factory.getFactory(simulator).newNetworkProvisioner(null, link_h0s1, LINK_BW, lat0, loss0);
 		Factory.getFactory(simulator).newNetworkProvisioner(null, link_s1h1, LINK_BW, lat1, loss1);
 

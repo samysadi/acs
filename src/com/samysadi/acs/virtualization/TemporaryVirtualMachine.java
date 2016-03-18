@@ -28,15 +28,15 @@ package com.samysadi.acs.virtualization;
 
 /**
  * Defines a virtual machine which is for temporary usage only.
- * 
- * <p>Temporary VMs are automatically created by the simulator and are 
+ *
+ * <p>Temporary VMs are automatically created by the simulator and are
  * used for hosting jobs for file transfers for example. Such
  * VMs are not explicitly deployed by users. But they are needed to correctly
  * measure resources that were used by a particular user.
- * 
+ *
  * <p>Because they are not created by users, temporary VMs are not used by placement
  * policies when placing user jobs.
- * 
+ *
  * @since 1.0
  */
 public interface TemporaryVirtualMachine extends VirtualMachine {

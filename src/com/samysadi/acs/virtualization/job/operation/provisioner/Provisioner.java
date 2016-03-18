@@ -30,7 +30,7 @@ import com.samysadi.acs.core.entity.Entity;
 import com.samysadi.acs.virtualization.job.operation.Operation;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public interface Provisioner<OperationType extends Operation<Resource>, Resource> extends Entity {
@@ -41,11 +41,11 @@ public interface Provisioner<OperationType extends Operation<Resource>, Resource
 	/**
 	 * Computes and returns the maximum amount of resource that can be granted for the given
 	 * <tt>operation</tt> by this provisioner at current point of the simulation.
-	 * 
+	 *
 	 * <p>The operation may already have granted resource using this provisioner and those are
-	 * included in the returned resource as if {@link Provisioner#revokeAllocatedResource(Operation)} 
+	 * included in the returned resource as if {@link Provisioner#revokeAllocatedResource(Operation)}
 	 * was called before.
-	 * 
+	 *
 	 * @param operation the operation you want to get resource promise for
 	 * @return resource promise for the given <tt>operation</tt>
 	 */
@@ -53,10 +53,10 @@ public interface Provisioner<OperationType extends Operation<Resource>, Resource
 
 	/**
 	 * Grants the allocated resource of the given <tt>operation</tt> (see {@link Operation#getAllocatedResource()}).
-	 * 
+	 *
 	 * <p>Implementations must make sure that the operation's resource has not already been granted using this provisioner.
 	 * If so then an IllegalArgumentException is thrown.
-	 * 
+	 *
 	 * @param operation the operation of which you want to grant resource
 	 * @throws NullPointerException if the given <tt>operation</tt> is <tt>null</tt> or its allocated resource is <tt>null</tt>
 	 * @throws IllegalArgumentException if the allocated resource for the operation is greater than the resource returned by {@link Provisioner#getResourcePromise(Operation)}
@@ -66,10 +66,10 @@ public interface Provisioner<OperationType extends Operation<Resource>, Resource
 
 	/**
 	 * Revokes the allocated resource of the given <tt>operation</tt> (see {@link Operation#getAllocatedResource()}).
-	 * 
+	 *
 	 * <p>Implementations must make sure that the operation's resource has been granted using this provisioner (and not yet revoked).
 	 * If not then an IllegalArgumentException is thrown.
-	 * 
+	 *
 	 * @param operation the operation of which you want to revoke resource
 	 * @throws NullPointerException if the given <tt>operation</tt> is <tt>null</tt> or its allocated resource is <tt>null</tt>
 	 * @throws IllegalArgumentException if no resource were granted for the operation using this provisioner (or if they were already revoked)

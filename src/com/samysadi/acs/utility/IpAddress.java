@@ -30,9 +30,9 @@ import com.samysadi.acs.utility.collections.Bitmap;
 
 /**
  * An object to save Ip Address information.
- * 
+ *
  * <p>Ip addresses are saved in a long (8 bytes).
- * 
+ *
  * @since 1.0
  */
 public class IpAddress {
@@ -193,7 +193,7 @@ public class IpAddress {
 						p[--j] = parts[i];
 					parts = p;
 				}
-				
+
 				long long0 = parts[0];
 				for (int i = 1; i < 4; i++) {
 					long0 = (long0 << 16) + parts[i];
@@ -234,15 +234,15 @@ public class IpAddress {
 	    	ipString.append(":");
 	    }
 	    ipString.deleteCharAt(ipString.length()-1);
-		
+
 	    return ipString.toString();
 	}
 
 	/**
 	 * Generates and returns an IP address.
-	 * 
+	 *
 	 * <p>Calling this ensures you that you will get a new unused  {@link IpAddress}.
-	 * 
+	 *
 	 * @return a {@link IpAddress}
 	 */
 	public static IpAddress newIpAddress() {

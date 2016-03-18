@@ -31,7 +31,7 @@ import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.workload.Workload;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class TaskImpl implements Task {

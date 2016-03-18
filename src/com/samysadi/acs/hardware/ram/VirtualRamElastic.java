@@ -40,7 +40,7 @@ public class VirtualRamElastic extends VirtualMemoryUnitElastic<RamZone, Ram> im
 
 	/**
 	 * Empty constructor that creates a ram with zero capacity.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link VirtualRamElastic#VirtualRamElastic(long)} though.
 	 */

@@ -35,7 +35,7 @@ import com.samysadi.acs.virtualization.VirtualMachine;
 import com.samysadi.acs.virtualization.job.Job;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class VmJobsCountProbe extends AbstractProbe<Long> {

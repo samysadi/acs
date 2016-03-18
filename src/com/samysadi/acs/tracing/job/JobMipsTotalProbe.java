@@ -33,11 +33,11 @@ import com.samysadi.acs.tracing.AbstractLongIntegratorProbe;
 import com.samysadi.acs.virtualization.job.Job;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class JobMipsTotalProbe extends AbstractLongIntegratorProbe implements MiProbe {
-	public static final String KEY = JobMipsTotalProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = JobMipsTotalProbe.class.getSimpleName().substring(0,
 									JobMipsTotalProbe.class.getSimpleName().length() - 5);
 
 	@Override

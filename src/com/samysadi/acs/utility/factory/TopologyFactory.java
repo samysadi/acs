@@ -31,9 +31,9 @@ import com.samysadi.acs.service.CloudProvider;
 import com.samysadi.acs.utility.factory.generation.mode.GenerationMode;
 
 /**
- * Defines a factory for generating hosts and the network 
+ * Defines a factory for generating hosts and the network
  * interconnection between them.
- * 
+ *
  * @since 1.0
  */
 public abstract class TopologyFactory extends Factory {
@@ -59,7 +59,7 @@ public abstract class TopologyFactory extends Factory {
 
 	/**
 	 * Generates a topology (hosts, switches and links) and returns <tt>null</tt>.
-	 * 
+	 *
 	 * @return <tt>null</tt>
 	 */
 	@Override

@@ -30,18 +30,18 @@ import com.samysadi.acs.core.notifications.CoreNotificationCodes;
 
 /**
  * An entity that can be allocated for sole and unique use by another entity.
- * 
+ *
  * <p>It offers two methods, one to check whether this entity is allocated or not,
  * and another to update that flag.
- * 
+ *
  * @since 1.0
  */
 public interface AllocatableEntity extends Entity {
 	/**
 	 * Returns <tt>true</tt> if this Entity is allocated, usually for sole use by another {@link Entity}).
-	 * 
+	 *
 	 * <p>By default this entity is not allocated (ie: this method returns false).
-	 * 
+	 *
 	 * @return <tt>true</tt> if this Entity is allocated
 	 * @see AllocatableEntity#setAllocated
 	 */
@@ -49,9 +49,9 @@ public interface AllocatableEntity extends Entity {
 
 	/**
 	 * Updates the allocated flag of this entity.
-	 * 
+	 *
 	 * <p>A {@link CoreNotificationCodes#ENTITY_ALLOCATED_FLAG_CHANGED} notification is thrown.
-	 * 
+	 *
 	 * @param b
 	 */
 	public void setAllocated(boolean b);

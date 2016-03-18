@@ -31,13 +31,13 @@ import com.samysadi.acs.hardware.Host;
 /**
  * This interface describes a thin client.<br/>
  * It is used by users to have access to the Cloud and use its resources.
- * 
+ *
  * <p>A thin client is a host which has access to the network but cannot have any other kind of resources (ram, storage or pu).<br/>
  * Also, if you try to add a VM to a thin client (or any of the previously cited resources) you will
  * get an IllegalArgumentException.
- * 
+ *
  * <p>You can still run network operations on top of a thin client through its {@link ThinClientVirtualMachine}.
- * 
+ *
  * @since 1.0
  */
 public interface ThinClient extends Host {
@@ -49,9 +49,9 @@ public interface ThinClient extends Host {
 
 	/**
 	 * Returns the main virtual machine of this {@link ThinClient}.
-	 * 
+	 *
 	 * <p>The returned virtual machine should be running. and you should not stop it or remove it from its parent.
-	 * 
+	 *
 	 * @return main virtual machine of this {@link ThinClient}
 	 */
 	public ThinClientVirtualMachine getVirtualMachine();

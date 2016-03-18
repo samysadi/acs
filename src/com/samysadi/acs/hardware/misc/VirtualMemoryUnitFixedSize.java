@@ -29,10 +29,10 @@ package com.samysadi.acs.hardware.misc;
 
 /**
  * Use this class to simulate fixed-size virtual memory units.
- * 
+ *
  * <p>A fixed-size VirtualMemoryUnit immediately allocates its capacity on the parent MemoryUnit.<br/>
  * So, if you create a 5GB virtual Memory Unit and only use 3GB, then 5GB are still allocated on the parent MemoryUnit.
- * 
+ *
  * @since 1.0
  */
 public abstract class VirtualMemoryUnitFixedSize<Zone extends MemoryZone, Unit extends MemoryUnit<Zone>> extends VirtualMemoryUnitImpl<Zone, Unit>  {
@@ -40,7 +40,7 @@ public abstract class VirtualMemoryUnitFixedSize<Zone extends MemoryZone, Unit e
 	/**
 	 * Creates a new VirtualMemoryUnit with the given <tt>capacity</tt>. Its capacity is immediately
 	 * allocated on the parent MemoryUnit.
-	 * 
+	 *
 	 * @param capacity the maximum capacity of this VirtualMemoryUnit
 	 */
 	public VirtualMemoryUnitFixedSize(long capacity) {

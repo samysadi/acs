@@ -36,7 +36,7 @@ import com.samysadi.acs.service.CloudProvider;
 
 
 /**
- * 
+ *
  * @since 1.0
  */
 public interface NetworkDevice extends Entity, FailureProneEntity, PoweredEntity {
@@ -49,30 +49,30 @@ public interface NetworkDevice extends Entity, FailureProneEntity, PoweredEntity
 
 	/**
 	 * Returns the list of interfaces contained within this NetworkDevice.
-	 * 
+	 *
 	 * @return the list of interfaces contained within this NetworkDevice
 	 */
 	public List<NetworkInterface> getInterfaces();
 
 	/**
 	 * Returns <tt>true</tt> if this device can route data received from one interface to another interface.
-	 * 
+	 *
 	 * <p>This flag is used by {@link RoutingProtocol}s when looking for routes.
-	 * 
+	 *
 	 * @return <tt>true</tt> if this device can route data
 	 */
 	public boolean isRoutingEnabled();
 
 	/**
 	 * Returns the {@link RoutingProtocol} associated with this NetworkDevice.
-	 * 
+	 *
 	 * @return the {@link RoutingProtocol} associated with this NetworkDevice
 	 */
 	public RoutingProtocol getRoutingProtocol();
 
 	/**
 	 * Returns the {@link CloudProvider} to whom this device belongs to, or <tt>null</tt> if this device does not belong to any {@link CloudProvider}.
-	 * 
+	 *
 	 * @return the {@link CloudProvider} to whom this device belongs to, or <tt>null</tt>
 	 */
 	public CloudProvider getCloudProvider();

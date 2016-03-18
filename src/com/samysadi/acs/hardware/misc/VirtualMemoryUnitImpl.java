@@ -31,8 +31,8 @@ import com.samysadi.acs.hardware.Host;
 import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.collections.Bitmap;
 
-/** 
- * 
+/**
+ *
  * @since 1.0
  */
 public abstract class VirtualMemoryUnitImpl<Zone extends MemoryZone, Unit extends MemoryUnit<Zone>> extends MemoryUnitImpl<Zone> implements VirtualMemoryUnit<Zone, Unit> {

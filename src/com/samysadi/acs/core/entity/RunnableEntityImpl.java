@@ -29,7 +29,7 @@ package com.samysadi.acs.core.entity;
 import com.samysadi.acs.core.notifications.CoreNotificationCodes;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class RunnableEntityImpl extends EntityImpl implements RunnableEntity {
@@ -130,7 +130,7 @@ public abstract class RunnableEntityImpl extends EntityImpl implements RunnableE
 
 	/**
 	 * Returns <tt>true</tt> if current state is {@link com.samysadi.acs.core.entity.RunnableEntity.RunnableState#RUNNING}
-	 * 
+	 *
 	 * @return <tt>true</tt> if this entity is in running state
 	 */
 	@Override
@@ -144,7 +144,7 @@ public abstract class RunnableEntityImpl extends EntityImpl implements RunnableE
 	 * 	<li>{@link com.samysadi.acs.core.entity.RunnableEntity.RunnableState#CANCELED};
 	 * 	<li>{@link com.samysadi.acs.core.entity.RunnableEntity.RunnableState#FAILED}.
 	 * </ul>
-	 * 
+	 *
 	 * @return <tt>true</tt> if this entity is terminated
 	 */
 	@Override

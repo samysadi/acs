@@ -28,10 +28,10 @@ package com.samysadi.acs.core.notifications;
 
 /**
  * A {@link NotificationListener} that requires immediate notification.
- * 
+ *
  * <p>Prefer using {@link NotificationListener}, as it will suit most of needs.<br/>
  * Except if you have very specific usage you should not need instantaneous listeners.
- * 
+ *
  * @since 1.0
  */
 public abstract class InstantNotificationListener extends NotificationListener {

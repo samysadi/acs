@@ -42,7 +42,7 @@ import com.samysadi.acs.service.staas.Staas;
 import com.samysadi.acs.utility.NotificationCodes;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class SfReplicationManagerDefault extends EntityImpl implements SfReplicationManager {
@@ -129,7 +129,7 @@ public class SfReplicationManagerDefault extends EntityImpl implements SfReplica
 
 	/**
 	 * You still need to remove it from the list.
-	 * 
+	 *
 	 * @param replica
 	 */
 	private void removeReplica(StorageFile replica) {

@@ -30,11 +30,11 @@ import com.samysadi.acs.core.notifications.CoreNotificationCodes;
 
 /**
  * An entity that can be turned on and off.
- * 
+ *
  * <p>When the power state changes, a {@link CoreNotificationCodes#POWER_STATE_CHANGED} notification is thrown.
- * 
+ *
  * <p>Default power state when instantiating a new object which implements this class is {@link PowerState#ON}.
- * 
+ *
  * @since 1.0
  */
 public interface PoweredEntity extends Entity {
@@ -60,16 +60,16 @@ public interface PoweredEntity extends Entity {
 
 	/**
 	 * Returns the {@link PowerState} of this entity.
-	 * 
+	 *
 	 * @return the {@link PowerState} of this entity
 	 */
 	public PowerState getPowerState();
 
 	/**
 	 * Changes the power state of this entity to the new given <tt>state</tt>.
-	 * 
+	 *
 	 * <p>Additionally, if the state has changed then a {@link CoreNotificationCodes#POWER_STATE_CHANGED} notification is thrown.
-	 * 
+	 *
 	 * @param powerState the new {@link PowerState}
 	 */
 	public void setPowerState(PowerState powerState);

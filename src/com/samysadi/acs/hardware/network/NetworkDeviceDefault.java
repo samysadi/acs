@@ -39,7 +39,7 @@ import com.samysadi.acs.utility.collections.MultiListView;
 
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class NetworkDeviceDefault extends FailureProneEntityImpl implements NetworkDevice {

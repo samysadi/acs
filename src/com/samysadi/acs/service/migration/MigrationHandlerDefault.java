@@ -54,7 +54,7 @@ import com.samysadi.acs.virtualization.job.JobDefault;
 import com.samysadi.acs.virtualization.job.operation.OperationSynchronizer;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class MigrationHandlerDefault extends EntityImpl implements MigrationHandler {
@@ -129,7 +129,7 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 				job.fail();
 				return;
 			}
-	
+
 			job.doStart();
 		}
 
@@ -440,10 +440,10 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 				protected void notificationPerformed(Notifier notifier,
 						int notification_code, Object data) {
 					NetworkOperation operation = (NetworkOperation) notifier;
-					
+
 					if (!operation.isTerminated())
 						return;
-	
+
 					operation.setParent(null);
 					this.discard();
 
@@ -520,26 +520,26 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 
 	private static final class MyStaticRsc0 extends OperationSynchronizer.RunnableStateChanged {
 		private final OperationSynchronizer sync0;
-		
+
 		private MyStaticRsc0(OperationSynchronizer sync0) {
 			this.sync0 = sync0;
 		}
-		
+
 		@Override
 		public void run(OperationSynchronizer sync) {
 			if (!sync.getOperation2().isTerminated())
 				return;
-		
+
 			//discard the file, it was here only to add storage overhead
 			((StorageOperation) sync.getOperation2()).getStorageFile().setParent(null);
-		
+
 			//discard the write operation
 			((StorageOperation) sync.getOperation2()).setParent(null);
-		
+
 			//discard the read job (and thus read operation)
 			Job muJob = sync.getOperation1().getParent();
 			removeTemporaryVm(muJob.getParent());
-		
+
 			sync.discard();
 			sync0.discard();
 		}

@@ -35,11 +35,11 @@ import com.samysadi.acs.tracing.AbstractLongIntegratorProbe;
 
 /**
  * Probe for instant energy consumption by the whole cloud.
- * 
+ *
  * @since 1.0
  */
 public class CpEnergyProbe extends AbstractLongIntegratorProbe implements EnergyProbe {
-	public static final String KEY = CpEnergyProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = CpEnergyProbe.class.getSimpleName().substring(0,
 									CpEnergyProbe.class.getSimpleName().length() - 5);
 
 	@Override

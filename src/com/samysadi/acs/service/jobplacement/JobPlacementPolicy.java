@@ -38,10 +38,10 @@ import com.samysadi.acs.virtualization.job.Job;
 /**
  * Defines methods for selecting a VM among all available VMs
  * when placing a Job.
- * 
+ *
  * <p>Implementations must take care not to select {@link TemporaryVirtualMachine}s for
  * placing jobs.
- * 
+ *
  * @since 1.0
  */
 public interface JobPlacementPolicy extends Entity {
@@ -54,14 +54,14 @@ public interface JobPlacementPolicy extends Entity {
 
 	/**
 	 * Selects and returns a virtual machine where to place the given <tt>job</tt>.
-	 * 
+	 *
 	 * <p>Depending on whether a VM was found or not, a {@link NotificationCodes#JOBPLACEMENT_VMSELECTION_SUCCESS} or
 	 * {@link NotificationCodes#JOBPLACEMENT_VMSELECTION_FAILED} is thrown.
-	 * 
+	 *
 	 * @param job the job you want to place
 	 * @param vms a list containing all the virtual machines where to make the selection
 	 * @return the selected virtual machine or <tt>null</tt> if no virtual machine was found
 	 */
 	public VirtualMachine selectVm(Job job, List<VirtualMachine> vms);
-	
+
 }

@@ -29,7 +29,7 @@ package com.samysadi.acs.core.entity;
 import com.samysadi.acs.core.notifications.CoreNotificationCodes;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class FailureProneEntityImpl extends EntityImpl implements Entity, FailureProneEntity {

@@ -28,13 +28,13 @@ package com.samysadi.acs.core.notifications;
 
 /**
  * An abstract class for receiving notification events.
- * 
+ *
  * <p>When you need to listen for a given notification code, you need to extend
  * this class and add an instance of it to the appropriate {@link Notifier}.
- * 
- * <p>See the {@link Notifier} documentation to learn more about how you can use notifications 
+ *
+ * <p>See the {@link Notifier} documentation to learn more about how you can use notifications
  * in the simulation.
- * 
+ *
  * @since 1.0
  */
 public abstract class NotificationListener {
@@ -47,7 +47,7 @@ public abstract class NotificationListener {
 	/**
 	 * Returns <tt>true</tt> if this NotificationListener can be notified again.
 	 * <tt>false</tt> is returned when this NotificationListener has reached its notification limit and cannot be notified again.
-	 * 
+	 *
 	 * @return <tt>true</tt> if this NotificationListener can be notified again
 	 */
 	final public boolean canBeNotified() {
@@ -56,7 +56,7 @@ public abstract class NotificationListener {
 
 	/**
 	 * Marks this listener as discarded.
-	 * 
+	 *
 	 * <p><b>Note</b> this listener will remain referenced on all entities where it was registered. It is only
 	 * effectively removed by the {@link Notifier} when calling a <tt>notify</tt> method or when it explicitly asked for using the
 	 * {@link Notifier#cleanupListeners()} method.
@@ -68,9 +68,9 @@ public abstract class NotificationListener {
 	/**
 	 * Returns <tt>true</tt> if this listener's code needs to be immediately executed after a notification.
 	 * Have a look at {@link Notifier#notify(int, Object)} for more information.
-	 * 
+	 *
 	 * <p><b>Note:</b> for most use cases returning <tt>false</tt> is just fine.
-	 * 
+	 *
 	 * @return <tt>true</tt> if this listener's code needs to be immediately executed after a notification
 	 */
 	public boolean isInstantNotification() {
@@ -84,9 +84,9 @@ public abstract class NotificationListener {
 
 	/**
 	 * Is called by any {@link Notifier} where this NotificationListener is registered (using addListener methods) when
-	 * {@link NotificationListener#canBeNotified() this.canBeNotified()} is <tt>true</tt> and the 
+	 * {@link NotificationListener#canBeNotified() this.canBeNotified()} is <tt>true</tt> and the
 	 * method {@link Notifier#notifyNow(int, Object)} is called on the Notifier.
-	 * 
+	 *
 	 * @param notifier the {@link Notifier} where this NotificationListener is registered
 	 * @param notification_code
 	 * @param data

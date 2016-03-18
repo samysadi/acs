@@ -32,15 +32,15 @@ import com.samysadi.acs.hardware.storage.operation.StorageResource;
 import com.samysadi.acs.virtualization.job.operation.provisioner.InfiniteProvisioner;
 
 /**
- * 
+ *
  * @since 1.0
  */
-public class InfiniteStorageProvisioner extends InfiniteProvisioner<StorageOperation, StorageResource> 
+public class InfiniteStorageProvisioner extends InfiniteProvisioner<StorageOperation, StorageResource>
 	implements StorageProvisioner {
 
 	/**
 	 * Empty constructor that creates a provisioner with infinite capacity.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link InfiniteStorageProvisioner#InfiniteStorageProvisioner(long)} though.
 	 */
@@ -50,9 +50,9 @@ public class InfiniteStorageProvisioner extends InfiniteProvisioner<StorageOpera
 
 	/**
 	 * Creates a provisioner with infinite capacity.
-	 * 
+	 *
 	 * <p><tt>transferRateCapacity</tt> is not taken into consideration and this provisioner will always have infinite capacity.
-	 * 
+	 *
 	 * @param transferRateCapacity
 	 */
 	public InfiniteStorageProvisioner(long transferRateCapacity) {

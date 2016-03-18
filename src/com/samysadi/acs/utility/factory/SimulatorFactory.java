@@ -30,7 +30,7 @@ import com.samysadi.acs.core.Config;
 import com.samysadi.acs.core.Simulator;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class SimulatorFactory extends Factory {
@@ -40,7 +40,7 @@ public abstract class SimulatorFactory extends Factory {
 
 	/**
 	 * Generates a simulator and returns it.
-	 * 
+	 *
 	 * @return {@link Simulator}
 	 */
 	@Override

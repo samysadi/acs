@@ -38,10 +38,10 @@ import com.samysadi.acs.utility.workload.Workload;
 /**
  * Selects a random file (between all user's files)
  * and defines it as the workload's active file.
- * 
- * <p>If the <i>Create</i> flag is specified, then 
+ *
+ * <p>If the <i>Create</i> flag is specified, then
  * a file is create if no file is found for the user.
- * 
+ *
  * @since 1.0
  */
 public class SelectRandomFileTask extends CreateFileTask {
@@ -88,7 +88,7 @@ public class SelectRandomFileTask extends CreateFileTask {
 				return;
 			}
 		}
-		
+
 		getWorkload().setStorageFile(file);
 
 		success();

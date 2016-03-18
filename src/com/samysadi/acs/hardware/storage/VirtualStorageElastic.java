@@ -49,7 +49,7 @@ public class VirtualStorageElastic extends VirtualMemoryUnitElastic<StorageFile,
 
 	/**
 	 * Empty constructor that creates a storage with zero capacity.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link VirtualStorageElastic#VirtualStorageElastic(long)} though.
 	 */

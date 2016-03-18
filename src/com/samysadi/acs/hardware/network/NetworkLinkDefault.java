@@ -31,7 +31,7 @@ import com.samysadi.acs.core.entity.EntityImpl;
 import com.samysadi.acs.hardware.network.operation.provisioner.NetworkProvisioner;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class NetworkLinkDefault extends EntityImpl implements NetworkLink {
@@ -42,7 +42,7 @@ public class NetworkLinkDefault extends EntityImpl implements NetworkLink {
 
 	/**
 	 * This constructor is provided only to satisfy the {@link Entity} contract.
-	 * 
+	 *
 	 * @throws NullPointerException
 	 */
 	public NetworkLinkDefault() {

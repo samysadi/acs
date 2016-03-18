@@ -33,15 +33,15 @@ import com.samysadi.acs.tracing.AbstractProbe;
 import com.samysadi.acs.virtualization.job.Job;
 
 /**
- * Probe for instant job download bandwidth that comes from the 
+ * Probe for instant job download bandwidth that comes from the
  * same cloud provider as that job.
- * 
+ *
  * <p>This implementation relies on {@link JobDownBwProbe} to update its value.
- * 
+ *
  * @since 1.0
  */
 public class JobDownBwCloudProbe extends AbstractProbe<Long> implements ModifiableProbe<Long>, DataRateProbe {
-	public static final String KEY = JobDownBwCloudProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = JobDownBwCloudProbe.class.getSimpleName().substring(0,
 			JobDownBwCloudProbe.class.getSimpleName().length() - 5);
 
 	@Override

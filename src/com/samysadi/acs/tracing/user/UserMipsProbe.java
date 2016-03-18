@@ -38,11 +38,11 @@ import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class UserMipsProbe extends AbstractProbe<Long> implements MipsProbe {
-	public static final String KEY = UserMipsProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = UserMipsProbe.class.getSimpleName().substring(0,
 									UserMipsProbe.class.getSimpleName().length() - 5);
 
 	@Override

@@ -33,11 +33,11 @@ import com.samysadi.acs.hardware.Host;
 import com.samysadi.acs.tracing.AbstractLongIntegratorProbe;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class HostUpBwCloudTotalProbe extends AbstractLongIntegratorProbe implements DataSizeProbe {
-	public static final String KEY = HostUpBwCloudTotalProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = HostUpBwCloudTotalProbe.class.getSimpleName().substring(0,
 									HostUpBwCloudTotalProbe.class.getSimpleName().length() - 5);
 
 	@Override

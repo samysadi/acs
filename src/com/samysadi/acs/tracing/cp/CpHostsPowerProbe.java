@@ -40,13 +40,13 @@ import com.samysadi.acs.utility.NotificationCodes;
 /**
  * Probe for instant power consumption by all the hosts in the whole cloud.<br/>
  * The probe value does not include other power usage by the cloud (ex: cooling, lighting, networking...).
- * 
+ *
  * <p>This implementation relies on {@link HostPowerProbe} to update its value.
- * 
+ *
  * @since 1.0
  */
 public class CpHostsPowerProbe extends AbstractProbe<Long> implements ModifiableProbe<Long>, PowerProbe {
-	public static final String KEY = CpHostsPowerProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = CpHostsPowerProbe.class.getSimpleName().substring(0,
 									CpHostsPowerProbe.class.getSimpleName().length() - 5);
 
 	@Override

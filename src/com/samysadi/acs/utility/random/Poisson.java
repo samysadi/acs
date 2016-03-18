@@ -33,7 +33,7 @@ import com.samysadi.acs.core.Simulator;
 
 /**
  * For more details on the implementation, refer to the cumulative distribution function in <a href="http://en.wikipedia.org/wiki/Poisson_distribution">wikipedia</a>.
- * 
+ *
  * @since 1.0
  */
 public class Poisson extends AbstractRandom {
@@ -50,7 +50,7 @@ public class Poisson extends AbstractRandom {
 
 	/**
 	 * Creates a new instance based on the current simulator's random generator.
-	 * 
+	 *
 	 * @see Poisson#Poisson(double, Random)
 	 */
 	public Poisson(double lambda) {

@@ -29,7 +29,7 @@ package com.samysadi.acs.hardware.storage.operation;
 import com.samysadi.acs.virtualization.job.operation.LongResource;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class StorageResource extends LongResource {

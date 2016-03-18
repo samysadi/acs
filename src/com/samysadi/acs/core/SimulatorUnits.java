@@ -33,9 +33,9 @@ import com.samysadi.acs.core.entity.EntityImpl;
 
 /**
  * Use this class to change units precision.
- * 
+ *
  * <p>{@link Simulator} must not be loaded when calling this class.
- * 
+ *
  * @since 1.0
  */
 public class SimulatorUnits extends EntityImpl {
@@ -53,7 +53,7 @@ public class SimulatorUnits extends EntityImpl {
 		Method m;
 		try {
 			m = ClassLoader.class.getDeclaredMethod("findLoadedClass", String.class);
-	
+
 			boolean old = m.isAccessible();
 			m.setAccessible(true);
 			try {

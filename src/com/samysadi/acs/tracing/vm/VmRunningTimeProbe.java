@@ -36,7 +36,7 @@ import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class VmRunningTimeProbe extends AbstractProbe<Long> implements TimeProbe {

@@ -36,7 +36,7 @@ import com.samysadi.acs.virtualization.job.operation.provisioner.Provisioner;
  * of <tt>long</tt> type specifies the provisioner's capacity. The second also of <tt>long</tt>
  * type specifies the induced latency when using the provisioner. The last specified the
  * induced loss rate.
- * 
+ *
  * @since 1.0
  */
 public interface NetworkProvisioner extends Provisioner<NetworkOperation, NetworkResource> {
@@ -46,25 +46,25 @@ public interface NetworkProvisioner extends Provisioner<NetworkOperation, Networ
 
 	/**
 	 * Returns the BW (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) total capacity of this provisioner.
-	 * 
+	 *
 	 * @return the BW (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) total capacity of this provisioner
 	 */
 	public long getCapacity();
 
 	/**
 	 * Returns the measured link latency that is induced when transferring data.
-	 * 
+	 *
 	 * @return the measured link latency that is induced when transferring data
 	 */
 	public long getLatency();
 
 	/**
 	 * Returns a double representing the percentage of data loss during transmission.
-	 * 
+	 *
 	 * <p>For example: 0.05 indicates a loss rate of 5%.<br/>
 	 * That means that 5% of the total transmitted date will be resent.
 	 * This also means that a total of 105% of dataSize were effectively transmitted.
-	 * 
+	 *
 	 * @return the loss rate that is induced by using this provisioner
 	 */
 	public double getLossRate();

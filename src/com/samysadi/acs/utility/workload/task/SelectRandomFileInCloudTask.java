@@ -38,7 +38,7 @@ import com.samysadi.acs.utility.workload.Workload;
 /**
  * Selects a random file (between all files in the cloud)
  * and defines it as the workload's active file.
- * 
+ *
  * @since 1.0
  */
 public class SelectRandomFileInCloudTask extends TaskImpl {

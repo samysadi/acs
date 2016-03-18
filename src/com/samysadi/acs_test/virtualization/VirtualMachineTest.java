@@ -33,7 +33,7 @@ import com.samysadi.acs.virtualization.job.Job;
 import com.samysadi.acs_test.core.entity.RunnableEntityTest;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class VirtualMachineTest extends RunnableEntityTest {

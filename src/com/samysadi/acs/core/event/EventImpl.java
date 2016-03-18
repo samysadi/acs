@@ -29,7 +29,7 @@ package com.samysadi.acs.core.event;
 import com.samysadi.acs.core.Simulator;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class EventImpl implements Event {

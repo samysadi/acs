@@ -32,15 +32,15 @@ import com.samysadi.acs.hardware.pu.operation.ComputingResource;
 import com.samysadi.acs.virtualization.job.operation.provisioner.InfiniteProvisioner;
 
 /**
- * 
+ *
  * @since 1.0
  */
-public class InfiniteComputingProvisioner extends InfiniteProvisioner<ComputingOperation, ComputingResource> 
+public class InfiniteComputingProvisioner extends InfiniteProvisioner<ComputingOperation, ComputingResource>
 	implements ComputingProvisioner  {
 
 	/**
 	 * Empty constructor that creates a provisioner with infinite capacity.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link InfiniteComputingProvisioner#InfiniteComputingProvisioner(long)} though.
 	 */
@@ -50,9 +50,9 @@ public class InfiniteComputingProvisioner extends InfiniteProvisioner<ComputingO
 
 	/**
 	 * Creates a provisioner with infinite capacity.
-	 * 
+	 *
 	 * <p><tt>mipsCapacity</tt> is not taken into consideration and this provisioner will always have infinite capacity.
-	 * 
+	 *
 	 * @param mipsCapacity
 	 */
 	public InfiniteComputingProvisioner(long mipsCapacity) {

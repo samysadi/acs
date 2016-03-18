@@ -40,11 +40,11 @@ import com.samysadi.acs.service.CloudProvider;
 import com.samysadi.acs.utility.collections.WeakLinkedList;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class PowerManagerDefault extends EntityImpl implements PowerManager {
-	private static final Object LOCK = new Object(); 
+	private static final Object LOCK = new Object();
 	private WeakLinkedList<Host> onHosts;
 
 	public PowerManagerDefault() {

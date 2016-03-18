@@ -43,10 +43,10 @@ import com.samysadi.acs.virtualization.job.Job;
  * Creates a job and places it
  * in one of the current user's {@link ThinClient}s.<br/>
  * The created job is defined as the current workload's remote job.
- * 
+ *
  * <p>Set the <i>NewThinClient</i> configuration value to <tt>true</tt> if you wish
  * to create a new thin client (instead of selecting one from existing).
- * 
+ *
  * @since 1.0
  */
 public class CreateClientJobTask extends TaskImpl {

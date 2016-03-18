@@ -29,7 +29,7 @@ package com.samysadi.acs.hardware.ram;
 import com.samysadi.acs.hardware.misc.VirtualMemoryUnit;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public interface VirtualRam extends Ram, RamZone, VirtualMemoryUnit<RamZone, Ram> {

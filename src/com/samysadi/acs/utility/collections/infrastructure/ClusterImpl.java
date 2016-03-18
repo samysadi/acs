@@ -33,7 +33,7 @@ import com.samysadi.acs.hardware.Host;
 
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class ClusterImpl extends MyArrayList<RackImpl> implements Cluster {

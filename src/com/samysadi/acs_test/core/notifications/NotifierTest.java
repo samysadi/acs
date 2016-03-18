@@ -44,7 +44,7 @@ import com.samysadi.acs.core.notifications.NotifierImpl;
 import com.samysadi.acs_test.Utils;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class NotifierTest {
@@ -144,7 +144,7 @@ public class NotifierTest {
 					}
 				});
 			}
-			
+
 		});
 
 		simulator.start();
@@ -176,7 +176,7 @@ public class NotifierTest {
 		//listener e must be fifth to be called
 		Assert.assertEquals(o, "e", e[4].getKey());
 		Assert.assertEquals(f, 1, e[4].getValue().intValue());
-		
+
 	}
 
 }

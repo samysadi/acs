@@ -35,21 +35,21 @@ import com.samysadi.acs.hardware.Host;
  * A structure that contains a list of hosts, and also
  * offers helper methods to build unmodifiable list containing all
  * hosts.
- * 
+ *
  * @since 1.0
  */
 public interface Rack {
 
 	/**
 	 * Returns an unmodifiable list that contains all hosts of this rack.
-	 * 
+	 *
 	 * @return an unmodifiable list that contains all hosts
 	 */
 	public List<? extends Host> getHosts();
 
 	/**
 	 * Returns the cluster that contains this rack, or <tt>null</tt> if it is not set.
-	 * 
+	 *
 	 * @return the cluster that contains this rack, or <tt>null</tt>
 	 */
 	public Cluster getCluster();

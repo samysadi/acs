@@ -33,11 +33,11 @@ import com.samysadi.acs.tracing.AbstractLongIntegratorProbe;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class VmMipsTotalProbe extends AbstractLongIntegratorProbe implements MiProbe {
-	public static final String KEY = VmMipsTotalProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = VmMipsTotalProbe.class.getSimpleName().substring(0,
 									VmMipsTotalProbe.class.getSimpleName().length() - 5);
 
 	@Override

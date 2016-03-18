@@ -39,21 +39,21 @@ import java.util.RandomAccess;
  * A list that gives a "read-only" view of multiple lists so that
  * they appear as one unique merged list without them being actually merged.<br/>
  * This list does not contain a merged copy of each of the underlying lists. So,
- * this has lesser memory usage, than creating a list and add all 
+ * this has lesser memory usage, than creating a list and add all
  * the underlying lists.
- * 
+ *
  * <p>Because this list is unmodifiable (read-only), all attempts to modify it, whether
  * directly or via its iterator, result in an UnsupportedOperationException.
- * 
+ *
  * <p>You have to override the {@code lists()} and {@code size()} methods to use this list.<br/>
  * The {@code size()} method must return an integer that is equal to the sum of the sizes of each of the lists returned by
  * the {@code lists()} method.<br/>
  * The list returned by the {@code lists()} method may safely contain <tt>null</tt> lists.
- * 
+ *
  * <p><b>Note</b> This list is optimized to be used with {@link RandomAccess} lists.
- * If {@code lists()} is not, or contains non-{@link RandomAccess} lists, then you will 
+ * If {@code lists()} is not, or contains non-{@link RandomAccess} lists, then you will
  * probably experience important performance issues.
- * 
+ *
  * @since 1.0
  */
 public abstract class AbstractMultiListView<E> extends AbstractCollection<E> implements List<E>, RandomAccess {
@@ -63,11 +63,11 @@ public abstract class AbstractMultiListView<E> extends AbstractCollection<E> imp
 	/**
 	 * Returns the list's modCount.
 	 * It should be different after each modification of one of the underlying lists.
-	 * 
+	 *
 	 * <p>Override this method if you want to throw exceptions after co-modifications.
-	 * 
+	 *
 	 * <p>This is useful especially to avoid bugs when one of the underlying lists is changed during an iteration.
-	 * 
+	 *
 	 * @return the list's modCount
 	 */
 	protected int getModCount() {

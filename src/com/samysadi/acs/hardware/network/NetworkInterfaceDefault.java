@@ -32,7 +32,7 @@ import com.samysadi.acs.utility.IpAddress;
 import com.samysadi.acs.utility.NotificationCodes;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class NetworkInterfaceDefault extends FailureProneEntityImpl implements NetworkInterface {

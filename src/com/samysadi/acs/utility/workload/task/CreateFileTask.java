@@ -39,10 +39,10 @@ import com.samysadi.acs.utility.workload.Workload;
 /**
  * Creates a file with the given initial <i>Size</i> in {@link Simulator#MEBIBYTE}
  * using the cloud provider's {@link Staas}.
- * 
- * <p>The created file is set as the current active file in the 
+ *
+ * <p>The created file is set as the current active file in the
  * workload (using {@link Workload#setStorageFile(StorageFile)}).
- * 
+ *
  * @since 1.0
  */
 public class CreateFileTask extends TaskImpl {

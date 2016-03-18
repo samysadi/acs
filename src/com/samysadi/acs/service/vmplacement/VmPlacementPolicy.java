@@ -41,10 +41,10 @@ import com.samysadi.acs.virtualization.VirtualMachine;
 /**
  * Defines methods for selecting a host among all available hosts
  * when placing a Virtual Machine.
- * 
+ *
  * <p>This interface also define a method for placing a VM after a host has been selected, and
  * a method to unplace it after it has been placed (see each method documentation for more information).
- * 
+ *
  * @since 1.0
  */
 public interface VmPlacementPolicy extends Entity {
@@ -57,17 +57,17 @@ public interface VmPlacementPolicy extends Entity {
 
 	/**
 	 * Selects a host where to place the given <tt>vm</tt> and returns it.
-	 * 
+	 *
 	 * <p>A host among all given hosts will be selected such that it satisfies
 	 * the virtual machine's defined SLA (defined through its configuration).<br/>
 	 * Among other conditions, the selected host must be in {@link FailureState#OK} state.
-	 * But, it can be in a state other than {@link PowerState#ON} if the cloud provider's 
+	 * But, it can be in a state other than {@link PowerState#ON} if the cloud provider's
 	 * power manager allows it to be powered on.
 	 * In which case, it is left to the placement method to power it on.
-	 * 
+	 *
 	 * <p>Depending on whether a host was found or not, a {@link NotificationCodes#VMPLACEMENT_VMSELECTION_SUCCESS} or
 	 * {@link NotificationCodes#VMPLACEMENT_VMSELECTION_FAILED} is thrown.
-	 * 
+	 *
 	 * @param vm
 	 * @param hosts possible hosts. May be <tt>null</tt> in which case, all hosts in the cloud are considered.
 	 * @param excludedHosts a list of hosts that should not be selected. May be <tt>null</tt>.
@@ -76,20 +76,20 @@ public interface VmPlacementPolicy extends Entity {
 	public Host selectHost(VirtualMachine vm, List<Host> hosts, List<Host> excludedHosts);
 
 	/**
-	 * Alias for {@link VmPlacementPolicy#selectHost(VirtualMachine, List, List)} where 
+	 * Alias for {@link VmPlacementPolicy#selectHost(VirtualMachine, List, List)} where
 	 * excluded hosts is <tt>null</tt>.
 	 */
 	public Host selectHost(VirtualMachine vm, List<Host> hosts);
 
 	/**
-	 * Alias for {@link VmPlacementPolicy#selectHost(VirtualMachine, List)} where 
+	 * Alias for {@link VmPlacementPolicy#selectHost(VirtualMachine, List)} where
 	 * possible hosts is <tt>null</tt>.
 	 */
 	public Host selectHost(VirtualMachine vm);
 
 	/**
 	 * Returns <tt>true</tt> if the vm can be placed on the given <tt>host</tt>.
-	 * 
+	 *
 	 * @param vm
 	 * @param host
 	 * @return <tt>true</tt> if the vm can be placed on the given <tt>host</tt>
@@ -101,23 +101,23 @@ public interface VmPlacementPolicy extends Entity {
 	 * When all actions were taken, the VM's parent is updated.<br/>
 	 * You need to listen to the {@link NotificationCodes#ENTITY_PARENT_CHANGED} to know when the placement
 	 * has ended, as it may not be the case when this method returns.
-	 * 
+	 *
 	 * <p>During the placement, any needed resources (example: {@link VirtualRam} and/or
 	 * {@link VirtualStorage}) are instantiated and set accordingly to the <tt>vm</tt>'s
 	 * SLA constraints (as defined in its configuration).
-	 * 
+	 *
 	 * <p>When the given <tt>vm</tt> already contains some or other resource, then
 	 * implementations must use the already set resources and must not replace them.<br/>
 	 * If the already set resources cannot comply to the SLA constraints, then an exception is thrown.
-	 * 
+	 *
 	 * <p>The given <tt>host</tt> may be in another state than {@link PowerState#ON}.
 	 * If so then this method asks the cloud provider's power manger to power it on.
-	 * 
-	 * <p>You need to check for the return value of {@link VmPlacementPolicy#canPlaceVm(VirtualMachine, Host)} to 
+	 *
+	 * <p>You need to check for the return value of {@link VmPlacementPolicy#canPlaceVm(VirtualMachine, Host)} to
 	 * see if the <tt>vm</tt> can be placed on the given <tt>host</tt>.<br/>
 	 * If you selected the <tt>host</tt> using {@link VmPlacementPolicy#selectHost(VirtualMachine)}
 	 * then this method should succeed.
-	 * 
+	 *
 	 * @param vm the {@link VirtualMachine} to place
 	 * @param host the {@link Host} where to place the <tt>vm</tt>
 	 * @throws IllegalArgumentException if one of the following condition(s) are true:<ul>
@@ -131,14 +131,14 @@ public interface VmPlacementPolicy extends Entity {
 	/**
 	 * Takes all actions in order to unplaces the given <tt>vm</tt>.<br/>
 	 * When all actions were taken, the VM's parent is updated (set to <tt>null</tt>).
-	 * 
+	 *
 	 * <p>Any allocated resource during placement
 	 * are detached from the parent host. This likely includes the {@link VirtualRam} and the {@link VirtualStorage} whose parents
 	 * are then set to <tt>null</tt>.
-	 * 
-	 * <p>The parent host of the VM should be powered off if 
+	 *
+	 * <p>The parent host of the VM should be powered off if
 	 * the cloud provider's power manger allows it to.
-	 * 
+	 *
 	 * @param vm
 	 * @throws IllegalArgumentException if the VM was not placed using this entity
 	 */

@@ -41,13 +41,13 @@ import com.samysadi.acs.core.event.Event;
 import com.samysadi.acs.core.tracing.Probe;
 
 /**
- * You can use notifications to easily take specific actions 
+ * You can use notifications to easily take specific actions
  * at different moments of the simulation.
- * 
+ *
  * <p>This class contains only core package notification codes.
- * 
+ *
  * <p><tt>0x80XXXXXX</tt> notification codes are reserved for core package.
- * 
+ *
  * @since 1.0
  */
 public class CoreNotificationCodes {
@@ -89,7 +89,7 @@ public class CoreNotificationCodes {
 	public static String notificationCodeToString(int notification_code) {
 		return notificationCodeToString(CoreNotificationCodes.class, notification_code);
 	}
-	
+
 
 	/* ENTITY
 	 * ------------------------------------------------------------------------
@@ -100,14 +100,14 @@ public class CoreNotificationCodes {
 	/**
 	 * <b>Description:</b> Thrown when a entity adds a new child entity<br/>
 	 * <b>Notifier:</b> {@link Entity} <br/>
-	 * <b>Object:</b> {@link Entity} the entity that has been added 
+	 * <b>Object:</b> {@link Entity} the entity that has been added
 	 */
 	public static final int ENTITY_ADDED					= ENTITY_MASK | 0x00;
 
 	/**
 	 * <b>Description:</b> Thrown when a entity removes a child entity<br/>
 	 * <b>Notifier:</b> {@link Entity} <br/>
-	 * <b>Object:</b> {@link Entity} the entity that has been removed 
+	 * <b>Object:</b> {@link Entity} the entity that has been removed
 	 */
 	public static final int ENTITY_REMOVED					= ENTITY_MASK | 0x01;
 
@@ -135,14 +135,14 @@ public class CoreNotificationCodes {
 	/**
 	 * <b>Description:</b> Thrown when this entity allocated flag is changed.<br/>
 	 * <b>Notifier:</b> {@link AllocatableEntity}<br/>
-	 * <b>Object:</b> <tt>null</tt> 
+	 * <b>Object:</b> <tt>null</tt>
 	 */
 	public static final int ENTITY_ALLOCATED_FLAG_CHANGED	= ENTITY_MASK | 0x50;
 
 	/**
 	 * <b>Description:</b> Thrown when the {@link FailureState} of this entity changes.<br/>
 	 * <b>Notifier:</b> {@link FailureProneEntity}<br/>
-	 * <b>Object:</b> <tt>null</tt> 
+	 * <b>Object:</b> <tt>null</tt>
 	 */
 	public static final int FAILURE_STATE_CHANGED			= ENTITY_MASK | 0x80;
 
@@ -170,7 +170,7 @@ public class CoreNotificationCodes {
 	/**
 	 * <b>Description:</b> Thrown when the simulation starts<br/>
 	 * <b>Notifier:</b> {@link Simulator}<br/>
-	 * <b>Object:</b> <tt>null</tt> 
+	 * <b>Object:</b> <tt>null</tt>
 	 */
 	public static final int SIMULATOR_STARTED				= SIMULATOR_MASK | 0x00;
 
@@ -178,14 +178,14 @@ public class CoreNotificationCodes {
 	 * <b>Description:</b> Thrown when the simulation stops. Check {@link Simulator#hasMoreEvents()} to see
 	 * if the simulation has ended or not.<br/>
 	 * <b>Notifier:</b> {@link Simulator}<br/>
-	 * <b>Object:</b> <tt>null</tt> 
+	 * <b>Object:</b> <tt>null</tt>
 	 */
 	public static final int SIMULATOR_STOPPED				= SIMULATOR_MASK | 0x01;
 
 	/**
 	 * <b>Description:</b> Thrown when the simulation time advances and before events of the current simulation time are processed.<br/>
 	 * <b>Notifier:</b> {@link Simulator}<br/>
-	 * <b>Object:</b> <tt>null</tt> or 
+	 * <b>Object:</b> <tt>null</tt> or
 	 */
 	public static final int SIMULATOR_TICK					= SIMULATOR_MASK | 0x10;
 
@@ -193,14 +193,14 @@ public class CoreNotificationCodes {
 	 * <b>Description:</b> Thrown when the simulator has processed all events at the current simulation time.
 	 * Note that you should not schedule events at current simulator's time or you will get an exception.<br/>
 	 * <b>Notifier:</b> {@link Simulator}<br/>
-	 * <b>Object:</b> <tt>null</tt> or 
+	 * <b>Object:</b> <tt>null</tt> or
 	 */
 	public static final int SIMULATOR_TICK_PASSED			= SIMULATOR_MASK | 0x11;
 
 	/**
 	 * <b>Description:</b> Thrown each time the simulator processes a new event.<br/>
 	 * <b>Notifier:</b> {@link Simulator}<br/>
-	 * <b>Object:</b> {@link Event} that has been processed 
+	 * <b>Object:</b> {@link Event} that has been processed
 	 */
 	public static final int SIMULATOR_EVENT_PROCESSED		= SIMULATOR_MASK | 0x20;
 
@@ -212,7 +212,7 @@ public class CoreNotificationCodes {
 	/**
 	 * <b>Description:</b> Thrown after that a probe value changes.<br/>
 	 * <b>Notifier:</b> {@link Probe}<br/>
-	 * <b>Object:</b> <tt>null</tt> 
+	 * <b>Object:</b> <tt>null</tt>
 	 */
 	public static final int PROBE_VALUE_CHANGED				= PROBE_MASK | 0x80;
 }

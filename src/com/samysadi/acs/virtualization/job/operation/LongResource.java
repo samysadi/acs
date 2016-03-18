@@ -31,17 +31,17 @@ import com.samysadi.acs.core.Simulator;
 
 /**
  * Defines a resource that contains a long as its main value.
- * 
+ *
  * <p>This resource maybe used to describe BW, MIPS, TransferRate etc.. When it does, then
  * the long value describes how much length (bytes, instructions ..) can be processed
  * per one Unit of Time which is equal to {@link Simulator#SECOND}.
- * 
+ *
  * @since 1.0
  */
 public abstract class LongResource implements Cloneable {
 	/**
 	 * Returns a long representation of this resource.
-	 * 
+	 *
 	 * @return a long representation of this resource
 	 */
 	public abstract long getLong();
@@ -60,7 +60,7 @@ public abstract class LongResource implements Cloneable {
 	/**
 	 * Creates and returns a clone of this resource.
 	 * The created clone's value is updated accordingly to the new given <tt>value</tt>.
-	 * 
+	 *
 	 * @param value
 	 * @return Cloned resource with given <tt>value</tt>
 	 */
@@ -68,11 +68,11 @@ public abstract class LongResource implements Cloneable {
 
 	/**
 	 * Returns the unit of time associated with this resource.
-	 * 
+	 *
 	 * <p>This is used to attach a time unit for resources (to represent BW, MIPS, TransferRate etc..).
-	 * 
+	 *
 	 * <p><b>Default</b> is {@link Simulator#SECOND}.
-	 * 
+	 *
 	 * @return the unit of time associated with this resource
 	 */
 	public final long getUnitOfTime() {

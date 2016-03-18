@@ -31,56 +31,56 @@ import com.samysadi.acs.user.ThinClient;
 import com.samysadi.acs.virtualization.job.Job;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public interface Workload extends Job {
 
 	/**
 	 * Returns this workload's RamZone.
-	 * 
+	 *
 	 * <p>If there is no RamZone associated with the current workload, then one is created automatically.
-	 * 
+	 *
 	 * @return this workload's RamZone
 	 */
 	public RamZone getRamZone();
 
 	/**
 	 * Returns current workload's {@link StorageFile}.
-	 * 
+	 *
 	 * <p>By default, a random file is selected among all current user's files.<br/>
 	 * And, if the current user has no attached files, then the default is <tt>null</tt>.
 	 * Current user is the owner of the parent virtual machine.
-	 * 
+	 *
 	 * <p>All tasks that works on {@link StorageFile}s will be given this file.
-	 * 
+	 *
 	 * @return current workload's {@link StorageFile}
 	 */
 	public StorageFile getStorageFile();
 
 	/**
 	 * Updates current workload's {@link StorageFile}.
-	 * 
+	 *
 	 * @param storageFile
 	 */
 	public void setStorageFile(StorageFile storageFile);
 
 	/**
 	 * Returns current workload's remote {@link Job}.
-	 * 
+	 *
 	 * <p>By default, a job is created on one of the current user's {@link ThinClient}s.<br/>
 	 * And, if the current user has no attached {@link ThinClient}s then one is created.
 	 * Current user is the owner of the parent virtual machine.
-	 * 
+	 *
 	 * <p>All tasks that needs a remote {@link Job} will be given this job.
-	 * 
+	 *
 	 * @return current workload's remote {@link Job}
 	 */
 	public Job getRemoteJob();
 
 	/**
 	 * Updates current workload's remote {@link Job}.
-	 * 
+	 *
 	 * @param remoteJob
 	 */
 	public void setRemoteJob(Job remoteJob);

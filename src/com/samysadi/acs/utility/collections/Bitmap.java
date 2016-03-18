@@ -37,14 +37,14 @@ import com.samysadi.acs.utility.Pair;
 
 /**
  * This class keeps an optimized internal bitmap.
- * 
+ *
  * <p>It offers basic operations like marking (ie: setting to 1) and unmarking (ie: setting to 0) bits. It also,
  * offers bitwise operations (NOT, AND, OR, XOR).
- * 
- * <p>This implementation uses a {@link TreeMap} to keep a cheap representation of the bitmap. 
+ *
+ * <p>This implementation uses a {@link TreeMap} to keep a cheap representation of the bitmap.
  * It can contain a maximum of {@link Bitmap#MAX_BITMAP_SIZE} bits. So, if you try to mark
  * or unmark bits starting from an index that is beyond this limit you will get an exception.
- * 
+ *
  * @since 1.0
  */
 public class Bitmap implements Cloneable {
@@ -60,7 +60,7 @@ public class Bitmap implements Cloneable {
 
 	/**
 	 * Checks that length and start parameters are valid and returns a valid length.
-	 * 
+	 *
 	 * @return the old length, or the new length if it was too big
 	 * @throws IllegalArgumentException if start or length are negative or if start is greater than or equal to {@link Bitmap#MAX_BITMAP_SIZE}
 	 */
@@ -84,7 +84,7 @@ public class Bitmap implements Cloneable {
 	/**
 	 * Marks (ie: sets to <tt>1</tt>) all the bits starting from the bit indexed
 	 * with <b>{@code start}</b> (inclusive) to the bit indexed with <b>{@code start + length - 1}</b> (inclusive).
-	 * 
+	 *
 	 * @param start the index of the first bit to be marked
 	 * @param length how many bits will be marked after the given <tt>start</tt> index.
 	 * @throws IllegalArgumentException if start or length are negative or if start is greater than or equal to {@link Bitmap#MAX_BITMAP_SIZE}.
@@ -141,10 +141,10 @@ public class Bitmap implements Cloneable {
 
 	/**
 	 * Marks all the bits that are marked in the given bitmap.
-	 * 
+	 *
 	 * <p>This is equivalent to making a bitwise OR of current bitmap with the given bitmap.<br/>
 	 * {@code newBitmap = this.bitwiseOr(m);}
-	 * 
+	 *
 	 * @param m
 	 */
 	public void mark(Bitmap m) {
@@ -154,13 +154,13 @@ public class Bitmap implements Cloneable {
 	/**
 	 * Marks (ie: sets to <tt>1</tt>) at least <tt>length</tt> bits starting from the bit
 	 * indexed with <tt>0</tt>.
-	 * 
+	 *
 	 * <p>This method will start from the index <tt>0</tt> looking for unmarked bits and it marks them
 	 * until it marks all the given <tt>length</tt>.
-	 * 
+	 *
 	 * <p>After calling this method the {@link Bitmap#getMarkedSize()} will be equal to:<br/>
 	 * {@code oldMarkedSize+length}
-	 * 
+	 *
 	 * @param length
 	 */
 	public void mark(long length) {
@@ -195,7 +195,7 @@ public class Bitmap implements Cloneable {
 
 	/**
 	 * Marks (ie: sets to <tt>1</tt>) all bits in this bitmap and returns the old bitmap (as it was before modifications).
-	 * 
+	 *
 	 * @return {@link Bitmap} old bitmap, as it was before being fully marked.
 	 */
 	public Bitmap mark() {
@@ -209,7 +209,7 @@ public class Bitmap implements Cloneable {
 	/**
 	 * Unmarks (ie: sets to <tt>0</tt>) all the bits starting from the
 	 * bit indexed with <b>{@code start}</b> (inclusive) until the bit indexed with <b>{@code start + length - 1}</b> (inclusive).
-	 * 
+	 *
 	 * @param start the index of the first bit to be unmarked
 	 * @param length how many bits will be unmarked after the given <tt>start</tt> index.
 	 * @throws IllegalArgumentException if start or length are negative or if start is greater than or equal to {@link Bitmap#MAX_BITMAP_SIZE}.
@@ -255,10 +255,10 @@ public class Bitmap implements Cloneable {
 
 	/**
 	 * Unmarks all the bits that are marked in the given bitmap.
-	 * 
+	 *
 	 * <p>This is equivalent to the bitwise AND NOT of current bitmap with the given bitmap.<br/>
-	 * {@code newBitmap = this.bitwiseAnd(m.clone().bitwiseNot());} 
-	 * 
+	 * {@code newBitmap = this.bitwiseAnd(m.clone().bitwiseNot());}
+	 *
 	 * @param m
 	 */
 	public void unmark(Bitmap m) {
@@ -273,13 +273,13 @@ public class Bitmap implements Cloneable {
 	 * bit indexed with <tt>0</tt>.<br/>
 	 * <b>Note</b> If the given <tt>length</tt> is greater than the value returned by
 	 * {@link Bitmap#getMarkedSize()}, then a maximum of that value is unmarked.
-	 * 
+	 *
 	 * <p>This method will start from the index <tt>0</tt> looking for marked bits and it unmarks them
 	 * until it unmarks all the given <tt>length</tt>.
-	 * 
+	 *
 	 * <p>After calling this method the {@link Bitmap#getMarkedSize()} will be equal to:<br/>
 	 * {@code Math.max(oldMarkedSize-length, 0)}
-	 * 
+	 *
 	 * @param length
 	 */
 	public void unmark(long length) {
@@ -302,7 +302,7 @@ public class Bitmap implements Cloneable {
 
 	/**
 	 * Unmarks (sets to <tt>0</tt>) all the bits in this bitmap and returns the old bitmap (as it was before modifications).
-	 * 
+	 *
 	 * @return a {@link Bitmap} containing old bitmap.
 	 */
 	public Bitmap unmark() {
@@ -314,7 +314,7 @@ public class Bitmap implements Cloneable {
 
 	/**
 	 * Returns <tt>true</tt> if the bit at the given index is marked (ie: equal to <tt>1</tt>).
-	 * 
+	 *
 	 * @param index
 	 * @return <tt>true</tt> if the bit at the given index is marked
 	 */
@@ -329,7 +329,7 @@ public class Bitmap implements Cloneable {
 
 	/**
 	 * Returns the total number of bits that are marked (ie: set to 1).
-	 * 
+	 *
 	 * @return the total number of bits that are marked
 	 */
 	public long getMarkedSize() {
@@ -343,7 +343,7 @@ public class Bitmap implements Cloneable {
 
 	/**
 	 * Returns the total number of bits that are unmarked (ie: set to 0).
-	 * 
+	 *
 	 * @return the total number of bits that are unmarked
 	 */
 	public long getUnmarkedSize() {
@@ -352,9 +352,9 @@ public class Bitmap implements Cloneable {
 
 	/**
 	 * Returns the marked size based on a page boundary, where page size is given by <tt>pageSize</tt>.
-	 * 
+	 *
 	 * <p>This method assumes that if a bit at a given page is marked then all the other bits in the page are marked too.
-	 * 
+	 *
 	 * @return the marked size based on a page boundary
 	 */
 	public long getMarkedPagesSize(long pageSize) {
@@ -379,9 +379,9 @@ public class Bitmap implements Cloneable {
 
 	/**
 	 * Returns the unmarked size based on a page boundary, where page size is given by <tt>pageSize</tt>.
-	 * 
+	 *
 	 * <p>This method assumes that if a bit at a given page is marked then all the other bits in the page are marked too.
-	 * 
+	 *
 	 * @return the unmarked size based on a page boundary
 	 */
 	public long getUnMarkedPagesSize(long pageSize) {
@@ -442,7 +442,7 @@ public class Bitmap implements Cloneable {
 	public void bitwiseXor(Bitmap m) {
 		Bitmap t2 = m.clone();
 		t2.bitwiseNot(); // ~m
-		t2.bitwiseAnd(this); // this & (~m) 
+		t2.bitwiseAnd(this); // this & (~m)
 
 		this.bitwiseNot(); // ~this
 		this.bitwiseAnd(m); // (~this) & m
@@ -456,7 +456,7 @@ public class Bitmap implements Cloneable {
 	public static class SubBitmap {
 		private long startIndex;
 		private long length;
-	
+
 		public SubBitmap(long startIndex, long length) {
 			super();
 			this.startIndex = startIndex;
@@ -474,7 +474,7 @@ public class Bitmap implements Cloneable {
 
 	/**
 	 * Returns an iterator through all marked {@link SubBitmap}s of the current Bitmap.
-	 * 
+	 *
 	 * @return an iterator through all marked {@link SubBitmap}s
 	 */
 	public Iterator<SubBitmap> getMarkedSubBitmapsIterator() {
@@ -539,9 +539,9 @@ public class Bitmap implements Cloneable {
 
 	/**
 	 * Returns a deep clone of this {@link Bitmap}.
-	 * 
+	 *
 	 * <p>You can modify the newly created instance safely and independently from the original.
-	 * 
+	 *
 	 * @return a deep clone of this {@link Bitmap}.
 	 */
 	@SuppressWarnings("unchecked")

@@ -27,7 +27,7 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 package com.samysadi.acs.utility;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class Location {

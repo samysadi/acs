@@ -48,7 +48,7 @@ import com.samysadi.acs.utility.random.Exponential;
 /**
  * This implementation generates failures and reparations with a {@link Exponential} probability
  * for each {@link FailureProneEntity} based the <tt>mtbf</tt> and <tt>mttr</tt> in their configuration.
- * 
+ *
  * @since 1.0
  */
 public class FailuresFactoryDefault extends FailuresFactory {
@@ -127,7 +127,7 @@ public class FailuresFactoryDefault extends FailuresFactory {
 
 	/**
 	 * Schedules a repair event for the given entity.
-	 * 
+	 *
 	 * @param fp
 	 */
 	protected void enableRepairs(FailureProneEntity fp) {
@@ -151,7 +151,7 @@ public class FailuresFactoryDefault extends FailuresFactory {
 
 	/**
 	 * Schedules a failure event for the given entity.
-	 * 
+	 *
 	 * @param fp
 	 */
 	protected void enableFailures(FailureProneEntity fp) {

@@ -35,15 +35,15 @@ import com.samysadi.acs.core.Config;
 /**
  * Abstract {@link GenerationMode} where possible configurations
  * are determined as follows.
- * 
+ *
  * <p>It is assumed that all configuration candidates are put under the same configuration.<br/>
  * Each candidate's context contains two String parts. A fixed prefix which is the same among
  * all other candidates. And, an integer suffix that distinguish it among other candidates.<br/>
  * For example, multiple host configurations maybe named: <i>Host0</i>, <i>Host1</i>, <i>Host2</i> ...
- * 
+ *
  * <p>When instantiating this class, all configuration candidates are determined and put under
  * a list which is accessible by subclasses using the protected <tt>configurations</tt> field.
- * 
+ *
  * @since 1.0
  */
 public abstract class AbstractGenerationMode implements GenerationMode {
@@ -74,7 +74,7 @@ public abstract class AbstractGenerationMode implements GenerationMode {
 
 	/**
 	 * Returns an unmodifiable list containing all possible configurations.
-	 * 
+	 *
 	 * @return an unmodifiable list containing all possible configurations
 	 */
 	public List<Config> getConfigurations() {

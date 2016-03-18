@@ -32,10 +32,10 @@ import com.samysadi.acs.virtualization.VirtualMachine;
  * A thin client VM is different from regular VMs because you
  * cannot allocate some resources types for it (virtual ram, virtual storage, processing units).<br/>
  * If you try to allocate such resources you will get an UnsupportedOperationException.
- * 
+ *
  * <p>Also, a thin client VM user is always the same as the {@link ThinClient}'s parent.<br/>
  * If you try to set a user for a thin client VM, then the method call is ignored.
- * 
+ *
  * @since 1.0
  */
 public interface ThinClientVirtualMachine extends VirtualMachine {

@@ -47,10 +47,10 @@ import com.samysadi.acs.utility.factory.Factory;
 
 /**
  * This implementation only creates one replica per file (which is that file).
- * 
- * <p>You should create your own implementation if you need more replicas per file, and 
+ *
+ * <p>You should create your own implementation if you need more replicas per file, and
  * add listeners in order to keep consistency.
- * 
+ *
  * @since 1.0
  */
 public class StaasDefault extends EntityImpl implements Staas {
@@ -233,18 +233,18 @@ public class StaasDefault extends EntityImpl implements Staas {
 	public void deleteFile(StorageFile storageFile) {
 		if (getReplicationManager() != null && getConsistencyManager() != null) {
 			List<StorageFile> replicas = getReplicationManager().getReplicas(storageFile);
-	
+
 			StorageFile primary = replicas.get(0);
 			getConsistencyManager().unregister(primary);
 			getReplicationManager().unregister(primary);
-	
+
 			for (StorageFile replica: replicas) {
 				NotificationListener n = (NotificationListener) replica.getProperty(PROP_CREATING);
 				if (n != null) {
 					replica.unsetProperty(PROP_CREATING);
 					n.discard();
 				}
-	
+
 				replica.unplace();
 			}
 		} else {

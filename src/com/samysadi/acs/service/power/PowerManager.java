@@ -34,7 +34,7 @@ import com.samysadi.acs.service.CloudProvider;
 import com.samysadi.acs.utility.NotificationCodes;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public interface PowerManager extends Entity {
@@ -48,7 +48,7 @@ public interface PowerManager extends Entity {
 	/**
 	 * Returns a list of hosts that are powered on.
 	 * This list includes only hosts that were powered on using current {@link PowerManager}.
-	 * 
+	 *
 	 * @return a list of hosts that are powered on
 	 */
 	public List<Host> getPoweredOnHosts();
@@ -56,10 +56,10 @@ public interface PowerManager extends Entity {
 	/**
 	 * The power manager keeps a lock counter for each host, this method increments
 	 * the lock counter which is associated with the given host.
-	 * 
-	 * <p>As long as the counter is not null, calling {@link PowerManager#canPowerOn(Host)} 
+	 *
+	 * <p>As long as the counter is not null, calling {@link PowerManager#canPowerOn(Host)}
 	 * or {@link PowerManager#canPowerOff(Host)} will return <tt>false</tt>.
-	 * 
+	 *
 	 * @param host
 	 * @see PowerManager#unlockHost(Host)
 	 */
@@ -68,10 +68,10 @@ public interface PowerManager extends Entity {
 	/**
 	 * The power manager keeps a lock counter for each host, this method decrements
 	 * the lock counter which is associated with the given host.
-	 * 
-	 * <p>As long as the counter is not null, calling {@link PowerManager#canPowerOn(Host)} 
+	 *
+	 * <p>As long as the counter is not null, calling {@link PowerManager#canPowerOn(Host)}
 	 * or {@link PowerManager#canPowerOff(Host)} will return <tt>false</tt>.
-	 * 
+	 *
 	 * @param host
 	 * @see PowerManager#lockHost(Host)
 	 * @throws IllegalArgumentException if the calling this method would result in a negative lock value for the given host
@@ -81,7 +81,7 @@ public interface PowerManager extends Entity {
 	/**
 	 * Returns <tt>true</tt> if the given <tt>host</tt> is not
 	 * powered on and this entity authorizes to power on the given host.
-	 * 
+	 *
 	 * @param host
 	 * @return <tt>true</tt> if and the given <tt>host</tt> is not
 	 * powered on and this entity authorizes to power on the given host
@@ -92,12 +92,12 @@ public interface PowerManager extends Entity {
 
 	/**
 	 * Returns <tt>true</tt> if the given <tt>host</tt> is not
-	 * powered off and this entity 
+	 * powered off and this entity
 	 * authorizes to power off the given <tt>host</tt>.
-	 * 
+	 *
 	 * @param host
 	 * @return <tt>true</tt> if the given <tt>host</tt> is not
-	 * powered off and this entity 
+	 * powered off and this entity
 	 * authorizes to power off the given <tt>host</tt>
 	 * This is usually <tt>true</tt> only if the host is not in use
 	 * @see PowerManager#lockHost(Host)
@@ -107,10 +107,10 @@ public interface PowerManager extends Entity {
 
 	/**
 	 * Powers on the given host.
-	 * 
+	 *
 	 * <p>You should listen to appropriate notification code ({@link NotificationCodes#POWER_STATE_CHANGED})
 	 * to know when the host is powered on as this may take time.
-	 * 
+	 *
 	 * @param host
 	 * @throws IllegalArgumentException if the host cannot be powered on
 	 * @see PowerManager#canPowerOn(Host)
@@ -119,10 +119,10 @@ public interface PowerManager extends Entity {
 
 	/**
 	 * Powers off the given host.
-	 * 
+	 *
 	 * <p>You should listen to appropriate notification code ({@link NotificationCodes#POWER_STATE_CHANGED})
 	 * to know when the host is powered off as this may take time.
-	 * 
+	 *
 	 * @param host
 	 * @throws IllegalArgumentException if the host cannot be powered off
 	 * @see PowerManager#canPowerOff(Host)

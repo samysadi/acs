@@ -36,7 +36,7 @@ import com.samysadi.acs.utility.collections.infrastructure.Rack;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public interface Host extends NetworkDevice {
@@ -46,35 +46,35 @@ public interface Host extends NetworkDevice {
 
 	/**
 	 * Returns the rack to whom this Host belongs to.
-	 * 
+	 *
 	 * @return the rack to whom this Host belongs to
 	 */
 	public Rack getRack();
 
 	/**
 	 * Returns the ram of this host.
-	 * 
+	 *
 	 * @return the ram of this host
 	 */
 	public Ram getRam();
 
 	/**
 	 * Returns the list of virtual machines that are contained within this host.
-	 * 
+	 *
 	 * @return the list of virtual machines that are contained within this host
 	 */
 	public List<VirtualMachine> getVirtualMachines();
 
 	/**
 	 * Returns the list of processing units contained within this host.
-	 * 
+	 *
 	 * @return the list of processing units contained within this host
 	 */
 	public List<ProcessingUnit> getProcessingUnits();
 
 	/**
 	 * Returns the list of storages that this host contains.
-	 * 
+	 *
 	 * @return the list of storages that this host contains
 	 */
 	public List<Storage> getStorages();

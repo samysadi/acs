@@ -41,12 +41,12 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
 /**
  * Appends the given <i>Size</i> in {@link Simulator#MEBIBYTE}
  * to the workload's active file.
- * 
+ *
  * <p>This will look for best file's replica using the cloud provider STaaS.
- * 
+ *
  * <p>You need to define the file to write, and the remote job that will append data to the file
  * using appropriate tasks.
- * 
+ *
  * @since 1.0
  */
 public class AppendFileTask extends TaskImpl {

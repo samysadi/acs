@@ -39,13 +39,13 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  * Probe for instant storage transfer rate consumption by the whole cloud.
- * 
+ *
  * <p>This implementation relies on {@link HostStorageTrProbe} to update its value.
- * 
+ *
  * @since 1.0
  */
 public class CpStorageTrProbe extends AbstractProbe<Long> implements ModifiableProbe<Long>, DataRateProbe {
-	public static final String KEY = CpStorageTrProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = CpStorageTrProbe.class.getSimpleName().substring(0,
 									CpStorageTrProbe.class.getSimpleName().length() - 5);
 
 	@Override

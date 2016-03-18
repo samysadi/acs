@@ -48,7 +48,7 @@ import com.samysadi.acs.virtualization.job.operation.OperationSynchronizer;
 import com.samysadi.acs_test.Utils;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class ComputingOperationTest {
@@ -134,7 +134,7 @@ public class ComputingOperationTest {
 		simulator.start();
 		if (exc != null)
             throw exc;
-	
+
 	}
 
 	@Test
@@ -173,7 +173,7 @@ public class ComputingOperationTest {
             throw exc;
 
 		Assert.assertEquals((long) Math.ceil((double)LENGTH * Simulator.SECOND / (MIPS_CAPACITY / 6)), simulator.getTime());
-	
+
 	}
 
 	@Test

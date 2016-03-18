@@ -31,10 +31,10 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
 
 /**
  * This provisioner always give resource promises with a value of {@link Long#MAX_VALUE}.
- * 
+ *
  * @since 1.0
  */
-public abstract class InfiniteProvisioner<OperationType extends Operation<Resource>, Resource extends LongResource> 
+public abstract class InfiniteProvisioner<OperationType extends Operation<Resource>, Resource extends LongResource>
 	extends LongProvisionerImpl<OperationType, Resource> {
 //	private long grantedCapacity0;
 //	private int grantedCapacity1;
@@ -109,7 +109,7 @@ public abstract class InfiniteProvisioner<OperationType extends Operation<Resour
 //			return makeResource(this.grantedCapacity0);
 //		else if (this.grantedCapacity1 > 0)
 //			return makeResource(Long.MAX_VALUE);
-//		else 
+//		else
 //			return makeResource(0);
 //	}
 

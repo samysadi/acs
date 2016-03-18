@@ -30,13 +30,13 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  * Use this class to simulate dynamically allocated virtual memory units.
- * 
- * <p>This VirtualMemoryUnit will initially not occupy any space on the parent memory unit, but will grow every time a 
+ *
+ * <p>This VirtualMemoryUnit will initially not occupy any space on the parent memory unit, but will grow every time a
  * new zone is created, until the virtual memory unit reaches the maximum capacity chosen when it was created.
- * 
+ *
  * <p>The occupied space on the parent memory unit will not decrease even if some zones are deleted.
  * The occupied space can only increase.
- * 
+ *
  * @since 1.0
  */
 public abstract class VirtualMemoryUnitDynamic<Zone extends MemoryZone, Unit extends MemoryUnit<Zone>> extends VirtualMemoryUnitImpl<Zone, Unit> {
@@ -48,7 +48,7 @@ public abstract class VirtualMemoryUnitDynamic<Zone extends MemoryZone, Unit ext
 	/**
 	 * Creates a new VirtualMemoryUnit which size can grow up to the maximum given <tt>capacity</tt>.
 	 * Its initial size is {@code 0l}.
-	 * 
+	 *
 	 * @param capacity the maximum capacity of this Virtual Memory Unit
 	 */
 	public VirtualMemoryUnitDynamic(long capacity) {

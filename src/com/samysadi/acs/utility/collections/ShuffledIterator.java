@@ -34,11 +34,11 @@ import java.util.Random;
 import com.samysadi.acs.core.Simulator;
 
 /**
- * This iterator sets a shuffled order to the elements of the underlying list using 
+ * This iterator sets a shuffled order to the elements of the underlying list using
  * a supplied {@link Random}.
- * 
+ *
  * <p>This implementation does not make any verification regarding if the underlying list is modified.
- * 
+ *
  * @since 1.0
  */
 public class ShuffledIterator<T> implements Iterator<T> {

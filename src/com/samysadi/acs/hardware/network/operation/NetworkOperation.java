@@ -35,18 +35,18 @@ import com.samysadi.acs.virtualization.job.operation.RemoteOperation;
 /**
  * This interface defines methods to simulate a data transmission operation between two Jobs
  * through a given route in the network.
- * 
- * <p>When starting a network operation, it seeks network resource from each provisioner in the allocated {@link Route} and 
+ *
+ * <p>When starting a network operation, it seeks network resource from each provisioner in the allocated {@link Route} and
  * stays activated until its entire length is processed, until a failure happens or until it is explicitly stopped (using appropriate method).
- * 
+ *
  * <p>You must ensure that both the parent Job and the destination Job are started in order to start this operation, otherwise an IllegalStateException is thrown.<br/>
  * If you start this operation while it has a <tt>null</tt> parent, or a <tt>null</tt> destination Job then a NullPointerException is thrown.
- * 
+ *
  * <p>If this operation has no allocated {@link Route}, then it will fail to start.<br/>
- * Besides, each link in the {@link Route} must have a non <tt>null</tt> provisioner otherwise a NullPointerException 
+ * Besides, each link in the {@link Route} must have a non <tt>null</tt> provisioner otherwise a NullPointerException
  * is thrown.
- * 
- * <p>When activating the operation, implementations must take care to register appropriate listeners 
+ *
+ * <p>When activating the operation, implementations must take care to register appropriate listeners
  * on each device on the route, and on the source and destination jobs (and VMs) to ensure that
  * the operation is deactivated or updated accordingly when:
  * <ul>
@@ -58,7 +58,7 @@ import com.samysadi.acs.virtualization.job.operation.RemoteOperation;
  * All implementation classes should provide a constructor with two arguments. The first
  * argument is a {@link Job} that specifies the destination job. The second argument
  * is a <tt>long</tt> that specifies the operation length (length of the transmission).
- * 
+ *
  * @since 1.0
  */
 public interface NetworkOperation extends RemoteOperation<NetworkResource> {
@@ -68,33 +68,33 @@ public interface NetworkOperation extends RemoteOperation<NetworkResource> {
 
 	/**
 	 * Returns <tt>true</tt> if data should be retransmitted on error.
-	 * 
-	 * <p>If <tt>false</tt> that means that the loss rate between nodes is not taken into account, which may be used to simulate 
+	 *
+	 * <p>If <tt>false</tt> that means that the loss rate between nodes is not taken into account, which may be used to simulate
 	 * communications where data integrity doesn't matter a lot.
-	 * 
+	 *
 	 * @return <tt>true</tt> if data should be retransmitted on error
 	 */
 	public boolean isRetransmitOnError();
 
 	/**
 	 * Returns the route that is assigned for this operation or <tt>null</tt>.
-	 * 
+	 *
 	 * <p><tt>null</tt> is returned if no route is assigned yet.
-	 * 
+	 *
 	 * @return Returns the route that is assigned for this operation or <tt>null</tt>
 	 */
 	public Route getAllocatedRoute();
 
 	/**
 	 * Returns the size in bytes (number of {@link Simulator#BYTE}s) of the data to be transmitted by this operation.
-	 * 
+	 *
 	 * @return the size in bytes (number of {@link Simulator#BYTE}s) of the data to be transmitted by this operation
 	 */
 	public long getLength();
 
 	/**
 	 * Returns the maximum bw (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) that this operation can use.
-	 * 
+	 *
 	 * @return the maximum bw (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) that this operation can use
 	 */
 	public long getResourceMax();
@@ -103,21 +103,21 @@ public interface NetworkOperation extends RemoteOperation<NetworkResource> {
 	 * Sets the maximum bw (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) that this operation can use. <br/>
 	 * The operation will never allocate more than this bw through the route.<br/>
 	 * <b>Default</b> value is {@code Long.MAX_VALUE}.
-	 * 
+	 *
 	 * @param maxBw
 	 */
 	public void setResourceMax(long maxBw);
 
 	/**
 	 * Returns the minimum needed Bw (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) by the operation to be activated
-	 * 
+	 *
 	 * @return the minimum needed Bw (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) by the operation to be activated
 	 */
 	public long getResourceMin();
 
 	/**
 	 * Sets the minimum usable Bw (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) by the operation to be activated.
-	 * 
+	 *
 	 * @param minBw
 	 */
 	public void setResourceMin(long minBw);
@@ -126,10 +126,10 @@ public interface NetworkOperation extends RemoteOperation<NetworkResource> {
 	 * Returns the total transmitted size (number of {@link Simulator#BYTE}s) that has effectively reached the DestinationJob.
 	 * This should not include the data that is being transmitted.
 	 * Only the data that has been transmitted until last deactivation should be included.
-	 * 
+	 *
 	 * @return The total effectively transmitted size (number of {@link Simulator#BYTE}s) that has reached the DestinationJob
 	 * @throws IllegalStateException if the operation is active
 	 */
 	public long getCompletedLength();
-	
+
 }

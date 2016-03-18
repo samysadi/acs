@@ -35,7 +35,7 @@ import com.samysadi.acs_test.Utils;
 import com.samysadi.acs_test.core.entity.RunnableEntityTest;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class JobDestTest extends RunnableEntityTest {
@@ -50,7 +50,7 @@ public class JobDestTest extends RunnableEntityTest {
 
 	@Override
 	public RunnableEntity startRunnableEntity() {
-		j1 = newJob(1); 
+		j1 = newJob(1);
 		return newJob(0);
 	}
 

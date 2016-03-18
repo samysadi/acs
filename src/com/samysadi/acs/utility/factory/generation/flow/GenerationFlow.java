@@ -31,10 +31,10 @@ package com.samysadi.acs.utility.factory.generation.flow;
  * This interface contains method to define when to generate
  * entities during the simulation, and how many entities need to be generated
  * at that moment.
- * 
+ *
  * <p>Factories that need to generate entities gradually as the simulation runs
  * may use this interface.
- * 
+ *
  * @since 1.0
  */
 public interface GenerationFlow extends Cloneable {
@@ -43,7 +43,7 @@ public interface GenerationFlow extends Cloneable {
 	/**
 	 * Returns the {@link GenerationFlowInfo} containing the simulation delay before generating
 	 * next entities, and how many entities need to be generated at that moment.
-	 * 
+	 *
 	 * @return the next {@link GenerationFlowInfo}
 	 */
 	public GenerationFlowInfo next();

@@ -38,7 +38,7 @@ import com.samysadi.acs.hardware.network.operation.NetworkResource;
 import com.samysadi.acs.utility.NotificationCodes;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class Route implements Iterable<NetworkInterface> {
@@ -56,7 +56,7 @@ public class Route implements Iterable<NetworkInterface> {
 
 	/**
 	 * Adds the given interface to this route and returns <tt>true</tt>.
-	 * 
+	 *
 	 * @param networkInterface
 	 * @return <tt>true</tt> (as specified by {@link LinkedList#add(Object)})
 	 * @throws NullPointerException if the given interface is <tt>null</tt>
@@ -67,7 +67,7 @@ public class Route implements Iterable<NetworkInterface> {
 			throw new NullPointerException("You cannot add null interfaces");
 		if (!this.interfaces.isEmpty()) {
 			if (this.getDestinationDevice() != networkInterface.getParent())
-				throw new IllegalArgumentException("You cannot add the given interface to this route (it would result in an inconsistent route).");			
+				throw new IllegalArgumentException("You cannot add the given interface to this route (it would result in an inconsistent route).");
 		}
 		return interfaces.add(networkInterface);
 	}
@@ -75,7 +75,7 @@ public class Route implements Iterable<NetworkInterface> {
 	/**
 	 * Merges the given route with this route and returns <tt>true</tt> if the route has changed.
 	 * The new route is added to the end of the current route.
-	 * 
+	 *
 	 * @param route
 	 * @return <tt>true</tt> if the route changed as result of the call
 	 * @throws NullPointerException if the given route is <tt>null</tt>
@@ -86,14 +86,14 @@ public class Route implements Iterable<NetworkInterface> {
 			throw new NullPointerException("You cannot add null routes");
 		if (!this.interfaces.isEmpty()) {
 			if (this.getDestinationDevice() != route.getSourceDevice())
-				throw new IllegalArgumentException("You cannot add the given route to this route (it would result in an inconsistent route).");			
+				throw new IllegalArgumentException("You cannot add the given route to this route (it would result in an inconsistent route).");
 		}
 		return interfaces.addAll(route.interfaces);
 	}
 
 	/**
 	 * Adds the given interface in the beginning of the current route and returns <tt>true</tt>.
-	 * 
+	 *
 	 * @param networkInterface
 	 * @return <tt>true</tt>
 	 * @throws NullPointerException if the given interface is <tt>null</tt>
@@ -105,7 +105,7 @@ public class Route implements Iterable<NetworkInterface> {
 			throw new NullPointerException("You cannot add null interfaces");
 		if (!this.interfaces.isEmpty()) {
 			if (this.getSourceDevice() != networkInterface.getRemoteNetworkInterface().getParent())
-				throw new IllegalArgumentException("You cannot add the given interface to this route (it would result in an inconsistent route).");			
+				throw new IllegalArgumentException("You cannot add the given interface to this route (it would result in an inconsistent route).");
 		}
 		interfaces.addFirst(networkInterface);
 		return true;
@@ -113,7 +113,7 @@ public class Route implements Iterable<NetworkInterface> {
 
 	/**
 	 * Returns the number of interfaces this route contains.
-	 * 
+	 *
 	 * @return the number of interfaces this route contains
 	 */
 	public int size() {
@@ -126,8 +126,8 @@ public class Route implements Iterable<NetworkInterface> {
 
 	/**
 	 * Returns the last (receiving) interface in this route that will receive this data.
-	 * This is NOT the last interface in the route but: lastInterface.getRemoteNetworkInterface() 
-	 * 
+	 * This is NOT the last interface in the route but: lastInterface.getRemoteNetworkInterface()
+	 *
 	 * @return the last (receiving) interface in this route that will receive this data
 	 */
 	protected NetworkInterface getLastRemoteNetworkInterface() {
@@ -145,9 +145,9 @@ public class Route implements Iterable<NetworkInterface> {
 	/**
 	 * Call this method to register a listener for {@link NotificationCodes#RP_ROUTING_UPDATED} notifications
 	 * on each device in this route including the parent of the remote interface that is linked to the last interface in this route (ie: destination device).
-	 * 
+	 *
 	 * <p>Prefer using this method rather than to iterate through network interfaces of this route.
-	 * 
+	 *
 	 * @param listener
 	 */
 	public void registerListenerForRoutingUpdates(NotificationListener listener) {
@@ -161,10 +161,10 @@ public class Route implements Iterable<NetworkInterface> {
 
 	/**
 	 * Returns the resource promise for the given <tt>operation</tt> through this route (all interfaces).
-	 * 
+	 *
 	 * <p>The returned promise can be safely granted as it is checked against all interfaces (links) that
 	 * the route contains.
-	 * 
+	 *
 	 * @param operation the operation for whom a resource promise will be returned
 	 * @return the resource promise for the given <tt>operation</tt> through this route
 	 */
@@ -190,9 +190,9 @@ public class Route implements Iterable<NetworkInterface> {
 		for (NetworkInterface next: this.interfaces) {
 			NetworkLink link = next.getUpLink();
 			NetworkResource r = link.getNetworkProvisioner().getResourcePromise(operation);
-			
+
 			latency += r.getLatency();
-			
+
 			lossRate = Math.max(lossRate, r.getLossRate());
 
 			bw = Math.min(bw, r.getBw());
@@ -203,7 +203,7 @@ public class Route implements Iterable<NetworkInterface> {
 
 	/**
 	 * Grants the <tt>operation</tt> allocated resource through this route.
-	 * 
+	 *
 	 * @param operation allocated resource of this operation is granted through the current route
 	 */
 	public void grantAllocatedResource(NetworkOperation operation) {
@@ -220,7 +220,7 @@ public class Route implements Iterable<NetworkInterface> {
 
 	/**
 	 * Revokes the <tt>operation</tt> allocated resource through this route.
-	 * 
+	 *
 	 * @param operation allocated resource of this operation is revoked through the current route
 	 */
 	public void revokeAllocatedResource(NetworkOperation operation) {
@@ -261,7 +261,7 @@ public class Route implements Iterable<NetworkInterface> {
 
 	/**
 	 * An iterator over the interfaces of this route in proper order.
-	 * 
+	 *
 	 * <p>The first interface is the interface of the source device.<br/>
 	 * The last is the interface of the penultimate device and not the destination device. This last interface
 	 * is linked to the destination device (use {@link NetworkInterface#getRemoteNetworkInterface()}.getParent() to get the destination device.

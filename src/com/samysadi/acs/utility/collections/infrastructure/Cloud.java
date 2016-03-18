@@ -35,35 +35,35 @@ import com.samysadi.acs.hardware.Host;
  * A structure that contains a list of data-centers, and also
  * offers helper methods to build unmodifiable lists containing all data-centers,
  * clusters, racks or hosts.
- * 
+ *
  * @since 1.0
  */
 public interface Cloud {
 
 	/**
 	 * Returns an unmodifiable list that contains all data-centers in this cloud.
-	 * 
+	 *
 	 * @return an unmodifiable list containing all data-centers
 	 */
 	public List<? extends Datacenter> getDatacenters();
 
 	/**
 	 * Returns an unmodifiable list that contains all clusters in all data-centers of this cloud.
-	 * 
+	 *
 	 * @return an unmodifiable list that contains all clusters
 	 */
 	public List<? extends Cluster> getClusters();
 
 	/**
 	 * Returns an unmodifiable list that contains all racks in all clusters in all data-centers in this cloud.
-	 * 
+	 *
 	 * @return an unmodifiable list that contains all racks
 	 */
 	public List<? extends Rack> getRacks();
 
 	/**
 	 * Returns an unmodifiable list that contains all hosts in all racks in all clusters in all data-centers in this cloud.
-	 * 
+	 *
 	 * @return an unmodifiable list that contains all hosts
 	 */
 	public List<? extends Host> getHosts();

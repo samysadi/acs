@@ -38,11 +38,11 @@ import com.samysadi.acs.user.User;
 /**
  * This interface contains methods to provide Storage as a Service (STaaS)
  * for users.
- * 
+ *
  * <p>The service may include replication of files and may grant consistency between
  * multiple replicas.
  * Also it may include different placement policies and replica selection policies.
- * 
+ *
  * @since 1.0
  */
 public interface Staas extends Entity {
@@ -55,28 +55,28 @@ public interface Staas extends Entity {
 
 	/**
 	 * Returns the {@link SfConsistencyManager}.
-	 * 
+	 *
 	 * @return the {@link SfConsistencyManager}
 	 */
 	public SfConsistencyManager getConsistencyManager();
 
 	/**
 	 * Returns the {@link SfPlacementPolicy}.
-	 * 
+	 *
 	 * @return the {@link SfPlacementPolicy}
 	 */
 	public SfPlacementPolicy getPlacementPolicy();
 
 	/**
 	 * Returns the {@link SfReplicaSelectionPolicy}.
-	 * 
+	 *
 	 * @return the {@link SfReplicaSelectionPolicy}
 	 */
 	public SfReplicaSelectionPolicy getReplicaSelectionPolicy();
 
 	/**
 	 * Returns the {@link SfReplicationManager}.
-	 * 
+	 *
 	 * @return the {@link SfReplicationManager}
 	 */
 	public SfReplicationManager getReplicationManager();
@@ -84,9 +84,9 @@ public interface Staas extends Entity {
 	/**
 	 * Creates and returns a new {@link StorageFile} and registers it for auto-replication,
 	 * and consistency management.
-	 * 
+	 *
 	 * <p>The created file is placed using current placement policy.
-	 * 
+	 *
 	 * @param size initial size of the file
 	 * @param user the user that asks to create the file (ie: the owner)
 	 * @return the created {@link StorageFile}
@@ -96,9 +96,9 @@ public interface Staas extends Entity {
 	/**
 	 * Deletes the given {@link StorageFile} (set its parent to <tt>null</tt>), and unregisters it from auto-replication and
 	 * consistency management.
-	 * 
+	 *
 	 * <p>All replicas of the given file are also deleted.
-	 * 
+	 *
 	 * @param storageFile
 	 */
 	public void deleteFile(StorageFile storageFile);

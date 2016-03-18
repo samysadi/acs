@@ -44,10 +44,10 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  * Probe for instant power consumption by a host.
- * 
- * <p>This implementation is based on the model described by <i>X. Fan et al.</i> 
+ *
+ * <p>This implementation is based on the model described by <i>X. Fan et al.</i>
  * in the 2007 paper entitled <b>Power provisioning for a warehouse-sized computer</b>.
- * 
+ *
  * <p>These three parameters are used in power calculation:<ul>
  * <li>The host's maximum power consumption (when fully used), this parameter is read from
  * configuration value: <i>PowerConsumption</i> (in Watts);
@@ -57,11 +57,11 @@ import com.samysadi.acs.utility.NotificationCodes;
  * </ul>
  * The power usage of a host at a given moment is then:<br/>
  * <math><mi>P</mi><mo>=</mo><msub><mi>P</mi><mi>idle</mi></msub><mo>+</mo><mo>(</mo><msub><mi>P</mi><mi>busy</mi></msub><mo>-</mo><msub><mi>P</mi><mi>idle</mi></msub><mo>)</mo><mi>u</mi></math>
- * 
+ *
  * @since 1.0
  */
 public class HostPowerProbe extends AbstractProbe<Long> implements PowerProbe {
-	public static final String KEY = HostPowerProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = HostPowerProbe.class.getSimpleName().substring(0,
 									HostPowerProbe.class.getSimpleName().length() - 5);
 
 	@Override

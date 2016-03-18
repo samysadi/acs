@@ -35,7 +35,7 @@ import com.samysadi.acs.core.notifications.NotifierImpl;
 
 /**
  * <b>Note:</b>This implementation also extends {@link NotifierImpl}.
- * 
+ *
  * @since 1.0
  */
 public abstract class ProbedImpl extends NotifierImpl implements Probed {
@@ -116,9 +116,9 @@ public abstract class ProbedImpl extends NotifierImpl implements Probed {
 
 	/**
 	 * Creates and returns a new probe instance based on the given <tt>probeKey</tt>.
-	 * 
+	 *
 	 * <p>This method is used in {@link Probed#getProbe(String, boolean)} when creating a new Probe.
-	 * 
+	 *
 	 * @return a new Probe instance based on the given <tt>probeKey</tt>
 	 */
 	protected abstract Probe<?> newProbe(String probeKey);

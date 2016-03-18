@@ -31,15 +31,15 @@ import com.samysadi.acs.core.entity.Entity;
 
 /**
  * A operation that runs for a given delay, then becomes completed.
- * 
+ *
  * @since 1.0
  */
 public final class TimerOperation extends LongOperationImpl<TimeResource> {
 	private static final TimeResource timePromise = new TimeResource();
-	
+
 	/**
 	 * Empty constructor that creates a zero-length operation.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.
 	 * You should use {@link TimerOperation#TimerOperation(long)} though.
 	 */

@@ -35,9 +35,9 @@ import com.samysadi.acs.utility.workload.Workload;
 
 /**
  * Deletes the workload's active file.
- * 
+ *
  * <p>You need to define the file to delete using appropriate tasks.
- * 
+ *
  * @since 1.0
  */
 public class DeleteFileTask extends TaskImpl {

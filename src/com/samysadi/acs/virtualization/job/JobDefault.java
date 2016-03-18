@@ -58,7 +58,7 @@ import com.samysadi.acs.virtualization.job.operation.RemoteOperation;
 import com.samysadi.acs.virtualization.job.operation.TimerOperation;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class JobDefault extends RunnableEntityImpl implements Job {
@@ -102,7 +102,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 		super.initializeEntity();
 
 		this.operations = new ArrayList<Operation<?>>();
-	
+
 		this.remoteOperations = null;
 
 		//register listeners, to add/remove remote operations
@@ -180,7 +180,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 	public void setPriority(int priority) {
 		if (this.priority == priority)
 			return;
-	
+
 		if (this.isRunning())
 			throw new IllegalStateException("Not allowed when the VM is running");
 
@@ -287,7 +287,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 
 		this.setRunnableState(RunnableState.COMPLETED);
 	}
-	
+
 
 	/* COMPUTING OPERATIONS
 	 * ------------------------------------------------------------------------ */
@@ -443,7 +443,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 		o.addListener(NotificationCodes.RUNNABLE_STATE_CHANGED, n);
 		o.addListener(NotificationCodes.ENTITY_PARENT_CHANGED, n);
 		o.doStart();
-			
+
 		return o;
 	}
 
@@ -494,7 +494,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 		o.addListener(NotificationCodes.RUNNABLE_STATE_CHANGED, n);
 		o.addListener(NotificationCodes.ENTITY_PARENT_CHANGED, n);
 		o.doStart();
-			
+
 		return o;
 	}
 

@@ -36,10 +36,10 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
  * This provisioner gives promises that are equal to its current free capacity.<br/>
  * It will also ensure that any granted resource will not be invalidated even if new capacity is freed.
  * Thus, granted resources remain allocated until they are explicitly freed.
- * 
+ *
  * @since 1.0
  */
-public abstract class StaticProvisioner<OperationType extends Operation<Resource>, Resource extends LongResource> 
+public abstract class StaticProvisioner<OperationType extends Operation<Resource>, Resource extends LongResource>
 	extends LongProvisionerImpl<OperationType, Resource> {
 	private long usedCapacity;
 	protected HashSet<OperationType> operations;

@@ -42,7 +42,7 @@ import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.virtualization.VirtualMachineDefault;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class ThinClientVirtualMachineDefault extends VirtualMachineDefault implements ThinClientVirtualMachine {
@@ -109,7 +109,7 @@ public class ThinClientVirtualMachineDefault extends VirtualMachineDefault imple
 
 	private boolean canStartVm() {
 		return (this.canStart() || this.canRestart()) &&
-				this.getParent().getFailureState() == FailureState.OK && 
+				this.getParent().getFailureState() == FailureState.OK &&
 				this.getParent().getPowerState() == PowerState.ON;
 	}
 

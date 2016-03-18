@@ -30,14 +30,14 @@ import com.samysadi.acs.core.entity.Entity;
 import com.samysadi.acs.hardware.misc.MemoryZoneImpl;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class RamZoneDefault extends MemoryZoneImpl implements RamZone {
 
 	/**
 	 * Empty constructor that creates an empty ram zone.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link RamZoneDefault#RamZoneDefault(long)} though.
 	 */

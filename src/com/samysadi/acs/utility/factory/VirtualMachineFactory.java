@@ -32,7 +32,7 @@ import com.samysadi.acs.user.User;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public abstract class VirtualMachineFactory extends Factory {
@@ -57,7 +57,7 @@ public abstract class VirtualMachineFactory extends Factory {
 	public User getUser() {
 		return this.user;
 	}
-	
+
 
 	/**
 	 * Generates a VM.<br/>

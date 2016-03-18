@@ -50,7 +50,7 @@ import com.samysadi.acs_test.Utils;
 
 
 /**
- * 
+ *
  * @since 1.0
  */
 @SuppressWarnings("unused")
@@ -85,7 +85,7 @@ public class StorageOperationTest {
 		sf2 = Factory.getFactory(simulator).newStorageFile(null, h0.getStorages().get(0), SF_SIZE);
 		sf2.getMemoryMap(DEFAULT_MAP).unmark();
 		TR_CAPACITY = sf0.getParent().getStorageProvisioner().getCapacity();
-		
+
 		h1 = cloudProvider.getHosts().get(1);
 		h2 = cloudProvider.getHosts().get(2);
 		hl = cloudProvider.getHosts().get(cloudProvider.getHosts().size()-1);
@@ -220,7 +220,7 @@ public class StorageOperationTest {
 		final long BW1 = Math.min((TR_CAPACITY - BW0) / 2, LINK_BW / 2); //s1 shares down link with s2
 
 		final long BW2 = BW1;
-		
+
 		simulator.schedule(new EventImpl() {
 			@Override
 			public void process() {
@@ -357,7 +357,7 @@ public class StorageOperationTest {
 		final long BW2 = BW1;
 
 		final long[] mdfy = new long[1];
-		
+
 		simulator.schedule(new EventImpl() {
 			@Override
 			public void process() {
@@ -415,7 +415,7 @@ public class StorageOperationTest {
 
 		assertLEquals(Math.max(timeForS0, timeForS12), simulator.getTime() - 1);
 	}
-	
+
 
 	@Test
 	public void aaaaa() {

@@ -27,7 +27,7 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 package com.samysadi.acs.utility;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class NumberUtils {
@@ -41,11 +41,11 @@ public class NumberUtils {
 	private static final double epsilon_zero_double = EPSILON * Double.MIN_NORMAL;
 	/**
 	 * Returns -1 if {@code a < b}, 0 if {@code a == b} and 1 if {@code a > b}.
-	 * 
+	 *
 	 * Don't use this in Comparable. The relation is not transitive
-	 * you can find x,y,z such as {@code compareDoubles(x,y)==0}, {@code compareDoubles(y,z)==0} but 
+	 * you can find x,y,z such as {@code compareDoubles(x,y)==0}, {@code compareDoubles(y,z)==0} but
 	 * {@code compareDoubles(x,z)>0}
-	 * 
+	 *
 	 * @return -1 if {@code a < b}, 0 if {@code a == b} and 1 if {@code a > b}
 	 */
 	public static int compareDoubles(double a, double b) {
@@ -53,7 +53,7 @@ public class NumberUtils {
 			return 0;
 		double sdiff = a - b;
 		double diff = Math.abs(sdiff);
-		if ((a == 0 || b == 0 || diff < Double.MIN_NORMAL) 
+		if ((a == 0 || b == 0 || diff < Double.MIN_NORMAL)
 				&& (diff < epsilon_zero_double))
 			return 0;
 		else if (diff/(Math.abs(a) + Math.abs(b)) < EPSILON)

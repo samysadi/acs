@@ -37,11 +37,11 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  * Probe for number of File placement failures.
- * 
+ *
  * @since 1.0
  */
 public class CpSfPlacementFailureCountProbe extends AbstractProbe<Long> {
-	public static final String KEY = CpSfPlacementFailureCountProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = CpSfPlacementFailureCountProbe.class.getSimpleName().substring(0,
 									CpSfPlacementFailureCountProbe.class.getSimpleName().length() - 5);
 
 	protected int getNotificationCode() {

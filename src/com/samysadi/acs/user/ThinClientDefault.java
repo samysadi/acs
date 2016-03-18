@@ -42,7 +42,7 @@ import com.samysadi.acs.utility.collections.infrastructure.Rack;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class ThinClientDefault extends NetworkDeviceDefault implements ThinClient {

@@ -55,26 +55,26 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * This class is used to keep configuration values that can be fetch from a configuration file.
- * 
+ *
  * <p>Configuration values are contexted.
- * You can get an instance of {@link Config} containing only 
+ * You can get an instance of {@link Config} containing only
  * configuration values in a given context using {@link Config#addContext(String)} method.
  * Moreover, you can get the parent instance of a {@link Config} using {@link Config#parentContext()}.<br/>
  * Note that contexted instances are transparently cached by this implementation. And modifications
  * to any instance will reflect on the parent/children instances.
- * 
- * <p>There are multiple get and set methods to access and modify configuration values (String, Boolean, Short, 
+ *
+ * <p>There are multiple get and set methods to access and modify configuration values (String, Boolean, Short,
  * Integer, Long, Float, Double).<br/>
  * These methods will only operate in the current context. Though, for get methods you can
  * set a recursive flag in order to look for a configuration value in parent contexts when
  * the configuration value is not present in current context.
- * 
+ *
  * <p><u><b>Configuration File Format:</b></u><br/>
  * The configuration can be read from a xml file where tags define configuration names (i.e. keys), and tag contents define the configuration values.
  * Each configuration can have an id attribute which is used to refer back to it (in order to remove for instance).<br/>
  * When defining children elements, their context will be defined using the context and the configuration name of their parent element.
- * So, for instance, if an element {@code A} in the context {@code C} has a child {@code B}, then the context of {@code B} will be {@code C.A}.<br/> 
- * 
+ * So, for instance, if an element {@code A} in the context {@code C} has a child {@code B}, then the context of {@code B} will be {@code C.A}.<br/>
+ *
  * <p>We define some special tags that cannot be used as configuration names. These are listed in the following:
  * <ul>
  * <li><b>&lt;include&gt;</b> includes another configuration file in the current context. If the filename is not absolute,
@@ -90,7 +90,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * if you use the wildcard (*) value for the id attribute, then all configurations in the current context whose name starts with Foo are removed.
  * <li><b>&lt;Remove&gt;</b> same as &lt;RemoveFoo&gt; but applies for all configurations in the current context independently from their name.
  * </ul>
- * 
+ *
  * @since 1.0
  */
 public class Config {
@@ -125,7 +125,7 @@ public class Config {
 	private static String trimContext(String context) {
 		int len = context.length();
 		int st = 0;
-		
+
 		while ((st < len) && (context.charAt(st) == CONTEXT_SEPARATOR))
 		    st++;
 		while ((st < len) && (context.charAt(len - 1) == CONTEXT_SEPARATOR))
@@ -150,7 +150,7 @@ public class Config {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param stdContext Must contain a trailing {@link Config#CONTEXT_SEPARATOR} (if not empty).
 	 * @return a config with the given context
 	 */
@@ -188,7 +188,7 @@ public class Config {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param stdContext Must contain a trailing {@link Config#CONTEXT_SEPARATOR} (if not empty).
 	 * @return parent context with a trailing {@link Config#CONTEXT_SEPARATOR} (if not empty).
 	 */
@@ -229,7 +229,7 @@ public class Config {
 				mainDir = file.getParentFile();
 			} catch (IOException e) {
 			}
-	
+
 			if (!includeConfigFile(mainDir, filename, this.context)) {
 				throw new IllegalStateException("Error when loading configuration file");
 			} else
@@ -315,13 +315,13 @@ public class Config {
 	}
 
 	/**
-	 * Returns the configuration value that matches the given <tt>configName</tt> or 
+	 * Returns the configuration value that matches the given <tt>configName</tt> or
 	 * <tt>defaultValue</tt> if none is found.
-	 * 
+	 *
 	 * <p>Set the <tt>recursive</tt> parameter to <tt>true</tt> if you want this method
 	 * to look for the configuration value in parent contexts if there is no matching
 	 * configuration in current context.
-	 * 
+	 *
 	 * @param configName
 	 * @param defaultValue
 	 * @param recursive
@@ -738,7 +738,7 @@ public class Config {
 		public String toString() {
 			return (size() == 0 ? "" : getLast() + ": ");
 		}
-		
+
 	}
 
 	protected boolean includeConfigFile(File baseDir, String filename, ConfigIncludeTrace includeTrace, String loadContext) {
@@ -793,7 +793,7 @@ public class Config {
 							"Error when loading configuration file: \"" + f.getPath() + "\".");
 					return false;
 				}
-				
+
 			} finally {
 				br.close();
 			}
@@ -838,9 +838,9 @@ public class Config {
 	public static final String REMOVE_TAG = "remove";
 	public static final String ID_ATTRIBUTE = "id";
 	public static final String WILDCARD_ID_ATTRIBUTE_VALUE = "*";
-	
 
-	public static final String DEFAULT_SAX_FACTORY = "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl"; 
+
+	public static final String DEFAULT_SAX_FACTORY = "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl";
 
 	private static HashMap<String, SAXParserFactory> parserFactories = new HashMap<String, SAXParserFactory>();
 	protected static SAXParserFactory getSAXParserFactory(String driver) {
@@ -866,7 +866,7 @@ public class Config {
 					rtr.setFeature("http://xml.org/sax/features/" + s, false);
 				} catch (Exception e) {}
 			}
-	
+
 			parserFactories.put(driver, rtr);
 		}
 		return rtr;
@@ -881,7 +881,7 @@ public class Config {
 	}
 
 	/**
-	 * Removes configurations belonging to the given context and all configurations belonging to 
+	 * Removes configurations belonging to the given context and all configurations belonging to
 	 * sub-contexts of the given context.
 	 */
 	private void _removeContext(String key) {
@@ -915,7 +915,7 @@ public class Config {
 	 * Looks for all configuration belonging to the given context
 	 * and removes them.
 	 * This method will also remove all contexts whose parent is the given context.
-	 * 
+	 *
 	 * @param stdContext a context name with a trailing {@link Config#CONTEXT_SEPARATOR} if not empty.
 	 */
 	private void removeContext(String stdContext) {
@@ -1036,7 +1036,7 @@ public class Config {
 
 				int i = 0;
 				while (true) {
-					String tag0 = tag + CONTEXT_ARRAY_SEPARATOR + String.valueOf(i); 
+					String tag0 = tag + CONTEXT_ARRAY_SEPARATOR + String.valueOf(i);
 					String ctx0 = _ctx + tag0;
 					String ctx0id = ctx0 + CONTEXT_SEPARATOR + ID_ATTRIBUTE;
 					if (Config.this.config.containsKey(ctx0)) {
@@ -1093,7 +1093,7 @@ public class Config {
 					throw new SAXException("Malformed document");
 				}
 
-				String id = atts.getValue(ID_ATTRIBUTE); 
+				String id = atts.getValue(ID_ATTRIBUTE);
 				lastId = id;
 
 				if (INCLUDE_TAG.compareToIgnoreCase(tag) == 0) {
@@ -1124,7 +1124,7 @@ public class Config {
 							ctx = ctx0 + CONTEXT_SEPARATOR;
 							break;
 						}
-						i++;	
+						i++;
 					}
 					if (id == null)
 						id = lastId = String.valueOf(i);
@@ -1219,7 +1219,7 @@ public class Config {
 					throws SAXException {
 				cont.append(ch, start, length);
 			}
-			
+
 		});
 
 		final SAXParseException[] pexc = new SAXParseException[] {null};
@@ -1229,7 +1229,7 @@ public class Config {
 			public void warning(SAXParseException exception) throws SAXException {
 				//nothing
 			}
-			
+
 			@Override
 			public void error(SAXParseException exception) throws SAXException {
 				//nothing

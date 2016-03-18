@@ -33,11 +33,11 @@ import com.samysadi.acs.hardware.Host;
 import com.samysadi.acs.tracing.AbstractLongIntegratorProbe;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class HostMipsTotalProbe extends AbstractLongIntegratorProbe implements MiProbe {
-	public static final String KEY = HostMipsTotalProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = HostMipsTotalProbe.class.getSimpleName().substring(0,
 									HostMipsTotalProbe.class.getSimpleName().length() - 5);
 
 	@Override

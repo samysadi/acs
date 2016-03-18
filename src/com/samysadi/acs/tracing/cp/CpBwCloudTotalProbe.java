@@ -33,11 +33,11 @@ import com.samysadi.acs.service.CloudProvider;
 import com.samysadi.acs.tracing.AbstractLongIntegratorProbe;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class CpBwCloudTotalProbe extends AbstractLongIntegratorProbe implements DataSizeProbe {
-	public static final String KEY = CpBwCloudTotalProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = CpBwCloudTotalProbe.class.getSimpleName().substring(0,
 									CpBwCloudTotalProbe.class.getSimpleName().length() - 5);
 
 	@Override

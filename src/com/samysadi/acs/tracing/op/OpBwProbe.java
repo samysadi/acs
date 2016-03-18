@@ -32,11 +32,11 @@ import com.samysadi.acs.hardware.network.operation.NetworkOperation;
 
 /**
  * Probe for Network Bw usage by a {@link NetworkOperation}.
- * 
+ *
  * @since 1.0
  */
 public class OpBwProbe extends OpLongProbe implements DataRateProbe {
-	public static final String KEY = OpBwProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = OpBwProbe.class.getSimpleName().substring(0,
 									OpBwProbe.class.getSimpleName().length() - 5);
 
 	@Override

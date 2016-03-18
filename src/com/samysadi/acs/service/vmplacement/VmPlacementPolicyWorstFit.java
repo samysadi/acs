@@ -32,7 +32,7 @@ package com.samysadi.acs.service.vmplacement;
  * among all available and powered on hosts.<br/>
  * The host is chosen according to the worst fit method.<br/>
  * If none is found then a new host is powered on.
- * 
+ *
  * @since 1.0
  */
 public class VmPlacementPolicyWorstFit extends VmPlacementPolicyBestFit {

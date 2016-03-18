@@ -33,7 +33,7 @@ import com.samysadi.acs.utility.random.Uniform;
 /**
  * A {@link AbstractGenerationMode} subclass that selects next candidate
  * configuration randomly between all available configurations.
- * 
+ *
  * @since 1.0
  */
 public class RandomGenerationMode extends AbstractGenerationMode {

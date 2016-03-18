@@ -46,7 +46,7 @@ import com.samysadi.acs.utility.collections.Bitmap;
 import com.samysadi.acs.utility.collections.ShuffledIterator;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class RoutingProtocolDefault extends EntityImpl implements RoutingProtocol {
@@ -194,12 +194,12 @@ public class RoutingProtocolDefault extends EntityImpl implements RoutingProtoco
 	/**
 	 * Returns a new constraints based on the given constraints for use by next RoutingProtocol
 	 * or <tt>null</tt> if no constraints are set.
-	 * 
+	 *
 	 * <p>Subclasses can use this method to improve performances by excluding some interfaces from being
 	 * analyzed when searching a route by returning <tt>null</tt>.
-	 * 
+	 *
 	 * <p>This method should return <tt>null</tt> only if there exist no route to <tt>destinationDevice</tt> through <tt>nextInterface</tt>.
-	 * 
+	 *
 	 * @param destinationDevice the destination device
 	 * @param nextInterface the next interface that is being analyzed
 	 * @param constraints as set in findRoute
@@ -221,11 +221,11 @@ public class RoutingProtocolDefault extends EntityImpl implements RoutingProtoco
 	/**
 	 * Choose the best route to transmit data,
 	 * by choosing the shortest route (with less nodes in it).
-	 * 
+	 *
 	 * <p>Of course, this may not be the optimal route.
 	 * You are free to override this method to do a better routing.
-	 * 
-	 * <p>If many equivalent routes are found, one is chosen randomly. 
+	 *
+	 * <p>If many equivalent routes are found, one is chosen randomly.
 	 */
 	@Override
 	public RouteInfo findRoute(NetworkDevice destinationDevice, RouteConstraints constraints) {
@@ -317,11 +317,11 @@ public class RoutingProtocolDefault extends EntityImpl implements RoutingProtoco
 			if (nextConstraints == null)
 				continue;
 			final NetworkDevice remoteDevice = networkInterface.getRemoteNetworkInterface().getParent();
-			
+
 			if (remoteDevice != destinationDevice && !remoteDevice.isRoutingEnabled())
 				continue;
 			if (minimumMetric < Double.POSITIVE_INFINITY)
-				constraints.minimumMetric=minimumMetric - MC; //no need to create a new constraints object (this implementation does not modify this object). 
+				constraints.minimumMetric=minimumMetric - MC; //no need to create a new constraints object (this implementation does not modify this object).
 			if (constraints.excludedDevices.contains(remoteDevice))
 				continue;
 			final RouteInfo ri = remoteDevice.getRoutingProtocol().findRoute(destinationDevice, nextConstraints);
@@ -335,7 +335,7 @@ public class RoutingProtocolDefault extends EntityImpl implements RoutingProtoco
 			//If new route has bigger or equal metric then continue.
 			//No need to make extra random selection when equal because we already are iterating starting from a random position
 			if (metric_c >= 0)
-				continue; 
+				continue;
 
 			best = ri;
 

@@ -33,7 +33,7 @@ import com.samysadi.acs.hardware.Host;
 import com.samysadi.acs.hardware.pu.operation.provisioner.ComputingProvisioner;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public interface ProcessingUnit extends Entity, FailureProneEntity, AllocatableEntity {

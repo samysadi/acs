@@ -32,11 +32,11 @@ import com.samysadi.acs.hardware.storage.operation.StorageOperation;
 
 /**
  * Probe for Storage Transfer rate usage by a {@link StorageOperation}.
- * 
+ *
  * @since 1.0
  */
 public class OpStorageTrProbe extends OpLongProbe implements DataRateProbe {
-	public static final String KEY = OpStorageTrProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = OpStorageTrProbe.class.getSimpleName().substring(0,
 									OpStorageTrProbe.class.getSimpleName().length() - 5);
 
 	@Override

@@ -35,17 +35,17 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  * Use this class to synchronize two {@link SynchronizableOperation} operations.
- * 
+ *
  * <p>After calling {@link OperationSynchronizer#synchronizeOperations(Operation, Operation, RunnableStateChanged)}
  * on the two operations you want to synchronize, this implementation will ensure that the two operations
  * will finish at the same time.
- * 
+ *
  * <p>If one of the operations fails or is canceled then the other will also fail or is canceled.<br/>
  * The two operations should always have the same {@link RunnableState}.
  * But if for some reason they do not, then an IllegalStateException is thrown.
- * This should only happen if one of the 
+ * This should only happen if one of the
  * operations makes a bad implementation of {@link SynchronizableOperation}.
- * 
+ *
  * @since 1.0
  */
 public class OperationSynchronizer extends NotificationListener {
@@ -199,13 +199,13 @@ public class OperationSynchronizer extends NotificationListener {
 
 	/**
 	 * Creates and returns an operation synchronizer for the two operations.
-	 * 
+	 *
 	 * <p>You can supply a {@link RunnableStateChanged} object to be called when
 	 * the {@link RunnableState} of one of two operations changes.
-	 * 
+	 *
 	 * @param operation1
 	 * @param operation2
-	 * @param r 
+	 * @param r
 	 * @return the {@link OperationSynchronizer}
 	 * @throws IllegalArgumentException if one of the two given operations does not
 	 * implement the {@link SynchronizableOperation}.

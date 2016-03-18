@@ -33,7 +33,7 @@ import com.samysadi.acs.core.Simulator;
 
 /**
  * For more details on the implementation, refer to the cumulative distribution function in <a href="http://en.wikipedia.org/wiki/Exponential_distribution">wikipedia</a>.
- * 
+ *
  * @since 1.0
  */
 public class Exponential extends AbstractRandom {
@@ -41,7 +41,7 @@ public class Exponential extends AbstractRandom {
 
 	/**
 	 * Generated numbers are between 0 (inclusive) and positive infinity (exclusive).
-	 * 
+	 *
 	 * @param mean <math><mi>mean</mi><mo>&gt;</mo><mn>0</mn></math> also equal to <math><msup><mi>λ</mi><mrow><mo>-</mo><mn>1</mn></mrow></msup></math> (see {@link Exponential}).
 	 * @param generator
 	 */
@@ -52,7 +52,7 @@ public class Exponential extends AbstractRandom {
 
 	/**
 	 * Creates a new instance based on the current simulator's random generator.
-	 * 
+	 *
 	 * @see Exponential#Exponential(double, Random)
 	 */
 	public Exponential(double mean) {

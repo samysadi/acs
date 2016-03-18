@@ -33,7 +33,7 @@ import com.samysadi.acs.core.Simulator;
 
 /**
  * For more details on the implementation, refer to the cumulative distribution function in <a href="http://en.wikipedia.org/wiki/Uniform_distribution_(continuous)">wikipedia</a>.
- * 
+ *
  * @since 1.0
  */
 public class Uniform extends AbstractRandom {
@@ -55,7 +55,7 @@ public class Uniform extends AbstractRandom {
 
 	/**
 	 * Creates a new instance based on the current simulator's random generator.
-	 * 
+	 *
 	 * @see Uniform#Uniform(double, double, Random)
 	 */
 	public Uniform(double min, double max) {
@@ -64,7 +64,7 @@ public class Uniform extends AbstractRandom {
 
 	/**
 	 * Equivalent to {@code Uniform(generator, 0.0d, max)}.
-	 * 
+	 *
 	 * @param max inclusive
 	 * @param generator
 	 */
@@ -74,7 +74,7 @@ public class Uniform extends AbstractRandom {
 
 	/**
 	 * Creates a new instance based on the current simulator's random generator.
-	 * 
+	 *
 	 * @see Uniform#Uniform(double, Random)
 	 */
 	public Uniform(double max) {
@@ -83,7 +83,7 @@ public class Uniform extends AbstractRandom {
 
 	/**
 	 * Equivalent to {@code Uniform(generator, 0.0d, Double.MAX_VALUE)}.
-	 * 
+	 *
 	 * @param generator
 	 */
 	public Uniform(Random generator) {
@@ -92,7 +92,7 @@ public class Uniform extends AbstractRandom {
 
 	/**
 	 * Creates a new instance based on the current simulator's random generator.
-	 * 
+	 *
 	 * @see Uniform#Uniform(double, double, Random)
 	 */
 	public Uniform() {

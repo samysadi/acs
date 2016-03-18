@@ -31,14 +31,14 @@ import com.samysadi.acs.hardware.pu.operation.ComputingOperation;
 import com.samysadi.acs.hardware.pu.operation.ComputingResource;
 import com.samysadi.acs.virtualization.job.operation.provisioner.FairProvisioner;
 
-public class FairComputingProvisioner extends FairProvisioner<ComputingOperation, ComputingResource> 
+public class FairComputingProvisioner extends FairProvisioner<ComputingOperation, ComputingResource>
 	implements ComputingProvisioner  {
 
 	private long capacity;
 
 	/**
 	 * Empty constructor that creates a provisioner with zero capacity.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link FairComputingProvisioner#FairComputingProvisioner(long)} though.
 	 */

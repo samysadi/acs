@@ -50,7 +50,7 @@ import com.samysadi.acs.virtualization.job.operation.OperationSynchronizer;
 import com.samysadi.acs.virtualization.job.operation.OperationSynchronizer.RunnableStateChanged;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class SfConsistencyManagerDefault extends EntityImpl implements SfConsistencyManager {
@@ -67,7 +67,7 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 
 	@Override
 	protected void initializeEntity() {
-		super.initializeEntity();	
+		super.initializeEntity();
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 	protected void updateReplica(StorageFile replica, StorageFile primary,
 			long pos, long size) {
 		if (replica == primary)
-			return; //nothing to do 
+			return; //nothing to do
 
 		if (replica.getProperty(PROP_UPD_KEY) != null) {
 			//already updating, so schedule this update for next time
@@ -247,7 +247,7 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 	@Override
 	public void unregister(StorageFile storageFile) {
 		List<StorageFile> replicas = getParent().getReplicationManager().getReplicas(storageFile);
-		
+
 		StorageFile primary = replicas.get(0);
 
 		NotificationListener l = (NotificationListener) primary.getProperty(PROP_CONSIST_KEY);
@@ -261,12 +261,12 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 			if (sync != null) {
 				sync.getOperation1().getParent().doCancel();
 				sync.getOperation1().getParent().setParent(null);
-	
+
 				sync.discard();
-	
+
 				replica.unsetProperty(PROP_UPD_KEY);
 			}
-	
+
 			@SuppressWarnings("unchecked")
 			LinkedList<long[]> nl = (LinkedList<long[]>) replica.getProperty(PROP_NEXTUPD_KEY);
 			if (nl != null)

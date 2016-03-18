@@ -36,7 +36,7 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class NotificationsTest {

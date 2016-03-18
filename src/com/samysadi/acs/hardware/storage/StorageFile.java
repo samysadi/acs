@@ -34,11 +34,11 @@ import com.samysadi.acs.user.User;
 import com.samysadi.acs.utility.NotificationCodes;
 
 /**
- * Contains methods that defines a file stored on a {@link Storage}. 
- * 
+ * Contains methods that defines a file stored on a {@link Storage}.
+ *
  * <p>All implementation classes should provide a constructor with one argument
  * of <tt>long</tt> type that specifies the StorageFile's size.
- * 
+ *
  * @since 1.0
  */
 public interface StorageFile extends MemoryZone {
@@ -62,7 +62,7 @@ public interface StorageFile extends MemoryZone {
 
 	/**
 	 * Returns the {@link StorageFileShareMode} of this file.
-	 * 
+	 *
 	 * @return the {@link StorageFileShareMode} of this file
 	 */
 	public StorageFileShareMode getShareMode();
@@ -74,21 +74,21 @@ public interface StorageFile extends MemoryZone {
 
 	/**
 	 * Returns <tt>true</tt> if an append operation can run now on this file.
-	 * 
+	 *
 	 * @return <tt>true</tt> if an append operation can run now on this file
 	 */
 	public boolean canAppend();
 
 	/**
 	 * Returns <tt>true</tt> if a write operation can run now on this file.
-	 * 
+	 *
 	 * @return <tt>true</tt> if a write operation can run now on this file
 	 */
 	public boolean canWrite();
 
 	/**
 	 * Returns <tt>true</tt> if a read operation can run now on this file.
-	 * 
+	 *
 	 * @return <tt>true</tt> if a read operation can run now on this file
 	 */
 	public boolean canRead();
@@ -109,17 +109,17 @@ public interface StorageFile extends MemoryZone {
 
 	/**
 	 * Returns the {@link SfPlacementPolicy} that was used when placing this StorageFile in the current storage.
-	 * <tt>null</tt> is returned if this StorageFile has no defined {@link SfPlacementPolicy}. 
-	 * 
+	 * <tt>null</tt> is returned if this StorageFile has no defined {@link SfPlacementPolicy}.
+	 *
 	 * @return the {@link SfPlacementPolicy} that was used when placing this StorageFile or <tt>null</tt>
 	 */
 	public SfPlacementPolicy getPlacementPolicy();
 
 	/**
 	 * This method is called by {@link SfPlacementPolicy} when placing this StorageFile on a storage.
-	 * 
+	 *
 	 * <p>You <b>should not</b> need to call this method if you are not implementing a placement policy.
-	 * 
+	 *
 	 * @param policy
 	 */
 	public void setPlacementPolicy(SfPlacementPolicy policy);
@@ -130,7 +130,7 @@ public interface StorageFile extends MemoryZone {
 	 * In both situations, this method guarantees that the current StorageFile's parent will be set to <tt>null</tt>.
 	 * Because this may take time, you need to listen to {@link NotificationCodes#ENTITY_PARENT_CHANGED} to know when
 	 * all actions have been taken.
-	 * 
+	 *
 	 * <p>If you only want to set a <tt>null</tt> parent for this StorageFile then use {@link StorageFile#setParent(Entity)}.
 	 * Which will set the <tt>null</tt> parent immediately.
 	 */
@@ -138,14 +138,14 @@ public interface StorageFile extends MemoryZone {
 
 	/**
 	 * Returns the {@link User} that owns this StorageFile.
-	 * 
+	 *
 	 * @return the {@link User} that owns this StorageFile
 	 */
 	public User getUser();
 
 	/**
 	 * Updates the {@link User} that owns this StorageFile.
-	 * 
+	 *
 	 * @param user
 	 */
 	public void setUser(User user);

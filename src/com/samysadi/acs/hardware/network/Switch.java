@@ -29,7 +29,7 @@ package com.samysadi.acs.hardware.network;
 /**
  * A switch is a {@link NetworkDevice} that connects one or more
  * devices between each other.
- * 
+ *
  * @since 1.0
  */
 public interface Switch extends NetworkDevice {
@@ -38,9 +38,9 @@ public interface Switch extends NetworkDevice {
 
 	/**
 	 * Returns <tt>true</tt>.
-	 * 
+	 *
 	 * <p>Switches can always route data from one interface to another.
-	 * 
+	 *
 	 * @return <tt>true</tt>
 	 */
 	@Override

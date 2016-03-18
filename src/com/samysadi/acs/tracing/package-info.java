@@ -26,15 +26,15 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * This package contains probes definitions of the simulator.
- * 
+ *
  * <p>The naming convention for a probe's class is set so that each
  * probe's class name contains a prefixthat is completely lowercase except for the first letter.
  * Based on that prefix, probes are classified into different sub-packages of which names
  * are is that prefix (in lower case).
- * 
+ *
  * <p>So for example, a probe name CpEnergyProbe will be put in the sub-package <i>cp</i>
  * with all probes that has the same prefix.
- * 
+ *
  * <p>This package contains the following sub-packages:<ul>
  * 		<li>cp: contains cloud provider probes;
  * 		<li>entity: contains entity probes;
@@ -45,7 +45,7 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
  * 		<li>user: contains user probes;
  * 		<li>vm: contains virtual machine probes.
  * </ul>
- * 
+ *
  * @since 1.0
  */
 package com.samysadi.acs.tracing;

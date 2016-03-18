@@ -37,14 +37,14 @@ import com.samysadi.acs.hardware.misc.MemoryZone;
 
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class RamDefault extends MemoryUnitImpl<RamZone> implements Ram {
 
 	/**
 	 * Empty constructor that creates a ram with zero capacity.
-	 * 
+	 *
 	 * <p>This constructor is provided only to satisfy the {@link Entity} contract.<br/>
 	 * You should use {@link RamDefault#RamDefault(long)} though.
 	 */

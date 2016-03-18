@@ -38,11 +38,11 @@ import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class HostDownBwProbe extends AbstractProbe<Long> implements DataRateProbe {
-	public static final String KEY = HostDownBwProbe.class.getSimpleName().substring(0, 
+	public static final String KEY = HostDownBwProbe.class.getSimpleName().substring(0,
 									HostDownBwProbe.class.getSimpleName().length() - 5);
 
 	@Override
