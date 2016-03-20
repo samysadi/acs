@@ -34,8 +34,11 @@ package com.samysadi.acs.core.entity;
 public interface UncloneableEntity extends Entity {
 
 	/**
+	 * This method is unsupported.
+	 *
 	 * @throws UnsupportedOperationException this operation is unsupported
 	 */
 	@Override
+	@Deprecated
 	public UncloneableEntity clone();
 }
