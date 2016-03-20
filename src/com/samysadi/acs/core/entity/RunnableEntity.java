@@ -186,4 +186,16 @@ public interface RunnableEntity extends Entity {
 	 * @return <tt>true</tt> if this entity is terminated
 	 */
 	public boolean isTerminated();
+
+	/**
+	 * Takes all actions to unplace this entity using the appropriate placement strategy if any, then
+	 * sets the <tt>null</tt> parent to this entity.
+	 *
+	 * <p>Because this may take time, you need to listen to {@link CoreNotificationCodes#ENTITY_PARENT_CHANGED} to know when
+	 * all actions have been taken.
+	 *
+	 * <p>If you only want to set a <tt>null</tt> parent for this entity then use {@link Entity#setParent(Entity)}.
+	 * Which will set the <tt>null</tt> parent immediately.
+	 */
+	public void unplace();
 }
