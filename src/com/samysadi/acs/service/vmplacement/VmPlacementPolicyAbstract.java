@@ -383,7 +383,7 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 				vm.setVirtualStorage(vStorage);
 			} else {
 				//check capacity and force the virtual storage to be in the same host as the VM
-				vStorage.setParent(null);
+				vStorage.unplace();
 				if (vStorage.getCapacity() < slaStorageCapacity)
 					vStorage.setCapacity(slaStorageCapacity);
 				vStorage.setParent(best);
@@ -456,7 +456,7 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 			vm.getVirtualRam().setParent(null);
 		vm.setUsableProcessingUnits(null);
 		if (vm.getVirtualStorage() != null)
-			vm.getVirtualStorage().setParent(null);
+			vm.getVirtualStorage().unplace();
 		vm.setUsableNetworkInterfaces(null);
 
 		//

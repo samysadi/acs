@@ -112,18 +112,6 @@ public interface VirtualMachine extends Entity, RunnableEntity {
 	public void setPlacementPolicy(VmPlacementPolicy policy);
 
 	/**
-	 * Unplaces current VM using current set {@link VmPlacementPolicy}, or sets a <tt>null</tt> parent for current VM
-	 * if no {@link VmPlacementPolicy} was set.<br/>
-	 * In both situations, this method guarantees that the current VM's parent will be set to <tt>null</tt>.
-	 * Because this may take time, you need to listen to {@link NotificationCodes#ENTITY_PARENT_CHANGED} to know when
-	 * all actions have been taken.
-	 *
-	 * <p>If you only want to set a <tt>null</tt> parent for this VM then use {@link VirtualMachine#setParent(Entity)}.
-	 * Which will set the <tt>null</tt> parent immediately.
-	 */
-	public void unplace();
-
-	/**
 	 * Returns the {@link User} that owns this Virtual Machine.
 	 *
 	 * @return the {@link User} that owns this Virtual Machine

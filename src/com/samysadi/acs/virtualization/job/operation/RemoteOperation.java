@@ -62,4 +62,14 @@ public interface RemoteOperation<Resource> extends Operation<Resource> {
 	 */
 	public void setDestinationJob(Job destinationJob);
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>Additionally, this method sets a <tt>null</tt> destination job
+	 * to this operation.
+	 *
+	 */
+	@Override
+	public void unplace();
+
 }

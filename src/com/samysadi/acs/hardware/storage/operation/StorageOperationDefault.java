@@ -193,7 +193,7 @@ public class StorageOperationDefault extends LongOperationImpl<StorageResource> 
 			return;
 		vm.doTerminate();
 		vm.setUser(null);
-		vm.setParent(null);
+		vm.unplace();
 	}
 
 	private String getCannotActivateReason() {
@@ -323,6 +323,8 @@ public class StorageOperationDefault extends LongOperationImpl<StorageResource> 
 			tempVm = old.getParent().getParent();
 		}
 
+		old.unplace();
+
 		//schedule free resources.
 		//Don't free them right away, may provoke concurrent modification exceptions.
 		Simulator.getSimulator().schedule(new MyStaticEvent0(tempVm, pJob));
@@ -339,7 +341,7 @@ public class StorageOperationDefault extends LongOperationImpl<StorageResource> 
 
 		@Override
 		public void process() {
-			pJob.setParent(null);
+			pJob.unplace();
 			removeTemporaryVm(tempVm);
 		}
 	}

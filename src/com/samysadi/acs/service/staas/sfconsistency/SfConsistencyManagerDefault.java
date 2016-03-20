@@ -46,6 +46,7 @@ import com.samysadi.acs.utility.collections.Bitmap.SubBitmap;
 import com.samysadi.acs.utility.factory.Factory;
 import com.samysadi.acs.virtualization.VirtualMachine;
 import com.samysadi.acs.virtualization.job.Job;
+import com.samysadi.acs.virtualization.job.operation.Operation;
 import com.samysadi.acs.virtualization.job.operation.OperationSynchronizer;
 import com.samysadi.acs.virtualization.job.operation.OperationSynchronizer.RunnableStateChanged;
 
@@ -53,6 +54,7 @@ import com.samysadi.acs.virtualization.job.operation.OperationSynchronizer.Runna
  *
  * @since 1.0
  */
+//FIXME set owner for files
 public class SfConsistencyManagerDefault extends EntityImpl implements SfConsistencyManager {
 
 	public SfConsistencyManagerDefault() {
@@ -92,7 +94,7 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 	private static void removeTemporaryVm(VirtualMachine vm) {
 		vm.doTerminate();
 		vm.setUser(null);
-		vm.setParent(null);
+		vm.unplace();
 	}
 
 	private static final Object PROP_CONSIST_KEY = new Object();
@@ -136,7 +138,7 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 			else if (deltaSize > 0) {
 				if (replica.getParent().getFreeCapacity() < deltaSize) {
 					//not enough capacity, let's delete this and let replication manager create a new replica if needed
-					replica.setParent(null);
+					replica.unplace();
 					return;
 				}
 				replica.setSize(primary.getSize());
@@ -166,15 +168,39 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 			j.doStart();
 		}
 
-		StorageOperation read = j.readFile(primary, pos, size, null);
+		NotificationListener n_read = new NotificationListener() {
+			@Override
+			protected void notificationPerformed(Notifier notifier,
+					int notification_code, Object data) {
+				Operation<?> o = ((Operation<?>) notifier);
+				if (o.isTerminated()) {
+					this.discard();
+					o.unplace();
+				}
+			}
+		};
+
+		StorageOperation read = j.readFile(primary, pos, size, n_read);
 		if (read == null) {
 			getLogger().log(replica, "Consistency update failed, because we cannot read primary file.");
 			j.doCancel();
-			j.setParent(null);
+			j.unplace();
 			return;
 		}
 
-		StorageOperation write = j.writeFile(replica, pos, size, null);
+		NotificationListener n_write = new NotificationListener() {
+			@Override
+			protected void notificationPerformed(Notifier notifier,
+					int notification_code, Object data) {
+				Operation<?> o = ((Operation<?>) notifier);
+				if (o.isTerminated()) {
+					this.discard();
+					o.unplace();
+				}
+			}
+		};
+
+		StorageOperation write = j.writeFile(replica, pos, size, n_write);
 		if (write == null) {
 			getLogger().log(replica, "Consistency update failed, because we cannot write replica file.");
 			j.doCancel();
@@ -260,7 +286,7 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 			OperationSynchronizer sync = (OperationSynchronizer) replica.getProperty(PROP_UPD_KEY);
 			if (sync != null) {
 				sync.getOperation1().getParent().doCancel();
-				sync.getOperation1().getParent().setParent(null);
+				sync.getOperation1().getParent().unplace();
 
 				sync.discard();
 

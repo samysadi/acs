@@ -280,7 +280,7 @@ public abstract class SfPlacementPolicyAbstract extends EntityImpl implements Sf
 			throw new IllegalArgumentException("The given StorageFile was not placed using this VmPlacementPolicy");
 
 		//
-		storageFile.setParent(null);
+		storageFile.unplace();
 		storageFile.setPlacementPolicy(null);
 
 		Host host = storage.getParentHost();

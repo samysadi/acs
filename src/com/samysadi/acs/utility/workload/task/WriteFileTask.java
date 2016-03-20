@@ -105,6 +105,7 @@ public class WriteFileTask extends TaskImpl {
 				Operation<?> o = ((Operation<?>) notifier);
 				if (o.isTerminated()) {
 					this.discard();
+					o.unplace();
 
 					if (o.getRunnableState() == RunnableState.FAILED)
 						fail();
@@ -130,7 +131,7 @@ public class WriteFileTask extends TaskImpl {
 
 		this.remainingSize-= o.getCompletedLength();
 
-		o.setParent(null);
+		o.unplace();
 
 		if (this.remainingSize <= 0)
 			success();

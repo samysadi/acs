@@ -51,12 +51,14 @@ import com.samysadi.acs.utility.factory.Factory;
 import com.samysadi.acs.virtualization.VirtualMachine;
 import com.samysadi.acs.virtualization.job.Job;
 import com.samysadi.acs.virtualization.job.JobDefault;
+import com.samysadi.acs.virtualization.job.operation.Operation;
 import com.samysadi.acs.virtualization.job.operation.OperationSynchronizer;
 
 /**
  *
  * @since 1.0
  */
+//FIXME should be rewritten
 public class MigrationHandlerDefault extends EntityImpl implements MigrationHandler {
 
 	private static final Object MIGRATION_MAP = new Object();
@@ -103,7 +105,7 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 	private static void removeTemporaryVm(VirtualMachine vm) {
 		vm.doTerminate();
 		vm.setUser(null);
-		vm.setParent(null);
+		vm.unplace();
 	}
 
 	@Override
@@ -226,7 +228,7 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 		 */
 		private void fail() {
 			this.doFail();
-			this.setParent(null);
+			this.unplace();
 
 			notify(NotificationCodes.MIGRATION_ERROR, migrationRequest);
 			migrationRequest.getVm().notify(NotificationCodes.VM_CANNOT_BE_MIGRATED, migrationRequest);
@@ -339,7 +341,7 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 
 					if (migrateStorage && migrationRequest.getVm().getVirtualStorage() != null) {
 						//unlink virtual storage from its parent, so that it is moved to the destination host during placement
-						migrationRequest.getVm().getVirtualStorage().setParent(null);
+						migrationRequest.getVm().getVirtualStorage().unplace();
 					}
 
 					migrationRequest.getVm().addListener(NotificationCodes.ENTITY_PARENT_CHANGED, new NotificationListener() {
@@ -367,13 +369,14 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 								migrationRequest.getVm().doStart();
 
 							MigrationJob.this.doCancel();
-							MigrationJob.this.setParent(null);
+							MigrationJob.this.unplace();
 							final MigrationResult migrationResult = new MigrationResult(migrationRequest);
 							MigrationHandlerDefault.this.notify(NotificationCodes.MIGRATION_SUCCESS, migrationResult);
 							migrationRequest.getVm().notify(NotificationCodes.VM_MIGRATED, migrationResult);
 						}
 					});
 
+					migrationRequest.getVm().setUser(null);
 					migrationRequest.getVm().unplace();
 
 					return;
@@ -444,8 +447,8 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 					if (!operation.isTerminated())
 						return;
 
-					operation.setParent(null);
 					this.discard();
+					operation.unplace();
 
 					if (operation.getRunnableState() != RunnableState.COMPLETED) {
 						MigrationJob.this.fail();
@@ -471,7 +474,7 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 					getLogger().log(this, "Migration failed because we cannot read/write from remote storage.");
 					removeTemporaryVm(muJob.getParent());
 					nextOperation.doPause();
-					nextOperation.setParent(null);
+					nextOperation.unplace();
 					MigrationJob.this.fail();
 					return;
 				}
@@ -482,47 +485,77 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 						getLogger().log(this, "Migration failed because we cannot read from remote storage.");
 						removeTemporaryVm(muJob.getParent());
 						nextOperation.doPause();
-						nextOperation.setParent(null);
+						nextOperation.unplace();
 						MigrationJob.this.fail();
 						return;
 					}
 					muJob.doStart();
 				}
 
-				StorageOperation read = muJob.readFile((VirtualStorage)mu, 0, remaining, null);
+				NotificationListener n_read = new NotificationListener() {
+					@Override
+					protected void notificationPerformed(Notifier notifier,
+							int notification_code, Object data) {
+						Operation<?> o = ((Operation<?>) notifier);
+						if (o.isTerminated()) {
+							this.discard();
+							o.unplace();
+						}
+					}
+				};
+
+				StorageOperation read = muJob.readFile((VirtualStorage)mu, 0, remaining, n_read);
 				StorageOperation write = null;
 				for (Storage s: destinationJob.getParent().getParent().getStorages())
 					if (s.getFreeCapacity() >= remaining) {
 						StorageFile writeFile = Factory.getFactory(destinationJob).newStorageFile(null, s, remaining);
-						write = destinationJob.writeFile(writeFile, 0, remaining, null);
+
+						NotificationListener n_write = new NotificationListener() {
+							@Override
+							protected void notificationPerformed(Notifier notifier,
+									int notification_code, Object data) {
+								StorageOperation o = ((StorageOperation) notifier);
+								if (o.isTerminated()) {
+									StorageFile writeFile = o.getStorageFile();
+									writeFile.unplace();
+
+									this.discard();
+									o.unplace();
+								}
+							}
+						};
+
+						write = destinationJob.writeFile(writeFile, 0, remaining, n_write);
 					}
 
 				if (read == null || write == null) {
 					if (write != null) {
 						getLogger().log(this, "Migration failed because we cannot read from source storage.");
 						write.doCancel();
-						write.setParent(null);
+						write.unplace();
 					} else
 						getLogger().log(this, "Migration failed because we cannot write to destination storage.");
 
 					removeTemporaryVm(muJob.getParent());
 					nextOperation.doPause();
-					nextOperation.setParent(null);
+					nextOperation.unplace();
 					MigrationJob.this.fail();
 					return;
 				}
 
 				final OperationSynchronizer sync0 = OperationSynchronizer.synchronizeOperations(nextOperation, read);
-				OperationSynchronizer.synchronizeOperations(read, write, new MyStaticRsc0(sync0));
+				OperationSynchronizer.synchronizeOperations(read, write, new MyStaticRsc0(sync0, muVm));
 			}
 		}
 	}
 
 	private static final class MyStaticRsc0 extends OperationSynchronizer.RunnableStateChanged {
 		private final OperationSynchronizer sync0;
+		private VirtualMachine tempVm;
 
-		private MyStaticRsc0(OperationSynchronizer sync0) {
+		private MyStaticRsc0(OperationSynchronizer sync0, VirtualMachine tempVm) {
 			this.sync0 = sync0;
+			this.tempVm = tempVm;
 		}
 
 		@Override
@@ -531,14 +564,13 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 				return;
 
 			//discard the file, it was here only to add storage overhead
-			((StorageOperation) sync.getOperation2()).getStorageFile().setParent(null);
+			((StorageOperation) sync.getOperation2()).getStorageFile().unplace();
 
 			//discard the write operation
-			((StorageOperation) sync.getOperation2()).setParent(null);
+			((StorageOperation) sync.getOperation2()).unplace();
 
-			//discard the read job (and thus read operation)
-			Job muJob = sync.getOperation1().getParent();
-			removeTemporaryVm(muJob.getParent());
+			//discard the read vm (and thus read job and operation)
+			removeTemporaryVm(tempVm);
 
 			sync.discard();
 			sync0.discard();

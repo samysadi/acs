@@ -155,4 +155,9 @@ public abstract class RunnableEntityImpl extends EntityImpl implements RunnableE
 				getRunnableState() == RunnableState.FAILED
 			;
 	}
+
+	@Override
+	public void unplace() {
+		setParent(null);
+	}
 }

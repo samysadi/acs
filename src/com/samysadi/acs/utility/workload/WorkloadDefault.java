@@ -423,7 +423,7 @@ public class WorkloadDefault extends JobDefault implements Workload {
 	private static void removeTemporaryVm(VirtualMachine vm) {
 		vm.doTerminate();
 		vm.setUser(null);
-		vm.setParent(null);
+		vm.unplace();
 	}
 
 	protected void updateDefaultRemoteJob() {

@@ -245,9 +245,11 @@ public class StaasDefault extends EntityImpl implements Staas {
 					n.discard();
 				}
 
+				//FIXME what about the owner of the replica?
 				replica.unplace();
 			}
 		} else {
+			//FIXME what about the owner of the storageFile
 			storageFile.unplace();
 		}
 	}

@@ -128,6 +128,12 @@ public class NetworkOperationDefault extends LongOperationImpl<NetworkResource> 
 	}
 
 	@Override
+	public void unplace() {
+		this.setDestinationJob(null);
+		super.unplace();
+	}
+
+	@Override
 	public boolean canRestart() {
 		if (getDestinationJob() == null ||
 				!getDestinationJob().isRunning())

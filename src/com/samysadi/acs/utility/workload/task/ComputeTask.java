@@ -69,6 +69,7 @@ public class ComputeTask extends TaskImpl {
 				Operation<?> o = ((Operation<?>) notifier);
 				if (o.isTerminated()) {
 					this.discard();
+					o.unplace();
 
 					if (o.getRunnableState() == RunnableState.FAILED)
 						fail();
@@ -94,7 +95,7 @@ public class ComputeTask extends TaskImpl {
 
 		this.remainingLength-= o.getCompletedLength();
 
-		o.setParent(null);
+		o.unplace();
 
 		if (this.remainingLength <= 0)
 			success();

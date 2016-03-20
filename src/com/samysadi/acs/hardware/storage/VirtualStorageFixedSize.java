@@ -158,6 +158,7 @@ public class VirtualStorageFixedSize extends VirtualMemoryUnitFixedSize<StorageF
 
 		if (old != null)
 			old.notify(NotificationCodes.USER_STORAGEFILE_DETACHED, this);
-		this.user.notify(NotificationCodes.USER_STORAGEFILE_ATTACHED, this);
+		if (this.user != null)
+			this.user.notify(NotificationCodes.USER_STORAGEFILE_ATTACHED, this);
 	}
 }

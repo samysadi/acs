@@ -296,7 +296,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 	public ComputingOperation compute(long lengthInMi, NotificationListener listener) {
 		ComputingOperation o = Factory.getFactory(this).newComputingOperation(null, this, lengthInMi);
 		if (!o.canStart()) {
-			o.setParent(null);
+			o.unplace();
 			return null;
 		}
 		if (listener != null)
@@ -338,7 +338,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 	public StorageOperation readFile(StorageFile file, long filePos, long size, NotificationListener listener) {
 		StorageOperation o = Factory.getFactory(this).newStorageOperation(null, this, file, StorageOperationType.READ, filePos, size);
 		if (!o.canStart()) {
-			o.setParent(null);
+			o.unplace();
 			return null;
 		}
 		if (listener != null)
@@ -351,7 +351,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 	public StorageOperation writeFile(StorageFile file, long filePos, long size, NotificationListener listener) {
 		StorageOperation o = Factory.getFactory(this).newStorageOperation(null, this, file, StorageOperationType.WRITE, filePos, size);
 		if (!o.canStart()) {
-			o.setParent(null);
+			o.unplace();
 			return null;
 		}
 		if (listener != null)
@@ -364,7 +364,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 	public StorageOperation appendFile(StorageFile file, long size, NotificationListener listener) {
 		StorageOperation o = Factory.getFactory(this).newStorageOperation(null, this, file, StorageOperationType.APPEND, 0, size);
 		if (!o.canStart()) {
-			o.setParent(null);
+			o.unplace();
 			return null;
 		}
 		if (listener != null)
@@ -380,7 +380,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 	public NetworkOperation sendData(Job destinationJob, long dataSize, NotificationListener listener) {
 		NetworkOperation o = Factory.getFactory(this).newNetworkOperation(null, this, destinationJob, dataSize);
 		if (!o.canStart()) {
-			o.setParent(null);
+			o.unplace();
 			return null;
 		}
 		if (listener != null)
@@ -399,7 +399,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 	private static void removeTemporaryVm(VirtualMachine vm) {
 		vm.doTerminate();
 		vm.setUser(null);
-		vm.setParent(null);
+		vm.unplace();
 	}
 
 	@Override
@@ -407,7 +407,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 			final NotificationListener listener) {
 		if (getParent() == null)
 			return null;
-		VirtualMachine destinationVm = newTemporaryVm(destinationHost, getParent().getUser());
+		final VirtualMachine destinationVm = newTemporaryVm(destinationHost, getParent().getUser());
 		if (destinationVm.canStart())
 			destinationVm.doStart();
 		Job destinationJob = Factory.getFactory(this).newJob(null, destinationVm);
@@ -417,7 +417,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 		NetworkOperation o = Factory.getFactory(this).newNetworkOperation(null, this, destinationJob, dataSize);
 		if (!o.canStart()) {
 			removeTemporaryVm(destinationVm);
-			o.setParent(null);
+			o.unplace();
 			return null;
 		}
 		if (listener != null)
@@ -426,14 +426,13 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 			@Override
 			protected void notificationPerformed(Notifier notifier,
 					int notification_code, Object data) {
-				NetworkOperation o = (NetworkOperation) notifier;
+				final NetworkOperation o = (NetworkOperation) notifier;
 				if (o.getParent() == null || o.isTerminated()) {
-					final VirtualMachine vm = o.getDestinationJob().getParent();
 					//make sure all listeners are invoked before discarding temporary vm
 					Simulator.getSimulator().schedule(1, new DispensableEventImpl() {
 						@Override
 						public void process() {
-							removeTemporaryVm(vm);
+							removeTemporaryVm(destinationVm);
 						}
 					});
 					this.discard();
@@ -458,7 +457,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 			NotificationListener listener) {
 		if (getParent() == null)
 			return null;
-		VirtualMachine srcVm = newTemporaryVm(srcHost, getParent().getUser());
+		final VirtualMachine srcVm = newTemporaryVm(srcHost, getParent().getUser());
 		if (srcVm.canStart())
 			srcVm.doStart();
 		Job srcJob = Factory.getFactory(this).newJob(null, srcVm);
@@ -468,7 +467,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 		NetworkOperation o = Factory.getFactory(this).newNetworkOperation(null, srcJob, this, dataSize);
 		if (!o.canStart()) {
 			removeTemporaryVm(srcVm);
-			o.setParent(null);
+			o.unplace();
 			return null;
 		}
 		if (listener != null)
@@ -479,12 +478,11 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 					int notification_code, Object data) {
 				NetworkOperation o = (NetworkOperation) notifier;
 				if (o.getParent() == null || o.isTerminated()) {
-					final VirtualMachine vm = o.getParent().getParent();
 					//make sure all listeners are invoked before discarding temporary vm
 					Simulator.getSimulator().schedule(1, new DispensableEventImpl() {
 						@Override
 						public void process() {
-							removeTemporaryVm(vm);
+							removeTemporaryVm(srcVm);
 						}
 					});
 					this.discard();
@@ -506,7 +504,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 		TimerOperation o = new TimerOperation(delay);
 		o.setParent(this);
 		if (!o.canStart()) {
-			o.setParent(null);
+			o.unplace();
 			return null;
 		}
 		if (listener != null)

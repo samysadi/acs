@@ -95,7 +95,7 @@ public class ThinClientDefault extends NetworkDeviceDefault implements ThinClien
 			if (this.mainVm == entity)
 				return;
 			if (this.mainVm != null)
-				this.mainVm.setParent(null);
+				this.mainVm.unplace();
 			this.mainVm = (ThinClientVirtualMachine) entity;
 		} else if (
 			(entity instanceof VirtualMachine) ||

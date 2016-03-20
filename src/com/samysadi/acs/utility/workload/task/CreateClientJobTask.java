@@ -95,7 +95,7 @@ public class CreateClientJobTask extends TaskImpl {
 			@Override
 			public void process() {
 				if (!job.canStart()) {
-					job.setParent(null);
+					job.unplace();
 					fail("The job cannot be started on the user's ThinClient");
 					return;
 				}
