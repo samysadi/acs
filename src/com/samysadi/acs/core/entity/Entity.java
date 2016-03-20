@@ -55,8 +55,9 @@ public interface Entity extends Notifier, Probed, Cloneable {
 	/**
 	 * Creates a clone of this entity and sets its parent to <tt>null</tt>.
 	 *
-	 * <p>This is a deep clone method which also clones children entities and sets their parents
+	 * <p>This is a deep clone method which also clones almost all children entities and sets their parents
 	 * to the newly created clone.
+	 * The only children which are not cloned are those implementing the {@link UncloneableEntity} interface.
 	 *
 	 * <p>Implementations must ensure that the new clone will be independent from the current entity.
 	 */

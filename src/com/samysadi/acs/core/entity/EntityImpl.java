@@ -75,6 +75,8 @@ public class EntityImpl extends ProbedImpl implements Entity {
 
 		clone.initializeEntity();
 		for (Entity e: this.getEntities()) {
+			if (e instanceof UncloneableEntity)
+				continue;
 			Entity cloneEntity = e.clone();
 			cloneEntity.setParent(clone);
 		}
