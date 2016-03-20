@@ -140,7 +140,7 @@ public interface Job extends Entity, RunnableEntity {
 	public StorageFile createFile(long size);
 
 	/**
-	 * Creates and starts a read operation on the given file.
+	 * Creates and starts a read {@link StorageOperation} on the given file.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
 	 *
 	 * @param file
@@ -154,7 +154,7 @@ public interface Job extends Entity, RunnableEntity {
 	public StorageOperation readFile(StorageFile file, long filePos, long size, NotificationListener listener);
 
 	/**
-	 * Creates and starts a write operation on the given file.
+	 * Creates and starts a write {@link StorageOperation} on the given file.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
 	 *
 	 * @param file
@@ -168,7 +168,7 @@ public interface Job extends Entity, RunnableEntity {
 	public StorageOperation writeFile(StorageFile file, long filePos, long size, NotificationListener listener);
 
 	/**
-	 * Creates and starts an append operation on the given file.
+	 * Creates and starts an append  {@link StorageOperation} on the given file.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
 	 *
 	 * @param file
@@ -181,7 +181,7 @@ public interface Job extends Entity, RunnableEntity {
 	public StorageOperation appendFile(StorageFile file, long size, NotificationListener listener);
 
 	/**
-	 * Creates and starts a network operation to send the given <tt>dataSize</tt> to the given <tt>destinationJob</tt>.
+	 * Creates and starts a {@link NetworkOperation} to send the given <tt>dataSize</tt> to the given <tt>destinationJob</tt>.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
 	 *
 	 * @param destinationJob
@@ -194,7 +194,7 @@ public interface Job extends Entity, RunnableEntity {
 	public NetworkOperation sendData(Job destinationJob, long dataSize, NotificationListener listener);
 
 	/**
-	 * Creates and starts a network operation to send the given <tt>dataSize</tt> to the given <tt>destinationHost</tt>.
+	 * Creates and starts a {@link NetworkOperation} to send the given <tt>dataSize</tt> to the given <tt>destinationHost</tt>.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
 	 *
 	 * <p>This method will automatically create a job and a virtual machine on the destination host to receive the data.<br/>
@@ -206,7 +206,7 @@ public interface Job extends Entity, RunnableEntity {
 	public NetworkOperation sendData(Host destinationHost, long dataSize, NotificationListener listener);
 
 	/**
-	 * Creates and starts a network operation that sends data from the given <tt>srcJob</tt> to the current job.
+	 * Creates and starts a {@link NetworkOperation} that sends data from the given <tt>srcJob</tt> to the current job.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
 	 *
 	 * <p>This method is equivalent to:
@@ -222,7 +222,7 @@ public interface Job extends Entity, RunnableEntity {
 	public NetworkOperation receiveData(Job srcJob, long dataSize, NotificationListener listener);
 
 	/**
-	 * Creates and starts a network operation on the <tt>srcHost</tt> which will send the the given <tt>dataSize</tt>
+	 * Creates and starts a {@link NetworkOperation} on the <tt>srcHost</tt> which will send the the given <tt>dataSize</tt>
 	 * to the current job.
 	 * The created operation is returned, but <tt>null</tt> can also be returned if the operation cannot be created/started.
 	 *
