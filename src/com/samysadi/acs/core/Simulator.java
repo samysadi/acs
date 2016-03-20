@@ -449,9 +449,9 @@ public class Simulator extends EntityImpl {
 				throw new IllegalArgumentException("This Simulator cannot be run using another Thread than the Thread that was used for its instantiation");
 		}
 
-		getLogger().log(Level.FINE, "Simulation started.");
+		getLogger().log(Level.INFO, "Simulation started.");
 
-		final Level progress_level = getConfig().getLevel("Log.Progress.Level", Level.FINER);
+		final Level progress_level = getConfig().getLevel("Log.Progress.Level", Level.FINE);
 		final boolean progress_level_loggable = getLogger().isLoggable(progress_level);
 		final long progress_delay = Math.round(getConfig().getDouble("Log.Progress.Delay", 10d) *
 				1000000000);
@@ -492,8 +492,8 @@ public class Simulator extends EntityImpl {
 					if (tt - tick2 > progress_delay) {
 						long h = added_report == 0 ? 0 : Math.round((1000000000d / (tt - tick2)) * (added_report+1));
 						tick2 = tt;
-						Logger.getGlobal().log(Level.FINER, "Simulation progress: remains " + this.nonDispensableEventsCount + " events and " + this.nextEvents.size() + " ticks (" + h + "e/s)");
-						Logger.getGlobal().log(Level.FINER, "Memory used: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) >> 20) + "MiB");
+						Logger.getGlobal().log(progress_level, "Simulation progress: remains " + this.nonDispensableEventsCount + " events and " + this.nextEvents.size() + " ticks (" + h + "e/s)");
+						Logger.getGlobal().log(progress_level, "Memory used: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) >> 20) + "MiB");
 						added_report = 0;
 					}
 					added_report += next_report;
@@ -527,10 +527,10 @@ public class Simulator extends EntityImpl {
 
 		this.systemTime += (System.nanoTime() - tick) / 1000000;
 
-		getLogger().log(Level.FINE, "Simulation stopped. Total execution time: " + Simulator.formatTime(getSystemTime() * Simulator.MILLISECOND) + ".");
+		getLogger().log(Level.INFO, "Simulation stopped. Total execution time: " + Simulator.formatTime(getSystemTime() * Simulator.MILLISECOND) + ".");
 
 		if (!this.hasMoreEvents())
-			getLogger().log(Level.FINE, "SIMULATION ENDED.");
+			getLogger().log(Level.INFO, "SIMULATION ENDED.");
 
 		this.isNotStopped = false;
 	}

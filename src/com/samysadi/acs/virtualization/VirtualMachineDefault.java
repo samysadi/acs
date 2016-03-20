@@ -28,9 +28,9 @@ package com.samysadi.acs.virtualization;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 import com.samysadi.acs.core.entity.Entity;
 import com.samysadi.acs.core.entity.FailureProneEntity;
@@ -213,15 +213,9 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 		if (!isRunning())
 			throw new IllegalStateException("This VM (" + this + ") is not running");
 
-		//FIXME
-		try {
-			for (Job job: this.getJobs())
-				if (job.isRunning())
-					job.doPause();
-		} catch(ConcurrentModificationException e) {
-			getLogger().log("" + this.getId());
-			throw e;
-		}
+		for (Job job: this.getJobs())
+			if (job.isRunning())
+				job.doPause();
 
 		unlockParentForUsedResources();
 		setRunnableState(RunnableState.PAUSED);
@@ -701,14 +695,14 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 				int notification_code, Object data) {
 			FailureProneEntity e = (FailureProneEntity) notifier;
 			if (e.getFailureState() != FailureState.OK) {
-				getLogger().log(VirtualMachineDefault.this, "Failed because a device (" + e + ") has stopped.");
+				getLogger().log(Level.FINEST, VirtualMachineDefault.this, "Failed because a device (" + e + ") has stopped.");
 				VirtualMachineDefault.this.doFail();
 			}
 		}
 
 		public boolean addFailureDependency(FailureProneEntity e) {
 			if (e.getFailureState() != FailureState.OK) {
-				getLogger().log(VirtualMachineDefault.this, "Failed because a device (" + e + ") has stopped.");
+				getLogger().log(Level.FINEST, VirtualMachineDefault.this, "Failed because a device (" + e + ") has stopped.");
 				return false;
 			}
 
@@ -726,14 +720,14 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 				int notification_code, Object data) {
 			PoweredEntity e = (PoweredEntity) notifier;
 			if (e.getPowerState() != PowerState.ON) {
-				getLogger().log(VirtualMachineDefault.this, "Failed because a device (" + e + ") is powered-off.");
+				getLogger().log(Level.FINEST, VirtualMachineDefault.this, "Failed because a device (" + e + ") is powered-off.");
 				VirtualMachineDefault.this.doFail();
 			}
 		}
 
 		public boolean addPowerDependency(PoweredEntity e) {
 			if (e.getPowerState() != PowerState.ON) {
-				getLogger().log(VirtualMachineDefault.this, "Failed because a device (" + e + ") is powered-off.");
+				getLogger().log(Level.FINEST, VirtualMachineDefault.this, "Failed because a device (" + e + ") is powered-off.");
 				return false;
 			}
 

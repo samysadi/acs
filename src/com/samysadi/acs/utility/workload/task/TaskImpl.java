@@ -25,6 +25,8 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 */
 package com.samysadi.acs.utility.workload.task;
 
+import java.util.logging.Level;
+
 import com.samysadi.acs.core.Config;
 import com.samysadi.acs.core.Logger;
 import com.samysadi.acs.utility.NotificationCodes;
@@ -83,8 +85,8 @@ public abstract class TaskImpl implements Task {
 
 	protected abstract boolean isExecuting();
 
-	protected void log(String message) {
-		Logger.getGlobal().log(this.getClass().getSimpleName() + ": " + message);
+	protected void log(Level level, String message) {
+		Logger.getGlobal().log(level, this.getClass().getSimpleName() + ": " + message);
 	}
 
 	protected void fail(String message) {
@@ -92,7 +94,7 @@ public abstract class TaskImpl implements Task {
 			this.interrupt();
 
 		if (message != null)
-			log("Failed: " + message);
+			log(Level.INFO, "Failed: " + message);
 
 		getWorkload().notify(NotificationCodes.WORKLOAD_TASK_FAILED, this);
 	}

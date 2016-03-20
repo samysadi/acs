@@ -27,6 +27,7 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 package com.samysadi.acs.service.migration;
 
 import java.util.ListIterator;
+import java.util.logging.Level;
 
 import com.samysadi.acs.core.Simulator;
 import com.samysadi.acs.core.entity.Entity;
@@ -276,7 +277,7 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 			destinationJob.setParent(migrationDestinationVm);
 
 			if (!migrationDestinationVm.canStart()) {
-				getLogger().log(migrationRequest.getVm(), "Migration failed because the migration job cannot be started on destination host.");
+				getLogger().log(Level.FINEST, migrationRequest.getVm(), "Migration failed because the migration job cannot be started on destination host.");
 				MigrationJob.this.fail();
 				return;
 			}
@@ -284,7 +285,7 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 
 			if (!destinationJob.isRunning()) {
 				if (!destinationJob.canStart()) {
-					getLogger().log(migrationRequest.getVm(), "Migration failed because the migration job cannot be started on destination host.");
+					getLogger().log(Level.FINEST, migrationRequest.getVm(), "Migration failed because the migration job cannot be started on destination host.");
 					MigrationJob.this.fail();
 					return;
 				}
@@ -354,7 +355,7 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 								placeNext = false;
 								if (!MigrationHandlerDefault.this.getParent().getVmPlacementPolicy().canPlaceVm(migrationRequest.getVm(), migrationRequest.getDestinationHost())) {
 									this.discard();
-									getLogger().log(migrationRequest.getVm(), "Migration failed because the VM cannot be placed on destination host.");
+									getLogger().log(Level.FINEST, migrationRequest.getVm(), "Migration failed because the VM cannot be placed on destination host.");
 									MigrationJob.this.fail();
 									return;
 								}
@@ -459,7 +460,7 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 				}
 			});
 			if (nextOperation == null) {
-				getLogger().log(this, "Migration failed because we cannot sync data.");
+				getLogger().log(Level.FINEST, this, "Migration failed because we cannot sync data.");
 				MigrationJob.this.fail();
 				return;
 			}
@@ -471,7 +472,7 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 				muJob.setParent(muVm);
 
 				if (!muVm.canStart()) {
-					getLogger().log(this, "Migration failed because we cannot read/write from remote storage.");
+					getLogger().log(Level.FINEST, this, "Migration failed because we cannot read/write from remote storage.");
 					removeTemporaryVm(muJob.getParent());
 					nextOperation.doPause();
 					nextOperation.unplace();
@@ -482,7 +483,7 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 
 				if (!muJob.isRunning()) {
 					if (!muJob.canStart()) {
-						getLogger().log(this, "Migration failed because we cannot read from remote storage.");
+						getLogger().log(Level.FINEST, this, "Migration failed because we cannot read from remote storage.");
 						removeTemporaryVm(muJob.getParent());
 						nextOperation.doPause();
 						nextOperation.unplace();
@@ -530,11 +531,11 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 
 				if (read == null || write == null) {
 					if (write != null) {
-						getLogger().log(this, "Migration failed because we cannot read from source storage.");
+						getLogger().log(Level.FINEST, this, "Migration failed because we cannot read from source storage.");
 						write.doCancel();
 						write.unplace();
 					} else
-						getLogger().log(this, "Migration failed because we cannot write to destination storage.");
+						getLogger().log(Level.FINEST, this, "Migration failed because we cannot write to destination storage.");
 
 					removeTemporaryVm(muJob.getParent());
 					nextOperation.doPause();

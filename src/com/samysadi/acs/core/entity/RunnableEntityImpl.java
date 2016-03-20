@@ -26,6 +26,8 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.core.entity;
 
+import java.util.logging.Level;
+
 import com.samysadi.acs.core.notifications.CoreNotificationCodes;
 
 /**
@@ -57,7 +59,7 @@ public abstract class RunnableEntityImpl extends EntityImpl implements RunnableE
 		if (parent == getParent())
 			return;
 		if (this.isRunning()) {
-			getLogger().log(this, "Canceled because a new parent is set.");
+			getLogger().log(Level.FINEST, this, "Canceled because a new parent is set.");
 			this.doCancel();
 		}
 		super.setParent(parent);

@@ -107,7 +107,7 @@ public class TraceFactoryDefault extends TraceFactory {
 								}
 							}
 
-							Logger.getGlobal().log(Level.FINE, "Writing trace file: " + f.getAbsolutePath());
+							Logger.getGlobal().log(Level.FINER, "Writing trace file: " + f.getAbsolutePath());
 							writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f, false), StandardCharsets.ISO_8859_1));
 						}
 						try {
@@ -155,7 +155,7 @@ public class TraceFactoryDefault extends TraceFactory {
 		try {
 			probe = getProbed().getProbe(probe_key);
 		} catch (Exception e) {
-			getLogger().log("The probe: " + probe_key + " cannot be created", e);
+			getLogger().log(Level.WARNING, "The probe: " + probe_key + " cannot be created", e);
 		}
 		if (probe == null)
 			return null;

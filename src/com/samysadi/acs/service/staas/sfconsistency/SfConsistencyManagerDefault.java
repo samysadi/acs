@@ -29,6 +29,7 @@ package com.samysadi.acs.service.staas.sfconsistency;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 import com.samysadi.acs.core.entity.Entity;
 import com.samysadi.acs.core.entity.EntityImpl;
@@ -153,7 +154,7 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 		j.setParent(tempVm);
 
 		if (!tempVm.canStart()) {
-			getLogger().log(replica, "Consistency update failed, because we cannot start job on parent host.");
+			getLogger().log(Level.FINEST, replica, "Consistency update failed, because we cannot start job on parent host.");
 			removeTemporaryVm(tempVm);
 			return;
 		}
@@ -161,7 +162,7 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 
 		if (!j.isRunning()) {
 			if (!j.canStart()) {
-				getLogger().log(replica, "Consistency update failed, because we cannot start job on parent host.");
+				getLogger().log(Level.FINEST, replica, "Consistency update failed, because we cannot start job on parent host.");
 				removeTemporaryVm(tempVm);
 				return;
 			}
@@ -182,7 +183,7 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 
 		StorageOperation read = j.readFile(primary, pos, size, n_read);
 		if (read == null) {
-			getLogger().log(replica, "Consistency update failed, because we cannot read primary file.");
+			getLogger().log(Level.FINEST, replica, "Consistency update failed, because we cannot read primary file.");
 			j.doCancel();
 			j.unplace();
 			return;
@@ -202,7 +203,7 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 
 		StorageOperation write = j.writeFile(replica, pos, size, n_write);
 		if (write == null) {
-			getLogger().log(replica, "Consistency update failed, because we cannot write replica file.");
+			getLogger().log(Level.FINEST, replica, "Consistency update failed, because we cannot write replica file.");
 			j.doCancel();
 			removeTemporaryVm(tempVm);
 			return;
@@ -218,7 +219,7 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 				final StorageFile replica = ((StorageOperation)sync.getOperation2()).getStorageFile();
 
 				if (sync.getOperation1().getRunnableState() != RunnableState.COMPLETED) {
-					getLogger().log(replica, "Consistency update failed, because we read/write operations failed.");
+					getLogger().log(Level.FINEST, replica, "Consistency update failed, because we read/write operations failed.");
 					removeTemporaryVm(sync.getOperation1().getParent().getParent());
 					sync.discard();
 					return;

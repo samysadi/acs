@@ -26,6 +26,8 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.virtualization.job.operation;
 
+import java.util.logging.Level;
+
 import com.samysadi.acs.core.Simulator;
 import com.samysadi.acs.core.entity.Entity;
 import com.samysadi.acs.core.entity.FailureProneEntity;
@@ -350,7 +352,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 						int notification_code, Object data) {
 					Resource r = LongOperationImpl.this.getProvisionerPromise();
 					if (r == null) {
-						getLogger().log(LongOperationImpl.this, "Failed because the provisioner cannot re-allocate resources for this operation.");
+						getLogger().log(Level.FINEST, LongOperationImpl.this, "Failed because the provisioner cannot re-allocate resources for this operation.");
 						LongOperationImpl.this.doFail();
 					} else if (r.getLong() != LongOperationImpl.this.getAllocatedResource().getLong()) {
 						LongOperationImpl.this.deactivate0();
@@ -371,7 +373,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 						int notification_code, Object data) {
 					FailureProneEntity e = (FailureProneEntity) notifier;
 					if (e.getFailureState() != FailureState.OK) {
-						getLogger().log(LongOperationImpl.this, "Failed because a device (" + e + ") has failed.");
+						getLogger().log(Level.FINEST, LongOperationImpl.this, "Failed because a device (" + e + ") has failed.");
 						LongOperationImpl.this.doFail();
 					}
 				}
@@ -387,7 +389,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 						int notification_code, Object data) {
 					PoweredEntity e = (PoweredEntity) notifier;
 					if (e.getPowerState() != PowerState.ON) {
-						getLogger().log(LongOperationImpl.this, "Failed because a device (" + e + ") is powered-off.");
+						getLogger().log(Level.FINEST, LongOperationImpl.this, "Failed because a device (" + e + ") is powered-off.");
 						LongOperationImpl.this.doFail();
 					}
 				}
@@ -423,7 +425,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	 */
 	protected boolean addFailureDependency(FailureProneEntity e) {
 		if (e.getFailureState() != FailureState.OK) {
-			getLogger().log(LongOperationImpl.this, "Failed because a device (" + e + ") has failed.");
+			getLogger().log(Level.FINEST, LongOperationImpl.this, "Failed because a device (" + e + ") has failed.");
 			return false;
 		}
 
@@ -447,7 +449,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	 */
 	protected boolean addPowerDependency(PoweredEntity e) {
 		if (e.getPowerState() != PowerState.ON) {
-			getLogger().log(LongOperationImpl.this, "Failed because a device (" + e + ") is powered-off.");
+			getLogger().log(Level.FINEST, LongOperationImpl.this, "Failed because a device (" + e + ") is powered-off.");
 			return false;
 		}
 
@@ -466,7 +468,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	protected boolean activate0() {
 		Resource r = LongOperationImpl.this.getProvisionerPromise();
 		if (r == null) {
-			getLogger().log(LongOperationImpl.this, "Failed because the provisioner cannot allocate resources for this operation.");
+			getLogger().log(Level.FINEST, LongOperationImpl.this, "Failed because the provisioner cannot allocate resources for this operation.");
 			doFail();
 			return false;
 		}

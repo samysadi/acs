@@ -26,6 +26,8 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.utility.workload.task;
 
+import java.util.logging.Level;
+
 import com.samysadi.acs.core.Config;
 import com.samysadi.acs.utility.workload.Workload;
 
@@ -52,7 +54,7 @@ public class LogTask extends TaskImpl {
 		final String message = getConfig().getString("Message", null);
 
 		if (message != null)
-			log(message);
+			log(Level.INFO, message);
 
 		success();
 	}

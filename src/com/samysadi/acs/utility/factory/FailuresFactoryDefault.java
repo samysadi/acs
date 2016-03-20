@@ -89,7 +89,7 @@ public class FailuresFactoryDefault extends FailuresFactory {
 			if (fp == null)
 				return;
 			if (fp.getFailureState() == FailureState.FAILED) {
-				getLogger().log(fp, "Repaired.");
+				getLogger().log(Level.FINEST, fp, "Repaired.");
 				fp.setFailureState(FailureState.OK);
 				FailuresFactoryDefault.this.enableFailures(fp);
 			}
@@ -107,7 +107,7 @@ public class FailuresFactoryDefault extends FailuresFactory {
 			if (fp == null)
 				return;
 			if (fp.getFailureState() != FailureState.FAILED) {
-				getLogger().log(fp, "Failed.");
+				getLogger().log(Level.FINEST, fp, "Failed.");
 				fp.setFailureState(FailureState.FAILED);
 				FailuresFactoryDefault.this.enableRepairs(fp);
 			}
@@ -252,10 +252,10 @@ public class FailuresFactoryDefault extends FailuresFactory {
 		hostsOnly = getConfig().getBoolean("HostsOnly", false);
 
 		if (getConfig().getBoolean("Enabled", true)) {
-			getLogger().log(Level.INFO, "Enabling failures and repairs " + (hostsOnly ? "for hosts only " : "") + "...");
+			getLogger().log(Level.FINE, "Enabling failures and repairs " + (hostsOnly ? "for hosts only " : "") + "...");
 			enableRec(Simulator.getSimulator());
 		} else
-			getLogger().log(Level.INFO, "Failures and repairs are disabled");
+			getLogger().log(Level.FINE, "Failures and repairs are disabled");
 
 		Simulator.getSimulator().restoreRandomGenerator();
 		return null;

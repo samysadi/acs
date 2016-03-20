@@ -26,6 +26,8 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.hardware.network.operation;
 
+import java.util.logging.Level;
+
 import com.samysadi.acs.core.Simulator;
 import com.samysadi.acs.core.entity.Entity;
 import com.samysadi.acs.core.notifications.NotificationListener;
@@ -257,7 +259,7 @@ public class NetworkOperationDefault extends LongOperationImpl<NetworkResource> 
 					NetworkOperationDefault.this.deactivate0();
 					NetworkOperationDefault.this.allocateRoute();
 					if (NetworkOperationDefault.this.getAllocatedRoute() == null) {
-						getLogger().log(NetworkOperationDefault.this, "Failed because a route cannot be found (again) for this operation.");
+						getLogger().log(Level.FINEST, NetworkOperationDefault.this, "Failed because a route cannot be found (again) for this operation.");
 						NetworkOperationDefault.this.doFail();
 						return;
 					}

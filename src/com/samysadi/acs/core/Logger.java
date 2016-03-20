@@ -43,7 +43,7 @@ import com.samysadi.acs.core.entity.Entity;
  * @since 1.0
  */
 public class Logger implements Closeable {
-	public static Level DEFAULT_LEVEL = Level.ALL;
+	public static Level DEFAULT_LEVEL = Level.FINER;
 
 	private java.util.logging.Logger logger = null;
 
@@ -171,7 +171,7 @@ public class Logger implements Closeable {
 	}
 
 	public void log(Entity entity, String message, Throwable thrown) {
-		log(Level.FINE, entity, message, thrown);
+		log(Level.INFO, entity, message, thrown);
 	}
 
 	public void log(Entity entity, String message) {

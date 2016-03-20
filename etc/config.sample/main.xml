@@ -18,12 +18,12 @@
 	<!-- <MaximumRunTime>360.0</MaximumRunTime> -->
 
 	<Log>
-		<!-- Log level, see java.util.logging.Level for more information -->
-		<Level>ALL</Level>
+		<!-- Log level, see java.util.logging.Level for more information. Default is FINER. -->
+		<!-- <Level>FINER</Level> -->
 
 		<Progress>
 			<!-- Progress log level -->
-			<!-- <Level>FINER</Level> -->
+			<!-- <Level>FINE</Level> -->
 			<!-- Delay in seconds before logging progress -->
 			<!-- <Delay>10</Delay> -->
 			<!-- Number of events to process before trying to display progress (set lower values for more accurate progress logging which will also induce higher overhead on the simulation)  -->
