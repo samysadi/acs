@@ -148,6 +148,8 @@ public class EntityImpl extends ProbedImpl implements Entity {
 			return;
 		if (!this.entities.remove(entity))
 			return;
+		if (this.entities.isEmpty())
+			this.entities = null;
 		notify(CoreNotificationCodes.ENTITY_REMOVED, entity);
 	}
 
