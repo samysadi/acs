@@ -30,6 +30,8 @@ import com.samysadi.acs.core.entity.FailureProneEntity.FailureState;
 import com.samysadi.acs.core.entity.PoweredEntity.PowerState;
 import com.samysadi.acs.core.notifications.NotificationListener;
 import com.samysadi.acs.core.notifications.Notifier;
+import com.samysadi.acs.core.tracing.ModifiableProbe;
+import com.samysadi.acs.core.tracing.Probe;
 import com.samysadi.acs.core.tracing.Probed;
 import com.samysadi.acs.hardware.Host;
 import com.samysadi.acs.service.CloudProvider;
@@ -90,12 +92,25 @@ public class CpActiveHostsCountProbe extends AbstractProbe<Long> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void recomputeValue() {
-		int s = 0;
-		for (Host h: ((CloudProvider)getParent()).getHosts())
-			if (h.getPowerState() == PowerState.ON && h.getFailureState() == FailureState.OK)
-				s++;
-		setValue(Long.valueOf(s));
+		int s_active = 0;
+		int s_failed = 0;
+		for (Host h: ((CloudProvider)getParent()).getHosts()) {
+			if (h.getFailureState() != FailureState.OK) {
+				s_failed++;
+				continue;
+			}
+			if (h.getPowerState() != PowerState.ON) {
+				continue;
+			}
+			s_active++;
+		}
+		setValue(Long.valueOf(s_active));
+
+		Probe<?> _p = (getParent().getProbe(CpFailedHostsCountProbe.KEY));
+		if (_p instanceof ModifiableProbe)
+			((ModifiableProbe<Long>) _p).setValue(Long.valueOf(s_failed));
 	}
 
 	private static void registerHost(Host h, NotificationListener l) {
