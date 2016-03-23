@@ -598,7 +598,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 
 	@Override
 	public boolean getFlag(long flag) {
-		return (this.flag & flag) != 0;
+		return (this.flag & flag) == flag;
 	}
 
 	@Override
