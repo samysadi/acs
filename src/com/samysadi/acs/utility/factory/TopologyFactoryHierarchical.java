@@ -32,6 +32,7 @@ import java.util.List;
 
 import com.samysadi.acs.core.Config;
 import com.samysadi.acs.core.Simulator;
+import com.samysadi.acs.core.entity.PoweredEntity.PowerState;
 import com.samysadi.acs.hardware.Host;
 import com.samysadi.acs.hardware.network.NetworkDevice;
 import com.samysadi.acs.hardware.network.NetworkInterface;
@@ -103,6 +104,8 @@ public class TopologyFactoryHierarchical extends TopologyFactory {
 	private int total_adv = 0; //is the total accomplished percent * 100
 	private int total_hosts = 0;
 
+	private int poweredOnCount = 0;
+
 	protected void generateLayer(int layer_index, List<NetworkDevice> topLayerDevices, Config topLayerCfg,
 			int aff_adv) {
 		final List<NetworkDevice> generatedDevices;
@@ -126,6 +129,12 @@ public class TopologyFactoryHierarchical extends TopologyFactory {
 			//generating hosts
 			Host h = FactoryUtils.generateHost(getHostGenerationMode().next(), getCloudProvider());
 			deviceCfg = h.getConfig();
+
+			if (poweredOnCount > 0) {
+				poweredOnCount--;
+				h.setPowerState(PowerState.ON);
+				getCloudProvider().getPowerManager().lockHost(h);
+			}
 
 			generatedDevices = new ArrayList<NetworkDevice>(1);
 			generatedDevices.add(h);
@@ -213,6 +222,8 @@ public class TopologyFactoryHierarchical extends TopologyFactory {
 		total_adv = 0;
 		total_hosts = 0;
 
+		poweredOnCount = FactoryUtils.generateInt("PoweredOnHostsCount", getConfig(), 0);
+
 		Config internetLayer = getConfig().addContext(INTERNETLAYER_CONTEXT);
 		ArrayList<NetworkDevice> topLayerDevices = new ArrayList<NetworkDevice>();
 		{
@@ -244,6 +255,7 @@ public class TopologyFactoryHierarchical extends TopologyFactory {
 		FactoryUtils.logAdvancement("Hosts", total_hosts, 100d);
 
 		Simulator.getSimulator().restoreRandomGenerator();
+
 		return null;
 	}
 

@@ -6,6 +6,10 @@
 	<!-- include hosts configurations -->
 	<include>hosts/all.xml</include>
 
+	<!-- You can use the following value to force a given number of hosts to be powered on.
+	Note that the powered on hosts are locked and will not be powered off automatically by the PowerManager -->
+	<!-- <PoweredOnHostsCount></PoweredOnHostsCount> -->
+
 	<Nodes>
 		<CountMin>60000</CountMin>
 		<CountMax>100000</CountMax>

@@ -30,6 +30,7 @@ import java.util.logging.Level;
 
 import com.samysadi.acs.core.Config;
 import com.samysadi.acs.core.Simulator;
+import com.samysadi.acs.core.entity.PoweredEntity.PowerState;
 import com.samysadi.acs.hardware.Host;
 import com.samysadi.acs.hardware.network.Switch;
 import com.samysadi.acs.service.CloudProvider;
@@ -52,6 +53,7 @@ public class TopologyFactoryFlat extends TopologyFactory {
 
 		final Config cfg = getConfig();
 
+		int poweredOnCount = FactoryUtils.generateInt("PoweredOnHostsCount", cfg, 0);
 		final int nodes_count = FactoryUtils.generateCount(cfg.addContext("Nodes"), 50);
 
 		getLogger().log(Level.FINE, "Going to generate: " + nodes_count + " hosts ...");
@@ -91,6 +93,12 @@ public class TopologyFactoryFlat extends TopologyFactory {
 			}
 
 			Host h = FactoryUtils.generateHost(getHostGenerationMode().next(), getCloudProvider());
+
+			if (poweredOnCount > 0) {
+				poweredOnCount--;
+				h.setPowerState(PowerState.ON);
+				getCloudProvider().getPowerManager().lockHost(h);
+			}
 
 			FactoryUtils.linkDevices(
 					getConfig(),
@@ -141,6 +149,7 @@ public class TopologyFactoryFlat extends TopologyFactory {
 		FactoryUtils.logAdvancement("Hosts", nodes_count, 100d);
 
 		Simulator.getSimulator().restoreRandomGenerator();
+
 		return null;
 	}
 
