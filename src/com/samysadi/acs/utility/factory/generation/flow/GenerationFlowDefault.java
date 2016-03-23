@@ -95,6 +95,6 @@ public class GenerationFlowDefault implements GenerationFlow {
 			return new GenerationFlowInfo(0, c);
 		}
 
-		return new GenerationFlowInfo(getGenerator().nextLong(), 1);
+		return new GenerationFlowInfo(Math.max(1l, getGenerator().nextLong()), 1);
 	}
 }
