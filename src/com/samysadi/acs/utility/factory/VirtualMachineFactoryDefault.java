@@ -36,7 +36,7 @@ import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class VirtualMachineFactoryDefault extends VirtualMachineFactory {
@@ -44,6 +44,11 @@ public class VirtualMachineFactoryDefault extends VirtualMachineFactory {
 	public VirtualMachineFactoryDefault(Config config,
 			CloudProvider cloudProvider, User user) {
 		super(config, cloudProvider, user);
+	}
+
+	private static void _notifyDone(VirtualMachine vm) {
+		if (vm.getUser() != null)
+			vm.getUser().notify(NotificationCodes.FACTORY_VIRTUALMACHINE_GENERATED, vm);
 	}
 
 	@Override
@@ -56,8 +61,10 @@ public class VirtualMachineFactoryDefault extends VirtualMachineFactory {
 
 		vm.setUser(getUser());
 
-		if (getCloudProvider() == null)
+		if (getCloudProvider() == null) {
+			_notifyDone(vm);
 			return vm;
+		}
 
 		Host host = getCloudProvider().getVmPlacementPolicy().selectHost(vm);
 		if (host == null) {
@@ -77,8 +84,12 @@ public class VirtualMachineFactoryDefault extends VirtualMachineFactory {
 
 				FactoryUtils.generateTraces(getConfig(), vm);
 
-				if (vm.getConfig().getBoolean("Checkpointing.Enabled", false))
+				Config cfg = vm.getConfig().addContext(FactoryUtils.Checkpoint_CONTEXT);
+
+				if (cfg.getBoolean("Enabled", false))
 					getCloudProvider().getCheckpointingHandler().register(vm);
+
+				_notifyDone(vm);
 			}
 		});
 

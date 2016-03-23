@@ -29,6 +29,7 @@ package com.samysadi.acs.utility.factory;
 import com.samysadi.acs.core.Config;
 import com.samysadi.acs.service.CloudProvider;
 import com.samysadi.acs.user.User;
+import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.virtualization.VirtualMachine;
 
 /**
@@ -60,9 +61,14 @@ public abstract class VirtualMachineFactory extends Factory {
 
 
 	/**
-	 * Generates a VM.<br/>
-	 * If the {@link VirtualMachineFactory#getCloudProvider()} does not return <tt>null</tt>, then the VM is also
+	 * Generates a VM.
+	 *
+	 * <p>If the {@link VirtualMachineFactory#getCloudProvider()} does not return <tt>null</tt>, then the VM is also
 	 * placed using the Cloud Provider's VM placement policy.
+	 *
+	 * <p>After that the VM is generated,
+	 * a {@link NotificationCodes#FACTORY_VIRTUALMACHINE_GENERATED} notification
+	 * is thrown.
 	 */
 	@Override
 	public abstract VirtualMachine generate();

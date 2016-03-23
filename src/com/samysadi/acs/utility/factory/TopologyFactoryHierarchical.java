@@ -39,6 +39,7 @@ import com.samysadi.acs.hardware.network.NetworkInterface;
 import com.samysadi.acs.hardware.network.Switch;
 import com.samysadi.acs.service.CloudProvider;
 import com.samysadi.acs.utility.IpAddress;
+import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.random.Uniform;
 
 
@@ -255,6 +256,9 @@ public class TopologyFactoryHierarchical extends TopologyFactory {
 		FactoryUtils.logAdvancement("Hosts", total_hosts, 100d);
 
 		Simulator.getSimulator().restoreRandomGenerator();
+
+		if (getCloudProvider()!=null)
+			getCloudProvider().notify(NotificationCodes.FACTORY_TOPOLOGY_GENERATED, null);
 
 		return null;
 	}

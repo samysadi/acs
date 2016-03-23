@@ -258,6 +258,9 @@ public class FailuresFactoryDefault extends FailuresFactory {
 			getLogger().log(Level.FINE, "Failures and repairs are disabled");
 
 		Simulator.getSimulator().restoreRandomGenerator();
+
+		Simulator.getSimulator().notify(NotificationCodes.FACTORY_FAILURES_GENERATED, null);
+
 		return null;
 	}
 

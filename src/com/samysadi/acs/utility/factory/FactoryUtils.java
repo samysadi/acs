@@ -27,6 +27,7 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 package com.samysadi.acs.utility.factory;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -510,6 +511,10 @@ public final class FactoryUtils {
 	/**
 	 * Generate and returns a new thin client for the given user, and connects it to the Internet.
 	 *
+	 * <p>After that the thin client is generated,
+	 * the {@link NotificationCodes#FACTORY_THINCLIENT_GENERATED} notification
+	 * is thrown.
+	 *
 	 * @param config contexted configuration
 	 * @param parent
 	 * @return generated {@link ThinClient}
@@ -539,6 +544,9 @@ public final class FactoryUtils {
 			);
 
 		FactoryUtils.generateTraces(config, h);
+
+		if (parent != null)
+			parent.notify(NotificationCodes.FACTORY_THINCLIENT_GENERATED, h);
 
 		return h;
 	}
@@ -634,20 +642,83 @@ public final class FactoryUtils {
 
 	public static final String Workload_CONTEXT				= "Workload";
 
-	public static Workload generateWorkload(Config config, User owner) {
+	/**
+	 * <p>After that the workload is generated,
+	 * a {@link NotificationCodes#FACTORY_WORKLOAD_GENERATED} notification
+	 * is thrown.
+	 *
+	 * @param config
+	 * @param owner
+	 * @param initiating if <tt>true</tt>, then the simulator is initiating and workload is only
+	 * started after that the simulator is initiated
+	 * @return generated workload
+	 */
+	public static Workload generateWorkload(Config config, User owner, boolean initiating) {
 		Workload workload = Factory.getFactory(config).newWorkload(null);
 		workload.setConfig(config);
 		generateTraces(config, Simulator.getSimulator());
 
 		//place and start workload
-		workload.addListener(NotificationCodes.ENTITY_PARENT_CHANGED, new GenerateWorkloadStaticListener0());
+		if (initiating)
+			InitiateWorkloadNotificationListener.getInstance().addWorkload(workload);
+		else
+			workload.addListener(NotificationCodes.ENTITY_PARENT_CHANGED, new GenerateWorkloadStaticListener0());
 
 		if (workload.getConfig().getBoolean("ThinClientWorkload", false))
 			placeWorkloadOnThinClient(workload, owner);
 		else
 			placeWorkloadOnCloud(workload, owner);
 
+		owner.notify(NotificationCodes.FACTORY_WORKLOAD_GENERATED, workload);
+
 		return workload;
+	}
+
+	private static void checkStartWorkload(Workload workload) {
+		if (workload.isRunning())
+			return;
+		if (!workload.canStart()) {
+			if (workload.getParent().isTerminated())
+				workload.doFail();
+		} else
+			workload.doStart();
+	}
+
+	private static class InitiateWorkloadNotificationListener extends NotificationListener {
+		private ArrayList<Workload> workloads = new ArrayList<Workload>();
+
+		@Override
+		protected void notificationPerformed(Notifier notifier,
+				int notification_code, Object data) {
+			this.discard();
+
+			for (Workload workload: workloads) {
+				if (workload.getParent() == null) {
+					workload.addListener(NotificationCodes.ENTITY_PARENT_CHANGED, new GenerateWorkloadStaticListener0());
+				} else
+					checkStartWorkload(workload);
+			}
+			workloads = null;
+
+			if (this == instance) {
+				Simulator.getSimulator().removeListener(NotificationCodes.FACTORY_SIMULATOR_GENERATED, instance);
+				instance = null;
+			}
+		}
+
+		public void addWorkload(Workload workload) {
+			if (workloads != null)
+				workloads.add(workload);
+		}
+
+		private static InitiateWorkloadNotificationListener instance = null;
+		private static InitiateWorkloadNotificationListener getInstance() {
+			if (instance == null) {
+				instance = new InitiateWorkloadNotificationListener();
+				Simulator.getSimulator().addListener(NotificationCodes.FACTORY_SIMULATOR_GENERATED, instance);
+			}
+			return instance;
+		}
 	}
 
 	private static final class GenerateWorkloadStaticListener0 extends
@@ -658,13 +729,9 @@ public final class FactoryUtils {
 			this.discard();
 
 			Workload workload = (Workload) notifier;
-			if (workload.isRunning())
-				return;
-			if (!workload.canStart()) {
-				if (workload.getParent().isTerminated())
-					workload.doFail();
-			} else
-				workload.doStart();
+			workload.removeListener(NotificationCodes.ENTITY_PARENT_CHANGED, this);
+
+			checkStartWorkload(workload);
 		}
 	}
 
@@ -738,11 +805,13 @@ public final class FactoryUtils {
 		return t;
 	}
 
-	public static final String CheckpointingHandler_CONTEXT		= "Task";
+	public static final String CheckpointingHandler_CONTEXT		= "CheckpointingHandler";
 
 	public static CheckpointingHandler generateCheckpointingHandler(CloudProvider cloudProvider, Config config) {
 		CheckpointingHandler ch = Factory.getFactory(config).newCheckpointingHandler(null, cloudProvider);
 		ch.setConfig(config);
 		return ch;
 	}
+
+	public static final String Checkpoint_CONTEXT					= "Checkpointing";
 }

@@ -28,6 +28,7 @@ package com.samysadi.acs.utility.factory;
 
 import com.samysadi.acs.core.Config;
 import com.samysadi.acs.core.Simulator;
+import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  *
@@ -40,6 +41,10 @@ public abstract class SimulatorFactory extends Factory {
 
 	/**
 	 * Generates a simulator and returns it.
+	 *
+	 * <p>After that the simulator is generated,
+	 * the {@link NotificationCodes#FACTORY_SIMULATOR_GENERATED} notification
+	 * is thrown.
 	 *
 	 * @return {@link Simulator}
 	 */

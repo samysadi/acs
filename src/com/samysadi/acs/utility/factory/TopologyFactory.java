@@ -28,6 +28,7 @@ package com.samysadi.acs.utility.factory;
 
 import com.samysadi.acs.core.Config;
 import com.samysadi.acs.service.CloudProvider;
+import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.factory.generation.mode.GenerationMode;
 
 /**
@@ -59,6 +60,10 @@ public abstract class TopologyFactory extends Factory {
 
 	/**
 	 * Generates a topology (hosts, switches and links) and returns <tt>null</tt>.
+	 *
+	 * <p>After that the topology is generated,
+	 * the {@link NotificationCodes#FACTORY_TOPOLOGY_GENERATED} notification
+	 * is thrown.
 	 *
 	 * @return <tt>null</tt>
 	 */

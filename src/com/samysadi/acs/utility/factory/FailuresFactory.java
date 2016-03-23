@@ -31,6 +31,7 @@ import com.samysadi.acs.core.Simulator;
 import com.samysadi.acs.core.entity.Entity;
 import com.samysadi.acs.core.entity.FailureProneEntity;
 import com.samysadi.acs.core.event.Event;
+import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  *
@@ -108,6 +109,10 @@ public abstract class FailuresFactory extends Factory {
 
 	/**
 	 * Enables failures/repairs simulation for the current Simulator and all of its children and returns <tt>null</tt>.
+	 *
+	 * <p>After that the failures are generated,
+	 * the {@link NotificationCodes#FACTORY_FAILURES_GENERATED} notification
+	 * is thrown.
 	 *
 	 * @return <tt>null</tt>
 	 */

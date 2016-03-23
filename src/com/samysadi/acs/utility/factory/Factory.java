@@ -124,7 +124,7 @@ import com.samysadi.acs.virtualization.job.JobDefault;
 /**
  * This Factory contains methods to create instances of different classes, accordingly to a given
  * configuration.
- * 
+ *
  * @since 1.0
  */
 public class Factory  {
@@ -148,7 +148,7 @@ public class Factory  {
 	}
 
 	protected Object generate() {
-		getLogger().log("Nothing to generate");
+		getLogger().log(Level.FINE, "Nothing to generate");
 		return null;
 	}
 
@@ -158,19 +158,19 @@ public class Factory  {
 	}
 
 	/* ********************************************************************* */
-	
+
 	/**
 	 * Returns a factory instance created using the given configuration.
-	 * 
+	 *
 	 * @return a factory instance created using the given configuration
 	 */
 	public static Factory getFactory(Config config) {
 		return new Factory(config);
 	}
-	
+
 	/**
 	 * Returns a factory instance created using the given entity's configuration
-	 * 
+	 *
 	 * @return a factory instance created using the given entity's configuration
 	 * @see Entity#getConfigRec()
 	 */
@@ -182,10 +182,10 @@ public class Factory  {
 
 	/**
 	 * Adds a link to the Internet for the given device.
-	 * 
+	 *
 	 * <p>See this {@link Factory#linkDevices(NetworkDevice, NetworkDevice, Class, Class, Class, Class, long, long, long, double) method} for
 	 * more details.
-	 * 
+	 *
 	 * @param networkDevice the device to add a link to
 	 * @param networkInterfaceClass
 	 * @param networkLinkClass
@@ -211,10 +211,10 @@ public class Factory  {
 
 	/**
 	 * Removes all links between the given <tt>networkDevice</tt> and the Internet.
-	 * 
-	 * <p>After calling this method, the given <tt>networkDevice</tt> will have no direct access to 
+	 *
+	 * <p>After calling this method, the given <tt>networkDevice</tt> will have no direct access to
 	 * the Internet through its own network interfaces.
-	 * 
+	 *
 	 * @param networkDevice
 	 */
 	public static void disconnectFromInternet(NetworkDevice networkDevice) {
@@ -233,7 +233,7 @@ public class Factory  {
 	/**
 	 * Returns <tt>true</tt> if the given <tt>networkDevice</tt> has at least one direct access to the Internet
 	 * through one of its own interfaces.
-	 * 
+	 *
 	 * @param networkDevice
 	 * @return <tt>true</tt> if the given <tt>networkDevice</tt> is connected to the Internet
 	 */
@@ -254,7 +254,7 @@ public class Factory  {
 		Switch s = getInternetSwitch();
 		if (s != null)
 			return s;
-		
+
 		s = newSwitch(null, Simulator.getSimulator());
 		RoutingProtocol rp = new InternetRoutingProtocol();
 		rp.setParent(s);
@@ -300,7 +300,7 @@ public class Factory  {
 	 * Creates a symmetrical connection (independent upload and download operations)
 	 * between device0 and device1 and returns an array containing the two created {@link NetworkInterface}s.
 	 * The first is the interface of <tt>device0</tt>. And the second is the interface of <tt>device1</tt>.
-	 * 
+	 *
 	 * @param device0
 	 * @param device1
 	 * @param networkInterface0Class needs not to be <tt>null</tt> or an exception is thrown
@@ -694,7 +694,7 @@ public class Factory  {
 	private String getProbeKeySubPackage(String probeKey) {
 		int len = probeKey.length();
 		int e = 1;
-		
+
 		while (e < len) {
 			char c = probeKey.charAt(e);
 			if (c >= 'A' && c <= 'Z')

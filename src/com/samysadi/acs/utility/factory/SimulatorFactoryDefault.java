@@ -30,6 +30,10 @@ import java.util.logging.Level;
 
 import com.samysadi.acs.core.Config;
 import com.samysadi.acs.core.Simulator;
+import com.samysadi.acs.core.event.EventImpl;
+import com.samysadi.acs.core.notifications.NotificationListener;
+import com.samysadi.acs.core.notifications.Notifier;
+import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.factory.generation.mode.GenerationMode;
 
 
@@ -43,32 +47,77 @@ public class SimulatorFactoryDefault extends SimulatorFactory {
 		super(config);
 	}
 
+	private void generateCloudProvider(long tick, GenerationMode g, int index, int count, NotificationListener l) {
+		if (index >= count) {
+			l.discard();
+			Simulator.getSimulator().removeListener(NotificationCodes.FACTORY_CLOUDPROVIDER_GENERATED, l);
+			Simulator.getSimulator().notify(NotificationCodes.FACTORY_ALL_CLOUDPROVIDERS_GENERATED, null);
+			_generate1(tick);
+			return;
+		}
+
+		getLogger().log(Level.FINER, "Generating CloudProvider " + index + "/" + count);
+		FactoryUtils.generateCloudProvider(g.next());
+	}
+
+	private void _generate0(final long tick) {
+		getLogger().log(Level.INFO, "Generating infrastructure ...");
+		final GenerationMode g = newGenerationMode(null, FactoryUtils.CloudProvider_CONTEXT);
+		final int count = FactoryUtils.generateCount(getConfig().addContext(FactoryUtils.CloudProvider_CONTEXT), 1);
+		final int[] indexTab = {0};
+
+		NotificationListener l = new NotificationListener() {
+			@Override
+			protected void notificationPerformed(Notifier notifier,
+					int notification_code, Object data) {
+				generateCloudProvider(tick, g, indexTab[0], count, this);
+				indexTab[0]++;
+			}
+		};
+
+		Simulator.getSimulator().addListener(NotificationCodes.FACTORY_CLOUDPROVIDER_GENERATED, l);
+		generateCloudProvider(tick, g, indexTab[0], count, l);
+		indexTab[0]++;
+	}
+
+	private void _generate1(final long tick) {
+		NotificationListener l = new NotificationListener() {
+			@Override
+			protected void notificationPerformed(Notifier notifier,
+					int notification_code, Object data) {
+				this.discard();
+				Simulator.getSimulator().removeListener(NotificationCodes.FACTORY_FAILURES_GENERATED, this);
+
+				_generate2(tick);
+			}
+		};
+
+		Simulator.getSimulator().addListener(NotificationCodes.FACTORY_FAILURES_GENERATED, l);
+		FactoryUtils.generateFailures(getConfig().addContext(FactoryUtils.Failures_CONTEXT));
+	}
+
+	private void _generate2(long tick) {
+		FactoryUtils.generateTraces(getConfig(), Simulator.getSimulator());
+
+		getLogger().log(Level.INFO, "Simulator was initialized. Initialization took: " +
+				Simulator.formatTime((System.nanoTime()-tick) * Simulator.MILLISECOND / 1000000) +
+				"."
+			);
+
+		Simulator.getSimulator().notify(NotificationCodes.FACTORY_SIMULATOR_GENERATED, null);
+	}
+
 	@Override
 	public Simulator generate() {
 		Simulator simulator = newSimulator(null, getConfig());
 
-		getLogger().log(Level.INFO, "Simulator is being initialized ...");
-
-		final long tick = System.nanoTime();
-
-		getLogger().log(Level.INFO, "Generating infrastructure ...");
-		{
-			GenerationMode g = newGenerationMode(null, FactoryUtils.CloudProvider_CONTEXT);
-			int cp_count = FactoryUtils.generateCount(getConfig().addContext(FactoryUtils.CloudProvider_CONTEXT), 1);
-			for (int i=0; i<cp_count; i++) {
-				getLogger().log(Level.FINER, "Generating CloudProvider " + (i+1) + "/" + cp_count);
-				FactoryUtils.generateCloudProvider(g.next());
+		Simulator.getSimulator().schedule(new EventImpl() {
+			@Override
+			public void process() {
+				getLogger().log(Level.INFO, "Simulator is being initialized ...");
+				_generate0(System.nanoTime());
 			}
-		}
-
-		FactoryUtils.generateFailures(getConfig().addContext(FactoryUtils.Failures_CONTEXT));
-
-		FactoryUtils.generateTraces(getConfig(), simulator);
-
-		getLogger().log(Level.INFO, "Simulator was initialized. Initialization took: " +
-					Simulator.formatTime((System.nanoTime()-tick) * Simulator.MILLISECOND / 1000000) +
-					"."
-				);
+		});
 
 		return simulator;
 	}

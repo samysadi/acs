@@ -29,6 +29,7 @@ package com.samysadi.acs.utility.factory;
 import com.samysadi.acs.core.Config;
 import com.samysadi.acs.service.CloudProvider;
 import com.samysadi.acs.user.User;
+import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.factory.generation.flow.GenerationFlow;
 import com.samysadi.acs.utility.factory.generation.mode.GenerationMode;
 
@@ -92,6 +93,10 @@ public abstract class UserFactory extends Factory {
 
 	/**
 	 * Generates a User and returns it.
+	 *
+	 * <p>After a user is generated,
+	 * the {@link NotificationCodes#FACTORY_USER_GENERATED} notification
+	 * is thrown.
 	 *
 	 * @return generated {@link User}
 	 */

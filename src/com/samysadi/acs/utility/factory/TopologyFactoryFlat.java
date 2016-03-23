@@ -34,6 +34,7 @@ import com.samysadi.acs.core.entity.PoweredEntity.PowerState;
 import com.samysadi.acs.hardware.Host;
 import com.samysadi.acs.hardware.network.Switch;
 import com.samysadi.acs.service.CloudProvider;
+import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.random.Uniform;
 
 /**
@@ -149,6 +150,9 @@ public class TopologyFactoryFlat extends TopologyFactory {
 		FactoryUtils.logAdvancement("Hosts", nodes_count, 100d);
 
 		Simulator.getSimulator().restoreRandomGenerator();
+
+		if (getCloudProvider()!=null)
+			getCloudProvider().notify(NotificationCodes.FACTORY_TOPOLOGY_GENERATED, null);
 
 		return null;
 	}

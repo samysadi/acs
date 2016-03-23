@@ -28,6 +28,7 @@ package com.samysadi.acs.utility.factory;
 
 import com.samysadi.acs.core.Config;
 import com.samysadi.acs.service.CloudProvider;
+import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.factory.generation.mode.GenerationMode;
 
 /**
@@ -48,6 +49,11 @@ public abstract class CloudProviderFactory extends Factory {
 		return userGenerationMode;
 	}
 
+	/**
+	 * <p>After a cloud provider is generated,
+	 * the {@link NotificationCodes#FACTORY_CLOUDPROVIDER_GENERATED} notification
+	 * is thrown.
+	 */
 	@Override
 	public abstract CloudProvider generate();
 }
