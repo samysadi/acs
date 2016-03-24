@@ -489,7 +489,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 
 	@Override
 	public final void setUsableProcessingUnits(List<ProcessingUnit> processingUnits) {
-		setUsableProcessingUnits(processingUnits, false);
+		setUsableProcessingUnits(processingUnits, true);
 	}
 
 	@Override
