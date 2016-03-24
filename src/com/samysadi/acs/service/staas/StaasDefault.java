@@ -26,7 +26,6 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.service.staas;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.samysadi.acs.core.entity.Entity;
@@ -153,7 +152,7 @@ public class StaasDefault extends EntityImpl implements Staas {
 	public List<Entity> getEntities() {
 		List<Entity> s = super.getEntities();
 
-		List<Entity> l = new ArrayList<Entity>(4);
+		List<Entity> l = newArrayList(4);
 		if (this.consistencyManager != null)
 			l.add(this.consistencyManager);
 		if (this.placementPolicy != null)
@@ -163,7 +162,7 @@ public class StaasDefault extends EntityImpl implements Staas {
 		if (this.replicationManager != null)
 			l.add(this.replicationManager);
 
-		List<List<? extends Entity>> r = new ArrayList<List<? extends Entity>>();
+		List<List<? extends Entity>> r = newArrayList(2);
 		r.add(s);
 		r.add(l);
 		return new MultiListView<Entity>(r);

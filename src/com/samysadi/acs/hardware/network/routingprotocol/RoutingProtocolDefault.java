@@ -26,7 +26,6 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.hardware.network.routingprotocol;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -168,7 +167,7 @@ public class RoutingProtocolDefault extends EntityImpl implements RoutingProtoco
 
 		Bitmap m = null;
 		if (this.routingHints == null)
-			this.routingHints = new ArrayList<Pair<NetworkInterface,Bitmap>>(getParent() != null ? getParent().getInterfaces().size() : 2);
+			this.routingHints = newArrayList(getParent() != null ? getParent().getInterfaces().size() : 2);
 		else {
 			for (Pair<NetworkInterface, Bitmap> p: this.routingHints)
 				if (p.getValue1().equals(nextInterface))

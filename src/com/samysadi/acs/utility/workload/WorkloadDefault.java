@@ -75,7 +75,7 @@ public class WorkloadDefault extends JobDefault implements Workload {
 	 * Used to keep track of the jobs that are associated with current workload.
 	 * Those jobs are checked for termination and terminated accordingly if the workload is terminated.
 	 */
-	private ArrayList<Job> registeredJobs;
+	private List<Job> registeredJobs;
 
 	private final static NotificationListener mainListener = new MainListener();
 
@@ -395,8 +395,11 @@ public class WorkloadDefault extends JobDefault implements Workload {
 		if (remoteJob == this.remoteJob)
 			return;
 		this.remoteJob = remoteJob;
-		if (this.remoteJob != null)
+		if (this.remoteJob != null) {
+			if (this.registeredJobs == null)
+				this.registeredJobs = newArrayList();
 			this.registeredJobs.add(this.remoteJob);
+		}
 	}
 
 

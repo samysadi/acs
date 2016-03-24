@@ -27,6 +27,7 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 package com.samysadi.acs.utility;
 
 import com.samysadi.acs.core.Simulator;
+import com.samysadi.acs.core.entity.RunnableEntity;
 import com.samysadi.acs.core.notifications.CoreNotificationCodes;
 import com.samysadi.acs.hardware.Host;
 import com.samysadi.acs.hardware.misc.MemoryUnit;
@@ -40,8 +41,8 @@ import com.samysadi.acs.hardware.storage.Storage;
 import com.samysadi.acs.hardware.storage.StorageFile;
 import com.samysadi.acs.hardware.storage.operation.StorageOperation;
 import com.samysadi.acs.service.CloudProvider;
-import com.samysadi.acs.service.checkpointing.Checkpoint;
 import com.samysadi.acs.service.checkpointing.CheckpointingHandler;
+import com.samysadi.acs.service.checkpointing.checkpoint.Checkpoint;
 import com.samysadi.acs.service.jobplacement.JobPlacementPolicy;
 import com.samysadi.acs.service.migration.MigrationHandler;
 import com.samysadi.acs.service.staas.sfconsistency.SfConsistencyManager;
@@ -543,7 +544,7 @@ public class NotificationCodes extends CoreNotificationCodes {
 	/**
 	 * <b>Description:</b> Thrown after that a checkpoint was successfully used for recovery.<br/>
 	 * <b>Notifier:</b> {@link Checkpoint}<br/>
-	 * <b>Object:</b> the newly created {@link VirtualMachine}
+	 * <b>Object:</b> the newly created {@link RunnableEntity}
 	 */
 	public static final int CHECKPOINT_RECOVER_SUCCESS		= CH_MASK | 0x20;
 
@@ -555,51 +556,163 @@ public class NotificationCodes extends CoreNotificationCodes {
 	public static final int CHECKPOINT_RECOVER_ERROR		= CH_MASK | 0x21;
 
 	/**
-	 * <b>Description:</b> Thrown after that a checkpoint was successfully transfered to a new destination host.<br/>
+	 * <b>Description:</b> Thrown after that a copy of the checkpoint was successfully created on a new memory zone.<br/>
 	 * <b>Notifier:</b> {@link Checkpoint}<br/>
-	 * <b>Object:</b> <tt>null</tt>
+	 * <b>Object:</b> the newly created {@link Checkpoint}
 	 */
-	public static final int CHECKPOINT_TRANSFER_SUCCESS		= CH_MASK | 0x30;
+	public static final int CHECKPOINT_COPY_SUCCESS			= CH_MASK | 0x30;
 
 	/**
-	 * <b>Description:</b> Thrown after that an error happens when trying to transfer a checkpoint to a new destination host.<br/>
+	 * <b>Description:</b> Thrown after that an error happens when trying to copy the checkpoint to a new memory zone.<br/>
 	 * <b>Notifier:</b> {@link Checkpoint}<br/>
 	 * <b>Object:</b> <tt>null</tt>
 	 */
-	public static final int CHECKPOINT_TRANSFER_ERROR		= CH_MASK | 0x31;
-
-	/**
-	 * <b>Description:</b><br/>
-	 * <b>Notifier:</b> {@link Checkpoint}<br/>
-	 * <b>Object:</b> <tt>null</tt>
-	 */
-	public static final int CHECKPOINT_DESTINATION_HOST_CHANGED	= CH_MASK | 0x80;
+	public static final int CHECKPOINT_COPY_ERROR			= CH_MASK | 0x31;
 
 	/**
 	 * <b>Description:</b><br/>
 	 * <b>Notifier:</b> {@link Checkpoint}<br/>
 	 * <b>Object:</b> <tt>null</tt>
 	 */
-	public static final int CHECKPOINT_BUSY_STATE_CHANGED 	= CH_MASK | 0x81;
+	public static final int CHECKPOINT_MEMORYZONE_CHANGED	= CH_MASK | 0x80;
+
+	/**
+	 * <b>Description:</b><br/>
+	 * <b>Notifier:</b> {@link Checkpoint}<br/>
+	 * <b>Object:</b> <tt>null</tt>
+	 */
+	public static final int CHECKPOINT_STATE_CHANGED 		= CH_MASK | 0x81;
+
+	/**
+	 * <b>Description:</b><br/>
+	 * <b>Notifier:</b> {@link Checkpoint}<br/>
+	 * <b>Object:</b> <tt>null</tt>
+	 */
+	public static final int CHECKPOINT_CHECKPOINTINGHANDLER_CHANGED = CH_MASK | 0x88;
+
+	/**
+	 * <b>Description:</b> Thrown after that the checkpoint has been deleted.<br/>
+	 * <b>Notifier:</b> {@link Checkpoint}<br/>
+	 * <b>Object:</b> <tt>null</tt>
+	 */
+	public static final int CHECKPOINT_DELETED				= CH_MASK | 0xA0;
 
 	/* CHEKPOINTING_HANDLER
 	 * ------------------------------------------------------------------------
 	 */
 	private static final int CHH_MASK = nextMask();
 
-	/**
-	 * <b>Description:</b> Thrown after that a VM was registered for automatic checkpointing.<br/>
-	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
-	 * <b>Object:</b> the {@link VirtualMachine} that was registered.
-	 */
-	public static final int CHECKPOINTINGHANDLER_REGISTERED	= CHH_MASK | 0x00;
+	public static class CheckpointingHandlerDeleteResult<E extends RunnableEntity, C extends Checkpoint<E,?>> {
+		private E entity;
+		private C checkpoint;
+
+		public CheckpointingHandlerDeleteResult(E entity, C checkpoint) {
+			super();
+			this.entity = entity;
+			this.checkpoint = checkpoint;
+		}
+
+		/**
+		 * Returns the entity for which the checkpoint was deleted.
+		 *
+		 * @return the entity for which the checkpoint was deleted.
+		 */
+		public E getEntity() {
+			return entity;
+		}
+
+		/**
+		 * Returns the {@link Checkpoint} that was deleted.
+		 *
+		 * <p><b>Note</b> that using {@link Checkpoint#getParent()} on the checkpoint will return <tt>null</tt>
+		 * after the deletion.
+		 * Use {@link CheckpointingHandlerDeleteResult#getEntity()} instead.
+		 *
+		 * @return the {@link Checkpoint} that was deleted.
+		 */
+		public C getCheckpoint() {
+			return checkpoint;
+		}
+	}
 
 	/**
-	 * <b>Description:</b> Thrown after that a VM was unregistered from automatic checkpointing.<br/>
+	 * <b>Description:</b> Thrown after that an entity was registered for automatic checkpointing.<br/>
 	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
-	 * <b>Object:</b> the {@link VirtualMachine} that was unregistered.
+	 * <b>Object:</b> the {@link RunnableEntity} that was registered.
+	 */
+	public static final int CHECKPOINTINGHANDLER_REGISTERED		= CHH_MASK | 0x00;
+
+	/**
+	 * <b>Description:</b> Thrown after that an entity was unregistered from automatic checkpointing.<br/>
+	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
+	 * <b>Object:</b> the {@link RunnableEntity} that was unregistered.
 	 */
 	public static final int CHECKPOINTINGHANDLER_UNREGISTERED	= CHH_MASK | 0x01;
+
+	/**
+	 * <b>Description:</b> Thrown after that a entity's checkpoint is automatically updated.<br/>
+	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
+	 * <b>Object:</b> the {@link Checkpoint}.
+	 */
+	public static final int CHECKPOINTINGHANDLER_AUTOUPDATE_SUCCESS	= CHH_MASK | 0x20;
+
+	/**
+	 * <b>Description:</b> Thrown after that an error happens when trying to automatically update an entity's checkpoint.<br/>
+	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
+	 * <b>Object:</b> the {@link Checkpoint}.
+	 */
+	public static final int CHECKPOINTINGHANDLER_AUTOUPDATE_ERROR	= CHH_MASK | 0x21;
+
+	/**
+	 * <b>Description:</b> Thrown after that a entity's checkpoint is automatically used for recovery.<br/>
+	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
+	 * <b>Object:</b> the {@link Checkpoint}.
+	 */
+	public static final int CHECKPOINTINGHANDLER_AUTORECOVER_SUCCESS	= CHH_MASK | 0x30;
+
+	/**
+	 * <b>Description:</b> Thrown after that an error happens when trying to automatically recover using an entity's checkpoint.<br/>
+	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
+	 * <b>Object:</b> the {@link Checkpoint}.
+	 */
+	public static final int CHECKPOINTINGHANDLER_AUTORECOVER_ERROR	= CHH_MASK | 0x31;
+
+	/**
+	 * <b>Description:</b> Thrown after that a new checkpoint was create by the {@link CheckpointingHandler}.<br/>
+	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
+	 * <b>Object:</b> the created {@link Checkpoint}.
+	 */
+	public static final int CHECKPOINTINGHANDLER_CHECKPOINT_CREATED	= CHH_MASK | 0x40;
+
+	/**
+	 * <b>Description:</b> Thrown after that an error is thrown while the {@link CheckpointingHandler} is trying to create a checkpoint.<br/>
+	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
+	 * <b>Object:</b> the {@link RunnableEntity} for which the handler tried to create a checkpoint.
+	 */
+	public static final int CHECKPOINTINGHANDLER_CHECKPOINT_ERROR	= CHH_MASK | 0x41;
+
+	/**
+	 * <b>Description:</b> Thrown after that a checkpoint was deleted using the {@link CheckpointingHandler} delete methods.<br/>
+	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
+	 * <b>Object:</b> the {@link CheckpointingHandlerDeleteResult} object holding the information about the deleted checkpoint.
+	 */
+	public static final int CHECKPOINTINGHANDLER_CHECKPOINT_DELETED	= CHH_MASK | 0x48;
+
+	/**
+	 * <b>Description:</b> Thrown after that the {@link CheckpointingHandler} found a checkpoint to use for recovery.<br/>
+	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
+	 * <b>Object:</b> the found {@link Checkpoint}
+	 */
+	public static final int CHECKPOINTINGHANDLER_RECOVER_SUCCESS		= CHH_MASK | 0x50;
+
+	/**
+	 * <b>Description:</b> Thrown if the {@link CheckpointingHandler} cannot find a checkpoint to use for recovery.<br/>
+	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
+	 * <b>Object:</b> the {@link RunnableEntity} for which the handler tried to find a checkpoint
+	 */
+	public static final int CHECKPOINTINGHANDLER_RECOVER_ERROR		= CHH_MASK | 0x51;
+
+
 
 	/* MIGRATION_HANDLER
 	 * ------------------------------------------------------------------------

@@ -119,7 +119,7 @@ public class SfReplicationManagerDefault extends EntityImpl implements SfReplica
 	}
 
 	private List<Host> getStorageHosts(List<StorageFile> r) {
-		ArrayList<Host> l = new ArrayList<Host>(r.size());
+		ArrayList<Host> l = newArrayList(r.size());
 		for (StorageFile sf: r) {
 			if (sf.hasParentRec())
 				l.add(sf.getParent().getParentHost());
@@ -144,7 +144,7 @@ public class SfReplicationManagerDefault extends EntityImpl implements SfReplica
 
 		final int replicasCount = getReplicasCount(storageFile);
 
-		final List<StorageFile> r = new ArrayList<StorageFile>(replicasCount);
+		final List<StorageFile> r = newArrayList(replicasCount);
 		r.add(storageFile);
 		storageFile.setProperty(PROP_REPLICAS_KEY, r);
 

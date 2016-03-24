@@ -26,7 +26,6 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.hardware.network;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,7 +63,7 @@ public abstract class NetworkDeviceDefault extends FailureProneEntityImpl implem
 		super.initializeEntity();
 
 		this.routingProtocol = null;
-		this.interfaces = new ArrayList<NetworkInterface>();
+		this.interfaces = newArrayList();
 	}
 
 	@Override
@@ -76,7 +75,7 @@ public abstract class NetworkDeviceDefault extends FailureProneEntityImpl implem
 				this.routingProtocol.setParent(null);
 			this.routingProtocol = (RoutingProtocol) entity;
 		} else if (entity instanceof NetworkInterface) {
-			if (!interfaces.add((NetworkInterface) entity))
+			if (!this.interfaces.add((NetworkInterface) entity))
 				return;
 		} else {
 			super.addEntity(entity);
@@ -92,7 +91,7 @@ public abstract class NetworkDeviceDefault extends FailureProneEntityImpl implem
 				return;
 			this.routingProtocol = null;
 		} else if (entity instanceof NetworkInterface) {
-			if (!interfaces.remove(entity))
+			if (!this.interfaces.remove(entity))
 				return;
 		} else {
 			super.removeEntity(entity);
@@ -105,11 +104,11 @@ public abstract class NetworkDeviceDefault extends FailureProneEntityImpl implem
 	public List<Entity> getEntities() {
 		List<Entity> s = super.getEntities();
 
-		List<Entity> l = new ArrayList<Entity>(1);
+		List<Entity> l = newArrayList(1);
 		if (this.routingProtocol != null)
 			l.add(this.routingProtocol);
 
-		List<List<? extends Entity>> r = new ArrayList<List<? extends Entity>>();
+		List<List<? extends Entity>> r = newArrayList(3);
 		r.add(s);
 		r.add(l);
 		r.add(this.interfaces);
@@ -118,7 +117,7 @@ public abstract class NetworkDeviceDefault extends FailureProneEntityImpl implem
 
 	@Override
 	public List<NetworkInterface> getInterfaces() {
-		return Collections.unmodifiableList(interfaces);
+		return Collections.unmodifiableList(this.interfaces);
 	}
 
 	@Override
@@ -151,7 +150,7 @@ public abstract class NetworkDeviceDefault extends FailureProneEntityImpl implem
 
 	@Override
 	public RoutingProtocol getRoutingProtocol() {
-		return routingProtocol;
+		return this.routingProtocol;
 	}
 
 	@Override

@@ -26,7 +26,6 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.user;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,7 +56,7 @@ public class UserDefault extends EntityImpl implements User {
 				if (vm.getUser() != user)
 					return;
 				if (user.virtualMachines == null)
-					user.virtualMachines = new ArrayList<VirtualMachine>();//new WeakLinkedList<VirtualMachine>();
+					user.virtualMachines = user.newArrayList();//new WeakLinkedList<VirtualMachine>();
 				user.virtualMachines.add(vm);
 			} else if (notification_code == NotificationCodes.USER_VM_DETACHED) {
 				VirtualMachine vm = (VirtualMachine) data;
@@ -69,7 +68,7 @@ public class UserDefault extends EntityImpl implements User {
 				if (sf.getUser() != user)
 					return;
 				if (user.storageFiles == null)
-					user.storageFiles = new ArrayList<StorageFile>();//new WeakLinkedList<StorageFile>();
+					user.storageFiles = user.newArrayList();//new WeakLinkedList<StorageFile>();
 				user.storageFiles.add(sf);
 			} else if (notification_code == NotificationCodes.USER_STORAGEFILE_DETACHED) {
 				StorageFile sf = (StorageFile) data;
@@ -125,7 +124,7 @@ public class UserDefault extends EntityImpl implements User {
 	public void addEntity(Entity entity) {
 		if (entity instanceof ThinClient) {
 			if (this.thinClients == null)
-				this.thinClients = new ArrayList<ThinClient>();
+				this.thinClients = newArrayList();
 			if (!this.thinClients.add((ThinClient) entity))
 				return;
 		} else {
@@ -142,6 +141,8 @@ public class UserDefault extends EntityImpl implements User {
 				return;
 			if (!this.thinClients.remove(entity))
 				return;
+			if (this.thinClients.isEmpty())
+				this.thinClients = null;
 		} else {
 			super.removeEntity(entity);
 			return;
@@ -153,11 +154,8 @@ public class UserDefault extends EntityImpl implements User {
 	public List<Entity> getEntities() {
 		List<Entity> s = super.getEntities();
 
-		//List<Entity> l = new ArrayList<Entity>(4);
-
-		List<List<? extends Entity>> r = new ArrayList<List<? extends Entity>>();
+		List<List<? extends Entity>> r = newArrayList(2);
 		r.add(s);
-		//r.add(l);
 		if (this.thinClients != null)
 			r.add(this.thinClients);
 		return new MultiListView<Entity>(r);

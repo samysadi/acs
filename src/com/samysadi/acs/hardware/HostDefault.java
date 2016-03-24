@@ -26,9 +26,7 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.hardware;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.samysadi.acs.core.entity.Entity;
@@ -67,11 +65,11 @@ public class HostDefault extends NetworkDeviceDefault implements Host {
 	protected void initializeEntity() {
 		super.initializeEntity();
 
-		this.vms = new ArrayList<VirtualMachine>();
+		this.vms = null;
 		this.rack = null;
 		this.ram = null;
-		this.processingUnits = new LinkedList<ProcessingUnit>();
-		this.storages = new ArrayList<Storage>();
+		this.processingUnits = null;
+		this.storages = null;
 	}
 
 	@Override
@@ -95,6 +93,8 @@ public class HostDefault extends NetworkDeviceDefault implements Host {
 	@Override
 	public void addEntity(Entity entity) {
 		if (entity instanceof VirtualMachine) {
+			if (this.vms == null)
+				this.vms = newArrayList();
 			if (!this.vms.add((VirtualMachine) entity))
 				return;
 		} else if (entity instanceof Ram) {
@@ -104,9 +104,13 @@ public class HostDefault extends NetworkDeviceDefault implements Host {
 				this.ram.setParent(null);
 			this.ram = (Ram) entity;
 		} else if (entity instanceof ProcessingUnit) {
+			if (this.processingUnits == null)
+				this.processingUnits = newArrayList();
 			if (!this.processingUnits.add((ProcessingUnit) entity))
 				return;
 		} else if (entity instanceof Storage) {
+			if (this.storages == null)
+				this.storages = newArrayList();
 			if (!this.storages.add((Storage) entity))
 				return;
 		} else {
@@ -119,18 +123,30 @@ public class HostDefault extends NetworkDeviceDefault implements Host {
 	@Override
 	public void removeEntity(Entity entity) {
 		if (entity instanceof VirtualMachine) {
+			if (this.vms == null)
+				return;
 			if (!this.vms.remove(entity))
 				return;
+			if (this.vms.isEmpty())
+				this.vms = null;
 		} else if (entity instanceof Ram) {
 			if (this.ram != entity)
 				return;
 			this.ram = null;
 		} else if (entity instanceof ProcessingUnit) {
+			if (this.processingUnits == null)
+				return;
 			if (!this.processingUnits.remove(entity))
 				return;
+			if (this.processingUnits.isEmpty())
+				this.processingUnits = null;
 		} else if (entity instanceof Storage) {
+			if (this.storages == null)
+				return;
 			if (!this.storages.remove(entity))
 				return;
+			if (this.storages.isEmpty())
+				this.storages = null;
 		} else {
 			super.removeEntity(entity);
 			return;
@@ -142,16 +158,19 @@ public class HostDefault extends NetworkDeviceDefault implements Host {
 	public List<Entity> getEntities() {
 		List<Entity> s = super.getEntities();
 
-		List<Entity> l = new ArrayList<Entity>(1);
+		List<Entity> l = newArrayList(1);
 		if (this.ram != null)
 			l.add(this.ram);
 
-		List<List<? extends Entity>> r = new ArrayList<List<? extends Entity>>();
+		List<List<? extends Entity>> r = newArrayList(5);
 		r.add(s);
 		r.add(l);
-		r.add(this.vms);
-		r.add(this.processingUnits);
-		r.add(this.storages);
+		if (this.vms != null)
+			r.add(this.vms);
+		if (this.processingUnits != null)
+			r.add(this.processingUnits);
+		if (this.storages != null)
+			r.add(this.storages);
 		return new MultiListView<Entity>(r);
 	}
 
@@ -167,17 +186,26 @@ public class HostDefault extends NetworkDeviceDefault implements Host {
 
 	@Override
 	public List<VirtualMachine> getVirtualMachines() {
-		return Collections.unmodifiableList(this.vms);
+		if (this.vms == null)
+			return Collections.emptyList();
+		else
+			return Collections.unmodifiableList(this.vms);
 	}
 
 	@Override
 	public List<ProcessingUnit> getProcessingUnits() {
-		return Collections.unmodifiableList(this.processingUnits);
+		if (this.processingUnits == null)
+			return Collections.emptyList();
+		else
+			return Collections.unmodifiableList(this.processingUnits);
 	}
 
 	@Override
 	public List<Storage> getStorages() {
-		return Collections.unmodifiableList(this.storages);
+		if (this.storages == null)
+			return Collections.emptyList();
+		else
+			return Collections.unmodifiableList(this.storages);
 	}
 
 	@Override

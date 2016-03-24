@@ -26,9 +26,7 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.virtualization.job;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.samysadi.acs.core.Simulator;
@@ -73,13 +71,16 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 			if (notification_code == NotificationCodes.JOB_DEST_OPERATION_ADDED) {
 				if (data instanceof RemoteOperation<?>) {
 					if (((JobDefault)notifier).remoteOperations == null)
-						((JobDefault)notifier).remoteOperations = new LinkedList<RemoteOperation<?>>();
+						((JobDefault)notifier).remoteOperations = ((JobDefault)notifier).newArrayList();
 					((JobDefault)notifier).remoteOperations.add((RemoteOperation<?>)data);
 				}
 			} else if (notification_code == NotificationCodes.JOB_DEST_OPERATION_REMOVED) {
 				if (data instanceof RemoteOperation<?>) {
-					if (((JobDefault)notifier).remoteOperations != null)
+					if (((JobDefault)notifier).remoteOperations != null) {
 						((JobDefault)notifier).remoteOperations.remove((RemoteOperation<?>)data);
+						if (((JobDefault)notifier).remoteOperations.isEmpty())
+							((JobDefault)notifier).remoteOperations = null;
+					}
 				}
 			}
 		}
@@ -101,7 +102,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 	protected void initializeEntity() {
 		super.initializeEntity();
 
-		this.operations = new ArrayList<Operation<?>>();
+		this.operations = null;
 
 		this.remoteOperations = null;
 
@@ -125,6 +126,8 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 	@Override
 	public void addEntity(Entity entity) {
 		if (entity instanceof Operation<?>) {
+			if (this.operations == null)
+				this.operations = newArrayList();
 			if (!this.operations.add((Operation<?>) entity))
 				return;
 		} else if (entity instanceof RunnableEntity) {
@@ -139,8 +142,12 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 	@Override
 	public void removeEntity(Entity entity) {
 		if (entity instanceof Operation<?>) {
+			if (this.operations == null)
+				return;
 			if (!this.operations.remove(entity))
 				return;
+			if (this.operations.isEmpty())
+				this.operations = null;
 		} else {
 			super.removeEntity(entity);
 			return;
@@ -152,15 +159,19 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 	public List<Entity> getEntities() {
 		List<Entity> s = super.getEntities();
 
-		List<List<? extends Entity>> r = new ArrayList<List<? extends Entity>>();
+		List<List<? extends Entity>> r = newArrayList(2);
 		r.add(s);
-		r.add(this.operations);
+		if (this.operations != null)
+			r.add(this.operations);
 		return new MultiListView<Entity>(r);
 	}
 
 	@Override
 	public List<Operation<?>> getOperations() {
-		return Collections.unmodifiableList(this.operations);
+		if (this.operations == null)
+			return Collections.emptyList();
+		else
+			return Collections.unmodifiableList(this.operations);
 	}
 
 	@Override

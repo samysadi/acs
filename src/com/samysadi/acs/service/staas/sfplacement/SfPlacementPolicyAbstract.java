@@ -26,7 +26,6 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.service.staas.sfplacement;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -162,8 +161,8 @@ public abstract class SfPlacementPolicyAbstract extends EntityImpl implements Sf
 			if (hosts == null) {
 				poweredOnHosts = getParent().getParent().getPowerManager().getPoweredOnHosts();
 			} else {
-				poweredOnHosts = new ArrayList<Host>(hosts.size());
-				poweredOffHosts = new ArrayList<Host>(hosts.size());
+				poweredOnHosts = newArrayList(hosts.size());
+				poweredOffHosts = newArrayList(hosts.size());
 				for (Host h: hosts) {
 					if (excludedHosts != null && excludedHosts.contains(h))
 						continue;

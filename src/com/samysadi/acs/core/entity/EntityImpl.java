@@ -134,7 +134,7 @@ public class EntityImpl extends ProbedImpl implements Entity {
 		if (entity.getParent() != null)
 			throw new IllegalArgumentException("The supplied entity has already a parent");
 		if (this.entities == null)
-			this.entities = new ArrayList<Entity>();
+			this.entities = newArrayList();
 		if (!this.entities.add(entity))
 			return;
 		notify(CoreNotificationCodes.ENTITY_ADDED, entity);
@@ -339,5 +339,14 @@ public class EntityImpl extends ProbedImpl implements Entity {
 
 	public static long getNextId() {
 		return idCounter+1;
+	}
+
+	protected final <C> ArrayList<C> newArrayList() {
+		//let's privilege memory consumption
+		return new ArrayList<C>(1);
+	}
+
+	protected final <C> ArrayList<C> newArrayList(int initialCapacity) {
+		return new ArrayList<C>(initialCapacity);
 	}
 }

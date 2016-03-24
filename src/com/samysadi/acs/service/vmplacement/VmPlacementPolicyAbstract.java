@@ -241,8 +241,8 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 			if (hosts == null) {
 				poweredOnHosts = getParent().getPowerManager().getPoweredOnHosts();
 			} else {
-				poweredOnHosts = new ArrayList<Host>(hosts.size());
-				poweredOffHosts = new ArrayList<Host>(hosts.size());
+				poweredOnHosts = newArrayList(hosts.size());
+				poweredOffHosts = newArrayList(hosts.size());
 				for (Host h: hosts) {
 					if (excludedHosts != null && excludedHosts.contains(h))
 						continue;
@@ -337,7 +337,7 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 			final int slaPuCount = vmConfig.getInt("Pu_Count", 1);
 			final long slaPuMips = vmConfig.getLong("Pu_Mips", 1000l) * Simulator.MI;
 
-			List<ProcessingUnit> pus = new ArrayList<ProcessingUnit>();
+			ArrayList<ProcessingUnit> pus = newArrayList();
 			for (ProcessingUnit pu:host.getProcessingUnits()) {
 				if (pus.size() >= slaPuCount)
 					break;
@@ -347,6 +347,8 @@ public abstract class VmPlacementPolicyAbstract extends EntityImpl implements Vm
 
 			if (pus.size() < slaPuCount)
 				throw new IllegalArgumentException("Cannot place the vm on the given host: not enough Computing power");
+
+			pus.trimToSize();
 
 			vm.setUsableProcessingUnits(pus);
 		}

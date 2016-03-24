@@ -66,6 +66,8 @@ public abstract class AbstractGenerationMode implements GenerationMode {
 
 		if (i == 0)
 			this.configurations.add(getConfig().addContext(context, i)); //make sure we have at least one config
+
+		((ArrayList<Config>)this.configurations).trimToSize();
 	}
 
 	public Config getConfig() {

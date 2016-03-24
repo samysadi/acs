@@ -26,7 +26,6 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.virtualization.job.operation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.samysadi.acs.core.entity.Entity;
@@ -199,7 +198,7 @@ public abstract class OperationImpl<Resource> extends RunnableEntityImpl impleme
 	 */
 	protected int registeredListener(NotificationListener listener) {
 		if (this.registeredListeners == null)
-			this.registeredListeners = new ArrayList<NotificationListener>();
+			this.registeredListeners = newArrayList();
 		this.registeredListeners.add(listener);
 		return this.registeredListeners.size()-1;
 	}

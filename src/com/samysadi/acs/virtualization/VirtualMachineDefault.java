@@ -112,7 +112,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 	protected void initializeEntity() {
 		super.initializeEntity();
 
-		this.jobs = new ArrayList<Job>();
+		this.jobs = null;
 		this.puAllocator = null;
 		this.computingProvisioner = null;
 		this.storageProvisioner = null;
@@ -316,6 +316,8 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 	@Override
 	public void addEntity(Entity entity) {
 		if (entity instanceof Job) {
+			if (this.jobs == null)
+				this.jobs = newArrayList();
 			if (!this.jobs.add((Job) entity))
 				return;
 		} else if (entity instanceof RunnableEntity) {
@@ -362,8 +364,12 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 	@Override
 	public void removeEntity(Entity entity) {
 		if (entity instanceof Job) {
+			if (this.jobs == null)
+				return;
 			if (!this.jobs.remove(entity))
 				return;
+			if (this.jobs.isEmpty())
+				this.jobs = null;
 		} else if (entity instanceof PuAllocator) {
 			if (this.puAllocator != entity)
 				return;
@@ -399,7 +405,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 	public List<Entity> getEntities() {
 		List<Entity> s = super.getEntities();
 
-		List<Entity> l = new ArrayList<Entity>(4);
+		List<Entity> l = newArrayList(4);
 		if (this.puAllocator != null)
 			l.add(this.puAllocator);
 		if (this.computingProvisioner != null)
@@ -409,16 +415,20 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 		if (this.networkProvisioner != null)
 			l.add(this.networkProvisioner);
 
-		List<List<? extends Entity>> r = new ArrayList<List<? extends Entity>>();
+		List<List<? extends Entity>> r = newArrayList(3);
 		r.add(s);
 		r.add(l);
-		r.add(this.jobs);
+		if (this.jobs != null)
+			r.add(this.jobs);
 		return new MultiListView<Entity>(r);
 	}
 
 	@Override
 	public List<Job> getJobs() {
-		return Collections.unmodifiableList(this.jobs);
+		if (this.jobs == null)
+			return Collections.emptyList();
+		else
+			return Collections.unmodifiableList(this.jobs);
 	}
 
 	@Override
@@ -618,7 +628,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 	public void bufferNotification(Notifier notifier, int notificationCode,
 			Object data) {
 		if (this.notificationsBuffer == null)
-			this.notificationsBuffer = new ArrayList<NotificationInfo>();
+			this.notificationsBuffer = newArrayList();
 		this.notificationsBuffer.add(new NotificationInfo(notifier, notificationCode, data));
 		if (this.notificationsBufferEpoch == Integer.MAX_VALUE)
 			this.notificationsBufferEpoch = 0;

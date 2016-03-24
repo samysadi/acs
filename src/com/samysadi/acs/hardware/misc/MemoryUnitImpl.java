@@ -26,7 +26,6 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.hardware.misc;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -116,7 +115,7 @@ public abstract class MemoryUnitImpl<Zone extends MemoryZone> extends FailurePro
 	public void addEntity(Entity entity) {
 		if (entity instanceof MemoryZone) {
 			if (zones == null)
-				zones = new ArrayList<Zone>();
+				zones = newArrayList();
 			if (!zones.add((Zone) entity))
 				return;
 		} else {
@@ -144,7 +143,7 @@ public abstract class MemoryUnitImpl<Zone extends MemoryZone> extends FailurePro
 	public List<Entity> getEntities() {
 		List<Entity> s = super.getEntities();
 
-		List<List<? extends Entity>> r = new ArrayList<List<? extends Entity>>();
+		List<List<? extends Entity>> r = newArrayList(2);
 		r.add(s);
 		if (this.zones != null)
 			r.add(this.zones);

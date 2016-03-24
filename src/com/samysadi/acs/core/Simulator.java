@@ -29,7 +29,6 @@ package com.samysadi.acs.core;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -286,7 +285,7 @@ public class Simulator extends EntityImpl {
 	protected void initializeEntity() {
 		super.initializeEntity();
 
-		this.cloudProviders = new ArrayList<CloudProvider>();
+		this.cloudProviders = newArrayList();
 	}
 
 	@Override
@@ -317,11 +316,8 @@ public class Simulator extends EntityImpl {
 	public List<Entity> getEntities() {
 		List<Entity> s = super.getEntities();
 
-		List<Entity> l = new ArrayList<Entity>(0);
-
-		List<List<? extends Entity>> r = new ArrayList<List<? extends Entity>>();
+		List<List<? extends Entity>> r = newArrayList(2);
 		r.add(s);
-		r.add(l);
 		r.add(this.cloudProviders);
 		return new MultiListView<Entity>(r);
 	}

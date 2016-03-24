@@ -26,7 +26,6 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.hardware.storage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.samysadi.acs.core.entity.Entity;
@@ -123,11 +122,11 @@ public class StorageDefault extends MemoryUnitImpl<StorageFile> implements Stora
 	public List<Entity> getEntities() {
 		List<Entity> s = super.getEntities();
 
-		List<Entity> l = new ArrayList<Entity>(1);
+		List<Entity> l = newArrayList(1);
 		if (this.storageProvisioner != null)
 			l.add(this.storageProvisioner);
 
-		List<List<? extends Entity>> r = new ArrayList<List<? extends Entity>>();
+		List<List<? extends Entity>> r = newArrayList(2);
 		r.add(s);
 		r.add(l);
 		return new MultiListView<Entity>(r);

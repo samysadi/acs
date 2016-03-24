@@ -26,7 +26,6 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.user;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -128,10 +127,10 @@ public class ThinClientDefault extends NetworkDeviceDefault implements ThinClien
 		List<Entity> s = super.getEntities();
 
 		if (this.mainVm != null) {
-			List<Entity> l = new ArrayList<Entity>(1);
+			List<Entity> l = newArrayList(1);
 			l.add(this.mainVm);
 
-			List<List<? extends Entity>> r = new ArrayList<List<? extends Entity>>();
+			List<List<? extends Entity>> r = newArrayList(2);
 			r.add(s);
 			r.add(l);
 			return new MultiListView<Entity>(r);
@@ -160,7 +159,7 @@ public class ThinClientDefault extends NetworkDeviceDefault implements ThinClien
 	public List<VirtualMachine> getVirtualMachines() {
 		VirtualMachine vm = getVirtualMachine();
 		if (vm != null) {
-			List<VirtualMachine> l = new ArrayList<VirtualMachine>(1);
+			List<VirtualMachine> l = newArrayList(1);
 			l.add(vm);
 			return Collections.unmodifiableList(l);
 		} else
