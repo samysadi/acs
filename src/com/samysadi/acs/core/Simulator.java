@@ -201,9 +201,7 @@ public class Simulator extends EntityImpl {
 	private Logger logger;
 
 	private Random random;
-	protected static int RANDOM_SEEDS_COUNT = 1000;
-	private long[] randomSeeds;
-	private int remainingRandomSeeds;
+	private Random randomSeedsGenerator;
 	private final WeakHashMap<Object, Random> randomsCache = new WeakHashMap<Object, Random>();
 	private final LinkedList<Random> randoms = new LinkedList<Random>();
 
@@ -250,10 +248,7 @@ public class Simulator extends EntityImpl {
 			else
 				seed = getConfig().getLong("seed", 0l);
 			this.random = new Random(seed);
-			this.remainingRandomSeeds = RANDOM_SEEDS_COUNT;
-			this.randomSeeds = new long[this.remainingRandomSeeds];
-			for (int i = 0; i< remainingRandomSeeds; i++)
-				this.randomSeeds[i] = this.random.nextLong();
+			this.randomSeedsGenerator = new Random(this.random.nextLong());
 		}
 
 		//
@@ -645,16 +640,7 @@ public class Simulator extends EntityImpl {
 	public Random getRandomGenerator(Object key) {
 		Random random = this.randomsCache.get(key);
 		if (random == null) {
-			long seed;
-			if (this.remainingRandomSeeds == 0) {
-				getLogger().log(Level.WARNING, "There is no remaining pre-generated random seeds.");
-				seed = getRandomGenerator().nextLong();
-			} else {
-				this.remainingRandomSeeds--;
-				seed = this.randomSeeds[this.remainingRandomSeeds];
-				if (this.remainingRandomSeeds == 0)
-					this.randomSeeds = null;
-			}
+			long seed = this.randomSeedsGenerator.nextLong();
 			random = new Random(seed);
 			this.randomsCache.put(key, random);
 		}
