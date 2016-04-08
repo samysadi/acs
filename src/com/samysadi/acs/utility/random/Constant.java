@@ -34,15 +34,15 @@ import java.util.Random;
  *
  * @since 1.0
  */
-public class Constant implements NumberGenerator {
-	private double val;
+public class Constant<E extends Number> implements NumberGenerator {
+	private E val;
 
-	public Constant(double value) {
+	public Constant(E value) {
 		super();
 		this.val = value;
 	}
 
-	public Constant(double val, Random generator) {
+	public Constant(E val, Random generator) {
 		this(val);
 	}
 
@@ -53,31 +53,31 @@ public class Constant implements NumberGenerator {
 
 	@Override
 	public byte nextByte() {
-		return (byte) val;
+		return val.byteValue();
 	}
 
 	@Override
 	public short nextShort() {
-		return (short) val;
+		return val.shortValue();
 	}
 
 	@Override
 	public int nextInt() {
-		return (int) val;
+		return val.intValue();
 	}
 
 	@Override
 	public float nextFloat() {
-		return (float) val;
+		return val.floatValue();
 	}
 
 	@Override
 	public long nextLong() {
-		return (long) val;
+		return val.longValue();
 	}
 
 	@Override
 	public double nextDouble() {
-		return val;
+		return val.doubleValue();
 	}
 }

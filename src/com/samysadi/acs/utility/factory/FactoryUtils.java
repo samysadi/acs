@@ -57,6 +57,7 @@ import com.samysadi.acs.user.ThinClientVirtualMachine;
 import com.samysadi.acs.user.User;
 import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.factory.generation.mode.FrequencyGenerationMode;
+import com.samysadi.acs.utility.random.Constant;
 import com.samysadi.acs.utility.random.Exponential;
 import com.samysadi.acs.utility.random.NumberGenerator;
 import com.samysadi.acs.utility.random.Uniform;
@@ -99,13 +100,26 @@ public final class FactoryUtils {
 	 * @return generated value
 	 */
 	public static Double generateDouble(String configName, Config config, Double defaultValue) {
+		NumberGenerator g = getDoubleGenerator(configName, config, defaultValue);
+
+		if (g == null)
+			return null;
+
+		return g.nextDouble();
+	}
+
+	/**
+	 *
+	 * @see #generateDouble(String, Config, Double)
+	 */
+	public static NumberGenerator getDoubleGenerator(String configName, Config config, Double defaultValue) {
 		if (config == null)
-			return defaultValue;
+			return defaultValue == null ? null : new Constant<Double>(defaultValue);
 
 		{
 			Double v = config.getDouble(configName, null);
 			if (v != null)
-				return v;
+				return new Constant<Double>(v);
 		}
 
 		{
@@ -113,28 +127,28 @@ public final class FactoryUtils {
 			if (min != null) {
 				Double max = config.getDouble(configName + "Max", null);
 				if (max != null)
-					return (new Uniform(min, max)).nextDouble();
+					return new Uniform(min, max);
 			}
 		}
 
 		{
 			Double mean = config.getDouble(configName + "Mean", null);
 			if (mean != null)
-				return (new Exponential(mean)).nextDouble();
+				return new Exponential(mean);
 		}
 
 		{
 			Class<?> clazz = config.getClassFromConfig(configName + "_Class", null, false);
 			if (clazz != null) {
 				try {
-					return ((NumberGenerator) clazz.newInstance()).nextDouble();
+					return ((NumberGenerator) clazz.newInstance());
 				} catch (Exception e) {
 					Logger.getGlobal().logInstantiationException(clazz, e);
 				}
 			}
 		}
 
-		return defaultValue;
+		return defaultValue == null ? null : new Constant<Double>(defaultValue);
 	}
 
 	/**
@@ -159,13 +173,26 @@ public final class FactoryUtils {
 	 * @return generated value
 	 */
 	public static Long generateLong(String configName, Config config, Long defaultValue) {
+		NumberGenerator g = getLongGenerator(configName, config, defaultValue);
+
+		if (g == null)
+			return null;
+
+		return g.nextLong();
+	}
+
+	/**
+	 *
+	 * @see #generateLong(String, Config, Long)
+	 */
+	public static NumberGenerator getLongGenerator(String configName, Config config, Long defaultValue) {
 		if (config == null)
-			return defaultValue;
+			return defaultValue == null ? null : new Constant<Long>(defaultValue);
 
 		{
 			Long v = config.getLong(configName, null);
 			if (v != null)
-				return v;
+				return new Constant<Long>(v);
 		}
 
 		{
@@ -173,28 +200,28 @@ public final class FactoryUtils {
 			if (min != null) {
 				Long max = config.getLong(configName + "Max", null);
 				if (max != null)
-					return (new Uniform(min, max)).nextLong();
+					return new Uniform(min, max);
 			}
 		}
 
 		{
 			Long mean = config.getLong(configName + "Mean", null);
 			if (mean != null)
-				return (new Exponential(mean)).nextLong();
+				return new Exponential(mean);
 		}
 
 		{
 			Class<?> clazz = config.getClassFromConfig(configName + "_Class", null, false);
 			if (clazz != null) {
 				try {
-					return ((NumberGenerator) clazz.newInstance()).nextLong();
+					return ((NumberGenerator) clazz.newInstance());
 				} catch (Exception e) {
 					Logger.getGlobal().logInstantiationException(clazz, e);
 				}
 			}
 		}
 
-		return defaultValue;
+		return defaultValue == null ? null : new Constant<Long>(defaultValue);
 	}
 
 	/**
@@ -219,13 +246,26 @@ public final class FactoryUtils {
 	 * @return generated value
 	 */
 	public static Integer generateInt(String configName, Config config, Integer defaultValue) {
+		NumberGenerator g = getIntGenerator(configName, config, defaultValue);
+
+		if (g == null)
+			return null;
+
+		return g.nextInt();
+	}
+
+	/**
+	 *
+	 * @see #generateInt(String, Config, Integer)
+	 */
+	public static NumberGenerator getIntGenerator(String configName, Config config, Integer defaultValue) {
 		if (config == null)
-			return defaultValue;
+			return defaultValue == null ? null : new Constant<Integer>(defaultValue);
 
 		{
 			Integer v = config.getInt(configName, null);
 			if (v != null)
-				return v;
+				return new Constant<Integer>(v);
 		}
 
 		{
@@ -233,28 +273,28 @@ public final class FactoryUtils {
 			if (min != null) {
 				Integer max = config.getInt(configName + "Max", null);
 				if (max != null)
-					return (new Uniform(min, max)).nextInt();
+					return new Uniform(min, max);
 			}
 		}
 
 		{
 			Integer mean = config.getInt(configName + "Mean", null);
 			if (mean != null)
-				return (new Exponential(mean)).nextInt();
+				return new Exponential(mean);
 		}
 
 		{
 			Class<?> clazz = config.getClassFromConfig(configName + "_Class", null, false);
 			if (clazz != null) {
 				try {
-					return ((NumberGenerator) clazz.newInstance()).nextInt();
+					return ((NumberGenerator) clazz.newInstance());
 				} catch (Exception e) {
 					Logger.getGlobal().logInstantiationException(clazz, e);
 				}
 			}
 		}
 
-		return defaultValue;
+		return defaultValue == null ? null : new Constant<Integer>(defaultValue);
 	}
 
 	/**
