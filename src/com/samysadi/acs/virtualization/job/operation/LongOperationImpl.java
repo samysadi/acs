@@ -571,7 +571,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	 *
 	 * <p>This method assumes that the operation is not running.
 	 *
-	 * @return the resource value to use in order to finish after the given <tt>delay</tt>
+	 * @return the minimum resource value to use in order to finish before the given <tt>delay</tt>
 	 */
 	protected abstract Resource computeSynchronizedResource(long delay);
 
