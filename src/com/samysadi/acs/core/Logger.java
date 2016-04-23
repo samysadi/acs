@@ -64,6 +64,16 @@ public class Logger implements Closeable {
 		enableConsole();
 	}
 
+	public Level getLevel() {
+		return this.logger.getLevel();
+	}
+
+	public void setLevel(Level l) {
+		this.logger.setLevel(l);
+		for (Handler handler: this.logger.getHandlers())
+			handler.setLevel(l);
+	}
+
 	public boolean isLoggable(Level level) {
 		return this.logger.isLoggable(level);
 	}
