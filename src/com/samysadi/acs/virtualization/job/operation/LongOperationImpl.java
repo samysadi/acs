@@ -742,7 +742,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	}
 
 	/**
-	 * @see SynchronizableOperation#stopSynchronization(long, Operation)
+	 * @see SynchronizableOperation#stopSynchronization()
 	 */
 	protected void stopSynchronization() {
 		if (isRunning())
