@@ -27,51 +27,77 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 package com.samysadi.acs.virtualization.job.operation;
 
 /**
- * An operation that offers methods to easily synchronize it
- * with other operations.
+ * An operation that can be synchronized with other operations.
  *
  * @see OperationSynchronizer
- * @since 1.0
+ * @since 1.2
  */
 public interface SynchronizableOperation<Resource> extends Operation<Resource> {
+	public OperationSynchronizer getOperationSynchronizer();
+
 	/**
 	 * Call this method so that the current operation will adjust its allocated resource
-	 * in order to finish (ie: to be completed) after running for <b>at least</b> the given <tt>delay</tt>.
+	 * in order to finish (ie: to be completed) after running for <b>at least</b> the
+	 * delay returned by {@link OperationSynchronizer#getSynchronizationDelay()}.
 	 *
-	 * <p>Calling this method will guarantee that this operation needs to be running for at least the given <tt>delay</tt>
+	 * <p>Calling this method will guarantee that this operation needs to be running for at least that delay
 	 * before it becomes completed.<br/>
-	 * But this method does not guarantee that the operation will be completed after it has been running for exactly the given delay, in
-	 * the case where it gets a too low resource promise from its provisioner. It may still need extra running time to be completed.
+	 * But this method does not guarantee that the operation will be completed after it has been running for exactly that delay.
+	 * If the operation gets a too low resource promise from its provisioner, then it may still need extra running time to be completed.
 	 *
-	 * <p>If synchronization was already started using this method, then this method should
-	 * behave as if it was called after calling {@link SynchronizableOperation#stopSynchronization()}.
+	 * <p>If {@link OperationSynchronizer#getSynchronizationDelay()} returns a negative <tt>delay</tt>, then the current operation
+	 * is delayed (i.e. will run forever).
 	 *
-	 * @param delay minimum remaining delay for this operation
-	 * @param operation contains the operation which the current operation is synchronized with, if any
-	 * @throws IllegalArgumentException if the given delay is zero or negative
-	 * @throws IllegalStateException if this operation is already running
+	 * <p>Additionally, after calling this method,
+	 * and if {@link OperationSynchronizer#isSynchronizeDelayBeforeCompletion()} returns <tt>true</tt>,
+	 * then current operation is delayed before completion.
+	 * In such case, for the operation to resume, you need to pause the operation,
+	 * call {@link SynchronizableOperation#stopSynchronization()} and
+	 * resume it.
+	 *
+	 * <p><b>Note:</b> You should not need to call this method directly.
+	 * If you need to synchronize an operation with an other, then use
+	 * {@link SynchronizableOperation#synchronizeWith(SynchronizableOperation)} or
+	 * {@link OperationSynchronizer#addOperation(SynchronizableOperation)}.
+	 *
+	 * @param operationSynchronizer the operationSynchronizer
+	 * @throws IllegalStateException if this operation is running
 	 */
-	public void startSynchronization(long delay, Operation<?> operation);
+	public void startSynchronization(OperationSynchronizer operationSynchronizer);
 
 	/**
 	 * Call this method to clear any synchronization restrictions that were set using
-	 * {@link SynchronizableOperation#startSynchronization(long, Operation)}.
+	 * {@link SynchronizableOperation#startSynchronization(OperationSynchronizer)}.
 	 *
-	 * <p>If the operation is not synchronized, then nothing is done.
+	 * <p><b>Note:</b> You should not need to call this method directly.
+	 * If you need to stop synchronizing an operation then use
+	 * {@link SynchronizableOperation#cancelSynchronization()} or
+	 * {@link OperationSynchronizer#removeOperation(SynchronizableOperation)}.
 	 *
-	 * @throws IllegalStateException if this operation is already running
+	 * @throws IllegalStateException if this operation is running
 	 */
 	public void stopSynchronization();
 
 	/**
-	 * Return <tt>true</tt> if current operation is synchronized with the given operation.
+	 * Synchronizes current operation with the given operation.
 	 *
-	 * <p>In other words, this method returns <tt>true</tt> if this operation is synchronized using {@link SynchronizableOperation#startSynchronization(long, Operation)}, AND
-	 * the operation which it is synchronized with is the same as the given <tt>operation</tt>.
-	 * <tt>false</tt> is returned if the given operation was not synchronized at all, or if {@link SynchronizableOperation#stopSynchronization()} was used.
+	 * <p>This method will create an {@link OperationSynchronizer} and add both
+	 * the current operation and the given <tt>operation</tt> to it.
+	 *
+	 * <p>If current operation or the given <tt>operation</tt> is already synchronized
+	 * then a new {@link OperationSynchronizer} is created, and all operations synchronized with
+	 * either current operation or the given <tt>operation</tt> are added to the
+	 * new {@link OperationSynchronizer}.
 	 *
 	 * @param operation
-	 * @return <tt>true</tt> if current operation is synchronized with the given operation
 	 */
-	public boolean isSynchronized(Operation<?> operation);
+	public void synchronizeWith(SynchronizableOperation<?> operation);
+
+	/**
+	 * Removes current operation from its {@link OperationSynchronizer} (see {@link SynchronizableOperation#getOperationSynchronizer()}).
+	 *
+	 * <p>If current operation is not synchronized (has no defined {@link OperationSynchronizer}) then nothing is done.
+	 *
+	 */
+	public void cancelSynchronization();
 }

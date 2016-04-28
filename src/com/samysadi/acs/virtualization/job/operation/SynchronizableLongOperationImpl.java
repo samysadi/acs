@@ -24,31 +24,46 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 ===============================================================================
 */
 
-package com.samysadi.acs.virtualization;
-
-import com.samysadi.acs.core.entity.Entity;
-import com.samysadi.acs.hardware.pu.ProcessingUnit;
-import com.samysadi.acs.hardware.pu.operation.ComputingOperation;
+package com.samysadi.acs.virtualization.job.operation;
 
 /**
- * This interface defines the strategy to use when a new {@link ComputingOperation} is
- * being started in order to select a {@link ProcessingUnit} among all available ones
- * inside the VM.
+ * A {@link LongOperationImpl} that implements the {@link SynchronizableOperation} interface.
  *
- * @since 1.0
+ * @since 1.2
  */
-public interface PuAllocator extends Entity {
+public abstract class SynchronizableLongOperationImpl<Resource extends LongResource> extends LongOperationImpl<Resource> implements SynchronizableOperation<Resource>{
+	public SynchronizableLongOperationImpl() {
+		super();
+	}
+
+	public SynchronizableLongOperationImpl(long operationLength) {
+		super(operationLength);
+	}
 
 	@Override
-	public PuAllocator clone();
+	public void startSynchronization(
+			OperationSynchronizer operationSynchronizer) {
+		super.startSynchronization(operationSynchronizer);
+	}
 
 	@Override
-	public VirtualMachine getParent();
+	public void stopSynchronization() {
+		super.stopSynchronization();
+	}
 
-	/**
-	 * Returns the best {@link ProcessingUnit} that should be used for the given computing operation.
-	 *
-	 * @return the best {@link ProcessingUnit} that should be used for the given computing operation
-	 */
-	public ProcessingUnit chooseProcessingUnit(ComputingOperation com);
+	@Override
+	public OperationSynchronizer getOperationSynchronizer() {
+		return super.getOperationSynchronizer();
+	}
+
+	@Override
+	public void synchronizeWith(SynchronizableOperation<?> operation) {
+		super.synchronizeWith(operation);
+	}
+
+	@Override
+	public void cancelSynchronization() {
+		super.cancelSynchronization();
+	}
+
 }

@@ -26,10 +26,10 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.hardware.network.operation;
 
-import com.samysadi.acs.core.Simulator;
 import com.samysadi.acs.hardware.network.routingprotocol.Route;
 import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.virtualization.job.Job;
+import com.samysadi.acs.virtualization.job.operation.LongOperation;
 import com.samysadi.acs.virtualization.job.operation.RemoteOperation;
 
 /**
@@ -37,7 +37,7 @@ import com.samysadi.acs.virtualization.job.operation.RemoteOperation;
  * through a given route in the network.
  *
  * <p>When starting a network operation, it seeks network resource from each provisioner in the allocated {@link Route} and
- * stays activated until its entire length is processed, until a failure happens or until it is explicitly stopped (using appropriate method).
+ * keeps running until its entire length is processed, until a failure happens or until it is explicitly stopped (using appropriate method).
  *
  * <p>You must ensure that both the parent Job and the destination Job are started in order to start this operation, otherwise an IllegalStateException is thrown.<br/>
  * If you start this operation while it has a <tt>null</tt> parent, or a <tt>null</tt> destination Job then a NullPointerException is thrown.
@@ -46,9 +46,9 @@ import com.samysadi.acs.virtualization.job.operation.RemoteOperation;
  * Besides, each link in the {@link Route} must have a non <tt>null</tt> provisioner otherwise a NullPointerException
  * is thrown.
  *
- * <p>When activating the operation, implementations must take care to register appropriate listeners
+ * <p>When starting the operation, implementations must take care to register appropriate listeners
  * on each device on the route, and on the source and destination jobs (and VMs) to ensure that
- * the operation is deactivated or updated accordingly when:
+ * the operation is stopped or updated accordingly when:
  * <ul>
  * 		<li> {@link NotificationCodes#OPERATION_RESOURCE_INVALIDATED}
  * 			the allocated BW on the route has changed;
@@ -61,7 +61,7 @@ import com.samysadi.acs.virtualization.job.operation.RemoteOperation;
  *
  * @since 1.0
  */
-public interface NetworkOperation extends RemoteOperation<NetworkResource> {
+public interface NetworkOperation extends LongOperation<NetworkResource>, RemoteOperation<NetworkResource> {
 
 	@Override
 	public NetworkOperation clone();
@@ -84,52 +84,4 @@ public interface NetworkOperation extends RemoteOperation<NetworkResource> {
 	 * @return Returns the route that is assigned for this operation or <tt>null</tt>
 	 */
 	public Route getAllocatedRoute();
-
-	/**
-	 * Returns the size in bytes (number of {@link Simulator#BYTE}s) of the data to be transmitted by this operation.
-	 *
-	 * @return the size in bytes (number of {@link Simulator#BYTE}s) of the data to be transmitted by this operation
-	 */
-	public long getLength();
-
-	/**
-	 * Returns the maximum bw (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) that this operation can use.
-	 *
-	 * @return the maximum bw (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) that this operation can use
-	 */
-	public long getResourceMax();
-
-	/**
-	 * Sets the maximum bw (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) that this operation can use. <br/>
-	 * The operation will never allocate more than this bw through the route.<br/>
-	 * <b>Default</b> value is {@code Long.MAX_VALUE}.
-	 *
-	 * @param maxBw
-	 */
-	public void setResourceMax(long maxBw);
-
-	/**
-	 * Returns the minimum needed Bw (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) by the operation to be activated
-	 *
-	 * @return the minimum needed Bw (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) by the operation to be activated
-	 */
-	public long getResourceMin();
-
-	/**
-	 * Sets the minimum usable Bw (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) by the operation to be activated.
-	 *
-	 * @param minBw
-	 */
-	public void setResourceMin(long minBw);
-
-	/**
-	 * Returns the total transmitted size (number of {@link Simulator#BYTE}s) that has effectively reached the DestinationJob.
-	 * This should not include the data that is being transmitted.
-	 * Only the data that has been transmitted until last deactivation should be included.
-	 *
-	 * @return The total effectively transmitted size (number of {@link Simulator#BYTE}s) that has reached the DestinationJob
-	 * @throws IllegalStateException if the operation is active
-	 */
-	public long getCompletedLength();
-
 }

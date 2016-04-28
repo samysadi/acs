@@ -426,6 +426,17 @@ public class Simulator extends EntityImpl {
 			this.nonDispensableEventsCount++;
 	}
 
+	/**
+	 * Returns the maximum delay value that can be used when scheduling events using
+	 * {@link Simulator#schedule(long, Event)} method.
+	 *
+	 * @return the maximum delay value that can be used when scheduling events using
+	 * {@link Simulator#schedule(long, Event)} method
+	 */
+	public long getMaximumScheduleDelay() {
+		return Long.MAX_VALUE - getTime();
+	}
+
 	protected void run() {
 		synchronized(this) {
 			if (this.isNotStopped)

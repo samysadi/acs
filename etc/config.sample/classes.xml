@@ -20,6 +20,7 @@
 	<NetworkLink_Class></NetworkLink_Class>
 	<NetworkOperation_Class></NetworkOperation_Class>
 	<NetworkProvisioner_Class></NetworkProvisioner_Class>
+	<OperationSynchronizer_Class></OperationSynchronizer_Class>
 	<PowerManager_Class></PowerManager_Class>
 	<ProcessingUnit_Class></ProcessingUnit_Class>
 	<PuAllocator_Class></PuAllocator_Class>

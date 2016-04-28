@@ -54,6 +54,7 @@ import com.samysadi.acs.virtualization.job.Job;
 import com.samysadi.acs.virtualization.job.JobDefault;
 import com.samysadi.acs.virtualization.job.operation.Operation;
 import com.samysadi.acs.virtualization.job.operation.OperationSynchronizer;
+import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
 
 /**
  *
@@ -544,13 +545,17 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 					return;
 				}
 
-				final OperationSynchronizer sync0 = OperationSynchronizer.synchronizeOperations(nextOperation, read);
-				OperationSynchronizer.synchronizeOperations(read, write, new MyStaticRsc0(sync0, muVm));
+				OperationSynchronizer os = Factory.getFactory(this).newOperationSynchronizer(null);
+				os.addOperation((SynchronizableOperation<?>) nextOperation);
+				os.addOperation((SynchronizableOperation<?>) read);
+				os.addOperation((SynchronizableOperation<?>) write);
+
+				write.addListener(NotificationCodes.RUNNABLE_STATE_CHANGED, new MyStaticRsc0(os, muVm));
 			}
 		}
 	}
 
-	private static final class MyStaticRsc0 extends OperationSynchronizer.RunnableStateChanged {
+	private static final class MyStaticRsc0 extends NotificationListener {
 		private final OperationSynchronizer sync0;
 		private VirtualMachine tempVm;
 
@@ -560,21 +565,21 @@ public class MigrationHandlerDefault extends EntityImpl implements MigrationHand
 		}
 
 		@Override
-		public void run(OperationSynchronizer sync) {
-			if (!sync.getOperation2().isTerminated())
+		protected void notificationPerformed(Notifier notifier,
+				int notification_code, Object data) {
+			if (!sync0.getOperations().get(2).isTerminated())
 				return;
 
 			//discard the file, it was here only to add storage overhead
-			((StorageOperation) sync.getOperation2()).getStorageFile().unplace();
+			((StorageOperation) sync0.getOperations().get(2)).getStorageFile().unplace();
 
 			//discard the write operation
-			((StorageOperation) sync.getOperation2()).unplace();
+			((StorageOperation) sync0.getOperations().get(2)).unplace();
 
 			//discard the read vm (and thus read job and operation)
 			removeTemporaryVm(tempVm);
 
-			sync.discard();
-			sync0.discard();
+			sync0.removeAllOperations();
 		}
 	}
 }

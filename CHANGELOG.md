@@ -1,6 +1,10 @@
 # 1.2 (underway)
+- Enhanced operations and operation synchronization 
+- Simulation initialization through factories redesigned 
 - Enhanced simulation progress logging
 - Logging settings are read from config files
+- Various minor bug fixes
+- Various small additions
 
 # 1.1
 - Added support for XML configuration files

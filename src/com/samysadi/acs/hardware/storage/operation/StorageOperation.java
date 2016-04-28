@@ -26,17 +26,16 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.hardware.storage.operation;
 
-import com.samysadi.acs.core.Simulator;
 import com.samysadi.acs.hardware.network.operation.NetworkOperation;
 import com.samysadi.acs.hardware.storage.StorageFile;
 import com.samysadi.acs.utility.NotificationCodes;
-import com.samysadi.acs.virtualization.job.operation.Operation;
+import com.samysadi.acs.virtualization.job.operation.LongOperation;
 
 /**
  * This interface defines methods to simulate a storage operation on a given {@link StorageFile}.
  *
  * <p>When starting a storage operation, it seeks transfer rate resource from the parent storage of its {@link StorageFile} and
- * stays activated until its entire length is processed (read, written or appended), until a failure happens or until it is explicitly stopped (using appropriate method).
+ * keeps running until its entire length is processed (read, written or appended), until a failure happens or until it is explicitly stopped (using appropriate method).
  *
  * <p>A storage operation can be created for a local file that is located in the same
  * host with the operation, or for a remote file that is located on another host (ex: SAN storages).<br/>
@@ -51,7 +50,7 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
  * <p>If your try to start this operation, while its {@link StorageFile} has a <tt>null</tt> storage parent or if that storage has <tt>null</tt> provisioner then a NullPointerException
  * is thrown when star.
  *
- * <p>Implementations have to listen and automatically deactivate the operation when:<ul>
+ * <p>Implementations have to listen and automatically stop the operation when:<ul>
  * 		<li> {@link NotificationCodes#OPERATION_RESOURCE_INVALIDATED}
  * 			The allocated TR for the operation changed;
  * 		<li> {@link NotificationCodes#FAILURE_STATE_CHANGED}
@@ -64,7 +63,7 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
  *
  * @since 1.0
  */
-public interface StorageOperation extends Operation<StorageResource> {
+public interface StorageOperation extends LongOperation<StorageResource> {
 	public enum StorageOperationType {
 		NONE,
 		READ,
@@ -93,45 +92,4 @@ public interface StorageOperation extends Operation<StorageResource> {
 	public StorageOperationType getType();
 
 	public long getFilePos();
-
-	/**
-	 * Returns the size in bytes (number of {@link Simulator#BYTE}s) of this operation.
-	 *
-	 * @return the size of this operation
-	 */
-	public long getLength();
-
-	/**
-	 * Returns the maximum usable Transfer Rate (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) for this operation.
-	 *
-	 * @return the maximum usable Transfer Rate
-	 */
-	public long getResourceMax();
-
-	/**
-	 * Sets the maximum usable Transfer Rate (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) for this operation
-	 */
-	public void setResourceMax(long maxTransferRate);
-
-	/**
-	 * Returns the minimum needed Transfer Rate (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) by the operation to be activated.
-	 *
-	 * @return the minimum needed Transfer Rate
-	 */
-	public long getResourceMin();
-
-	/**
-	 * Sets the minimum usable Transfer Rate (number of {@link Simulator#BYTE}s per one {@link Simulator#SECOND}) by the operation to be activated
-	 */
-	public void setResourceMin(long minTransferRate);
-
-	/**
-	 * Returns the completed length in bytes (number of {@link Simulator#BYTE}s) until last activation of this operation.
-	 *
-	 * <p>This must not include current active completed length (if this operation is active right now).
-	 *
-	 * @return the completed length until last activation
-	 */
-	public long getCompletedLength();
-
 }

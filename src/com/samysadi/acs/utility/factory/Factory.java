@@ -120,6 +120,8 @@ import com.samysadi.acs.virtualization.VirtualMachine;
 import com.samysadi.acs.virtualization.VirtualMachineDefault;
 import com.samysadi.acs.virtualization.job.Job;
 import com.samysadi.acs.virtualization.job.JobDefault;
+import com.samysadi.acs.virtualization.job.operation.OperationSynchronizer;
+import com.samysadi.acs.virtualization.job.operation.OperationSynchronizerDefault;
 
 /**
  * This Factory contains methods to create instances of different classes, accordingly to a given
@@ -667,6 +669,24 @@ public class Factory  {
 			return setParentFor((NetworkProvisioner) clazz
 					.getConstructor(long.class, long.class, double.class)
 					.newInstance(bwCapacity, latency, lossRate), parent);
+		} catch (Exception e) {
+			getLogger().logInstantiationException(clazz, e);
+			return null;
+		}
+	}
+
+	public Class<?> getOperationSynchronizerClass() {
+		return getConfig().getClassFromConfig("OperationSynchronizer_Class", OperationSynchronizerDefault.class, true);
+	}
+
+	public OperationSynchronizer newOperationSynchronizer(Class<?> clazz) {
+		if (clazz == null)
+			clazz = getOperationSynchronizerClass();
+
+		try {
+			return (OperationSynchronizer) clazz
+					.getConstructor()
+					.newInstance();
 		} catch (Exception e) {
 			getLogger().logInstantiationException(clazz, e);
 			return null;

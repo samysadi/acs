@@ -26,16 +26,15 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.hardware.pu.operation;
 
-import com.samysadi.acs.core.Simulator;
 import com.samysadi.acs.hardware.pu.ProcessingUnit;
 import com.samysadi.acs.utility.NotificationCodes;
-import com.samysadi.acs.virtualization.job.operation.Operation;
+import com.samysadi.acs.virtualization.job.operation.LongOperation;
 
 /**
  * This interface defines methods to simulate a computing operation.
  *
  * <p>When starting a computing operation, it seeks computing resource from its {@link ProcessingUnit} and
- * stays activated until its entire length is processed, until a failure happens or until it is explicitly stopped (using appropriate method).
+ * keeps running until its entire length is processed, until a failure happens or until it is explicitly stopped (using appropriate method).
  *
  * <p>You must ensure that the parent Job is started in order to start this operation, otherwise an IllegalStateException is thrown.<br/>
  * If you start this operation while it has a <tt>null</tt> parent then a NullPointerException is thrown.
@@ -44,7 +43,7 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
  * Besides, the allocated {@link ProcessingUnit} must have a non <tt>null</tt> provisioner otherwise a NullPointerException
  * is thrown.
  *
- * <p>Implementations must take care to listen to the following notifications to deactivate or update the operation:<ul>
+ * <p>Implementations must take care to listen to the following notifications to stop or update the operation when:<ul>
  * 		<li> {@link NotificationCodes#OPERATION_RESOURCE_INVALIDATED}
  * 			The mips allocated for this operation changes (because other operations are started / stopped).
  * 		<li> {@link NotificationCodes#FAILURE_STATE_CHANGED}
@@ -55,58 +54,15 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
  *
  * @since 1.0
  */
-public interface ComputingOperation extends Operation<ComputingResource> {
+public interface ComputingOperation extends LongOperation<ComputingResource> {
 
 	@Override
 	public ComputingOperation clone();
 
 	/**
-	 * Returns the allocated Processing Unit that is used if for the computing task (if the operation is active
-	 * or during last activation).
+	 * Returns the allocated {@link ProcessingUnit} that is used (or going to be used) for the computing task.
 	 *
-	 * @return the allocated Processing Unit that is used if for the computing task (if the operation is active
-	 * or during last activation)
+	 * @return the allocated {@link ProcessingUnit} that is used (or going to be used) for the computing task
 	 */
 	public ProcessingUnit getAllocatedPu();
-
-	/**
-	 * Returns the task length in number of {@link Simulator#MI}s.
-	 *
-	 * @return the task length in number of {@link Simulator#MI}s
-	 */
-	public long getLength();
-
-	/**
-	 * Returns the maximum usable MIPS (number of {@link Simulator#MI}s per one {@link Simulator#SECOND}) by the operation.
-	 *
-	 * @return the maximum usable MIPS (number of {@link Simulator#MI}s per one {@link Simulator#SECOND}) by the operation
-	 */
-	public long getResourceMax();
-
-	/**
-	 * Sets the maximum usable MIPS (number of {@link Simulator#MI}s per one {@link Simulator#SECOND}) by the operation
-	 */
-	public void setResourceMax(long maxMips);
-
-	/**
-	 * Returns the minimum needed MIPS (number of {@link Simulator#MI}s per one {@link Simulator#SECOND}) by the operation to be activated.
-	 *
-	 * @return the minimum needed MIPS (number of {@link Simulator#MI}s per one {@link Simulator#SECOND}) by the operation to be activated
-	 */
-	public long getResourceMin();
-
-	/**
-	 * Sets the minimum usable MIPS (number of {@link Simulator#MI}s per one {@link Simulator#SECOND}) by the operation to be activated
-	 */
-	public void setResourceMin(long minMips);
-
-	/**
-	 * Returns the completed length in number of {@link Simulator#MI} until last activation of this operation.
-	 *
-	 * <p>This must not include current active completed length (if this operation is active right now).
-	 *
-	 * @return the completed length in number of {@link Simulator#MI} until last activation of this operation
-	 */
-	public long getCompletedLength();
-
 }

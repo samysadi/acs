@@ -56,6 +56,7 @@ import com.samysadi.acs.utility.workload.task.Task;
 import com.samysadi.acs.virtualization.VirtualMachine;
 import com.samysadi.acs.virtualization.job.Job;
 import com.samysadi.acs.virtualization.job.operation.Operation;
+import com.samysadi.acs.virtualization.job.operation.OperationDelayer;
 import com.samysadi.acs.virtualization.job.operation.RemoteOperation;
 import com.samysadi.acs.virtualization.job.operation.provisioner.Provisioner;
 
@@ -323,6 +324,20 @@ public class NotificationCodes extends CoreNotificationCodes {
 	 * <b>Object:</b> <tt>null</tt>
 	 */
 	public static final int VM_FLAG_CHANGED 				= VM_MASK | 0x80;
+
+	/**
+	 * <b>Description:</b> Thrown when this VM's {@link OperationDelayer} has changed.<br/>
+	 * <b>Notifier:</b> {@link VirtualMachine}<br/>
+	 * <b>Object:</b> <tt>null</tt>
+	 */
+	public static final int VM_OPERATION_DELAYER_CHANGED	= VM_MASK | 0x81;
+
+	/**
+	 * <b>Description:</b> Thrown when this VM's {epoch has changed.<br/>
+	 * <b>Notifier:</b> {@link VirtualMachine}<br/>
+	 * <b>Object:</b> <tt>null</tt>
+	 */
+	public static final int VM_OPERATION_EPOCH_CHANGED		= VM_MASK | 0x82;
 
 	/**
 	 * <b>Description:</b><br/>

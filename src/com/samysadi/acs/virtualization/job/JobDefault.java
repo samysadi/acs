@@ -413,12 +413,61 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 		vm.unplace();
 	}
 
+	private static void scheduleRemoveTemporaryVm(final VirtualMachine vm, Operation<?> o) {
+		NotificationListener n = new NotificationListener() {
+			@Override
+			protected void notificationPerformed(Notifier notifier,
+					int notification_code, Object data) {
+				final NetworkOperation o = (NetworkOperation) notifier;
+				if (o.getParent() == null || o.isTerminated()) {
+					//make sure all listeners are invoked before discarding temporary vm
+					Simulator.getSimulator().schedule(1l, new DispensableEventImpl() {
+						@Override
+						public void process() {
+							if (vm.hasParentRec()) {
+								Operation<?> toWait = null;
+								for (Job j: vm.getJobs()) {
+									if (j.isTerminated())
+										continue;
+									for (Operation<?> o: j.getOperations())
+										if (!o.isTerminated()) {
+											toWait = o;
+											break;
+										}
+									if (toWait != null)
+										break;
+									for (Operation<?> o: j.getRemoteOperations())
+										if (!o.isTerminated()) {
+											toWait = o;
+											break;
+										}
+									if (toWait != null)
+										break;
+								}
+
+								if (toWait != null) {
+									scheduleRemoveTemporaryVm(vm, toWait);
+									return;
+								}
+							}
+
+							removeTemporaryVm(vm);
+						}
+					});
+					this.discard();
+				}
+			}
+		};
+		o.addListener(NotificationCodes.RUNNABLE_STATE_CHANGED, n);
+		o.addListener(NotificationCodes.ENTITY_PARENT_CHANGED, n);
+	}
+
 	@Override
 	public NetworkOperation sendData(Host destinationHost, long dataSize,
 			final NotificationListener listener) {
 		if (getParent() == null)
 			return null;
-		final VirtualMachine destinationVm = newTemporaryVm(destinationHost, getParent().getUser());
+		VirtualMachine destinationVm = newTemporaryVm(destinationHost, getParent().getUser());
 		if (destinationVm.canStart())
 			destinationVm.doStart();
 		Job destinationJob = Factory.getFactory(this).newJob(null, destinationVm);
@@ -433,25 +482,9 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 		}
 		if (listener != null)
 			o.addListener(NotificationCodes.RUNNABLE_STATE_CHANGED, listener);
-		NotificationListener n = new NotificationListener() {
-			@Override
-			protected void notificationPerformed(Notifier notifier,
-					int notification_code, Object data) {
-				final NetworkOperation o = (NetworkOperation) notifier;
-				if (o.getParent() == null || o.isTerminated()) {
-					//make sure all listeners are invoked before discarding temporary vm
-					Simulator.getSimulator().schedule(1, new DispensableEventImpl() {
-						@Override
-						public void process() {
-							removeTemporaryVm(destinationVm);
-						}
-					});
-					this.discard();
-				}
-			}
-		};
-		o.addListener(NotificationCodes.RUNNABLE_STATE_CHANGED, n);
-		o.addListener(NotificationCodes.ENTITY_PARENT_CHANGED, n);
+
+		scheduleRemoveTemporaryVm(destinationVm, o);
+
 		o.doStart();
 
 		return o;
@@ -468,7 +501,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 			NotificationListener listener) {
 		if (getParent() == null)
 			return null;
-		final VirtualMachine srcVm = newTemporaryVm(srcHost, getParent().getUser());
+		VirtualMachine srcVm = newTemporaryVm(srcHost, getParent().getUser());
 		if (srcVm.canStart())
 			srcVm.doStart();
 		Job srcJob = Factory.getFactory(this).newJob(null, srcVm);
@@ -483,25 +516,9 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 		}
 		if (listener != null)
 			o.addListener(NotificationCodes.RUNNABLE_STATE_CHANGED, listener);
-		NotificationListener n = new NotificationListener() {
-			@Override
-			protected void notificationPerformed(Notifier notifier,
-					int notification_code, Object data) {
-				NetworkOperation o = (NetworkOperation) notifier;
-				if (o.getParent() == null || o.isTerminated()) {
-					//make sure all listeners are invoked before discarding temporary vm
-					Simulator.getSimulator().schedule(1, new DispensableEventImpl() {
-						@Override
-						public void process() {
-							removeTemporaryVm(srcVm);
-						}
-					});
-					this.discard();
-				}
-			}
-		};
-		o.addListener(NotificationCodes.RUNNABLE_STATE_CHANGED, n);
-		o.addListener(NotificationCodes.ENTITY_PARENT_CHANGED, n);
+
+		scheduleRemoveTemporaryVm(srcVm, o);
+
 		o.doStart();
 
 		return o;

@@ -126,6 +126,14 @@ public class StorageOperationTest {
 		};
 	}
 
+	private long getRemainingDelay(long length, long resource) {
+		return Math.round(Math.ceil((double)length * Simulator.SECOND/resource));
+	}
+
+	private long getRemainingDelay(long resource) {
+		return getRemainingDelay(LENGTH, resource);
+	}
+
 	private void assertLEquals(long max, long v) {
 		if (max == v + 1)
 			return;
@@ -145,13 +153,14 @@ public class StorageOperationTest {
 				final StorageOperation s1 = j0.writeFile(sf1, 0, LENGTH, getOperationListener());
 				final StorageOperation s2 = j0.appendFile(sf2, LENGTH, getOperationListener());
 
-				Simulator.getSimulator().schedule(1, new EventImpl() {
+				final long TIME = 1;
+				Simulator.getSimulator().schedule(TIME, new EventImpl() {
 					@Override
 					public void process() {
 						try {
 							Assert.assertTrue(s0.isRunning());
 							Assert.assertNotNull(s0.getAllocatedResource());
-							Assert.assertEquals(TR_CAPACITY / 6, s0.getAllocatedResource().getLong());
+							Assert.assertEquals(getRemainingDelay(TR_CAPACITY / 6) - TIME, s0.getRemainingDelay());
 							Assert.assertTrue(s1.isRunning());
 							Assert.assertNotNull(s1.getAllocatedResource());
 							Assert.assertTrue(s2.isRunning());
@@ -229,20 +238,20 @@ public class StorageOperationTest {
 				final StorageOperation s1 = j1.writeFile(sf1, 0, LENGTH, getOperationListener());
 				final StorageOperation s2 = j1.appendFile(sf2, LENGTH, getOperationListener());
 
-				Simulator.getSimulator().schedule(1, new EventImpl() {
+				final long TIME = 1;
+				Simulator.getSimulator().schedule(TIME, new EventImpl() {
 					@Override
 					public void process() {
 						try {
 							Assert.assertTrue(s0.isRunning());
 							Assert.assertNotNull(s0.getAllocatedResource());
-							Assert.assertEquals(BW0, s0.getAllocatedResource().getLong());
+							Assert.assertEquals(getRemainingDelay(BW0) - TIME, s0.getRemainingDelay());
 							Assert.assertTrue(s1.isRunning());
 							Assert.assertNotNull(s1.getAllocatedResource());
+							Assert.assertEquals(getRemainingDelay(BW1) - TIME, s1.getRemainingDelay());
 							Assert.assertTrue(s2.isRunning());
 							Assert.assertNotNull(s2.getAllocatedResource());
-							Assert.assertEquals(s1.getAllocatedResource().getLong(), s2.getAllocatedResource().getLong());
-							assertLEquals(Math.min(TR_CAPACITY, LINK_BW),
-									s1.getAllocatedResource().getLong() + s2.getAllocatedResource().getLong());
+							Assert.assertEquals(getRemainingDelay(BW2) - TIME, s2.getRemainingDelay());
 						} catch (AssertionError e) {
 							exc = e;
 						}
@@ -366,13 +375,14 @@ public class StorageOperationTest {
 				final StorageOperation s1 = j1.writeFile(sf1, 0, LENGTH, getOperationListener());
 				final StorageOperation s2 = j1.appendFile(sf2, LENGTH, getOperationListener());
 
-				Simulator.getSimulator().schedule(1, new EventImpl() {
+				final long TIME = 1;
+				Simulator.getSimulator().schedule(TIME, new EventImpl() {
 					@Override
 					public void process() {
 						try {
 							Assert.assertTrue(s0.isRunning());
 							Assert.assertNotNull(s0.getAllocatedResource());
-							Assert.assertEquals(BW0, s0.getAllocatedResource().getLong());
+							Assert.assertEquals(getRemainingDelay(BW0) - TIME, s0.getRemainingDelay());
 							Assert.assertTrue(s1.isRunning());
 							Assert.assertNotNull(s1.getAllocatedResource());
 							Assert.assertTrue(s2.isRunning());

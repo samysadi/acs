@@ -26,6 +26,7 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.virtualization.job.operation;
 
+import java.util.List;
 import java.util.logging.Level;
 
 import com.samysadi.acs.core.Simulator;
@@ -39,13 +40,14 @@ import com.samysadi.acs.core.event.EventImpl;
 import com.samysadi.acs.core.notifications.NotificationListener;
 import com.samysadi.acs.core.notifications.Notifier;
 import com.samysadi.acs.utility.NotificationCodes;
+import com.samysadi.acs.utility.factory.Factory;
 
 /**
- * This class defines a Operation that uses a {@link LongResource}.
+ * This is the default implementation of the {@link LongOperation} interface.
  *
  * @since 1.0
  */
-public abstract class LongOperationImpl<Resource extends LongResource> extends OperationImpl<Resource> {
+public abstract class LongOperationImpl<Resource extends LongResource> extends OperationImpl<Resource> implements LongOperation<Resource> {
 	private long resourceMax;
 	private long resourceMin;
 	private long lastActivated;
@@ -54,11 +56,25 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	private long oldTotalRunningTime;
 	private long completedLength;
 
+	private long maxActivationLength;
 	private Event endOfOperationEvent;
+
+	/**
+	 * The operation is delayed
+	 */
+	private static final int DELAYED				= 0x00000001;
+
+	/**
+	 * The operation needs to be delayed at a given moment before completion
+	 */
+	private static final int DELAY_BEFORE_COMPLETION	= 0x00000002;
+
+	private int delayedState;
 
 	private long synchronizedResource;
 	private long synchronizedTimeAdjust;
-	private Operation<?> synchronizedWith;
+	private boolean synchronizedNeedsDelayingBeforeCompletion;
+	private OperationSynchronizer operationSynchronizer;
 
 	/**
 	 * Empty constructor that creates a zero-length operation.
@@ -83,7 +99,9 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 		this.lastActivated = Long.MAX_VALUE;
 		this.oldTotalRunningTime = 0l;
 		this.completedLength = 0l;
+		this.maxActivationLength = 0l;
 		this.endOfOperationEvent = null;
+		this.delayedState = 0;
 
 		if (operationLength <= 0)
 			throw new IllegalArgumentException("Operation length needs to be strictly positive");
@@ -102,14 +120,11 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 
 		this.synchronizedResource = Long.MAX_VALUE;
 		this.synchronizedTimeAdjust = 0l;
-		this.synchronizedWith = null;
+		this.synchronizedNeedsDelayingBeforeCompletion = false;
+		this.operationSynchronizer = null;
 	}
 
-	/**
-	 * Returns the length of this operation.
-	 *
-	 * @return the length of this operation
-	 */
+	@Override
 	public long getLength() {
 		return this.length;
 	}
@@ -118,32 +133,12 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 		this.length = length;
 	}
 
-	/**
-	 * Returns the maximum resource value that this operation can use (inclusive).
-	 *
-	 * <p>On activation, this operation will ask the provisioner to grant at most a value equals to this value, even if this operation receives
-	 * a promise greater than this value.
-	 *
-	 * <p><b>Default</b> is {@code Long.MAX_VALUE}.
-	 *
-	 * <p>For resources that needs a unit of time (to represent bandwidth, transfer rates etc..), the value returned here
-	 * is assumed to be the maximum length that can be operated in one {@link Simulator#SECOND}.
-	 *
-	 * @return the maximum resource value that this operation can use (inclusive)
-	 */
+	@Override
 	public long getResourceMax() {
 		return resourceMax;
 	}
 
-	/**
-	 * Updates the maximum resource that can be granted for this operation.
-	 *
-	 * <p>For resources that needs a unit of time (to represent bandwidth, transfer rates etc..), the value set here
-	 * is assumed to be the maximum length that can be operated in one {@link Simulator#SECOND}.
-	 *
-	 * @param resourceMax
-	 * @throws IllegalStateException if this operation is activated
-	 */
+	@Override
 	public void setResourceMax(long resourceMax) {
 		if (this.resourceMax == resourceMax)
 			return;
@@ -152,31 +147,12 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 		this.resourceMax = resourceMax;
 	}
 
-	/**
-	 * Returns the minimum resource value that this operation needs for activation (inclusive).
-	 *
-	 * <p>On activation, if this operation receives a smaller promise than this value from the provisioner, then the activation fails.
-	 *
-	 * <p><b>Default</b> is {@code 1l}.
-	 *
-	 * <p>For resources that needs a unit of time (to represent bandwidth, transfer rates etc..), the value returned here
-	 * is assumed to be the minimum length that can be operated in one {@link Simulator#SECOND}.
-	 *
-	 * @return the minimum resource value that this operation needs for activation (inclusive)
-	 */
+	@Override
 	public long getResourceMin() {
 		return resourceMin;
 	}
 
-	/**
-	 * Updates the minimum resource that has to be granted for this operation on activation.
-	 *
-	 * <p>For resources that needs a unit of time (to represent bandwidth, transfer rates etc..), the value set here
-	 * is assumed to be the minimum length that can be operated in one {@link Simulator#SECOND}.
-	 *
-	 * @param resourceMin
-	 * @throws IllegalStateException if this operation is activated
-	 */
+	@Override
 	public void setResourceMin(long resourceMin) {
 		if (this.resourceMin == resourceMin)
 			return;
@@ -193,13 +169,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 		return r;
 	}
 
-	/**
-	 * Returns the completed length of this operation.
-	 * If this operation is active then this does not include
-	 * the completed length since last activation.
-	 *
-	 * @return the completed length of this operation
-	 */
+	@Override
 	public long getCompletedLength() {
 		return completedLength;
 	}
@@ -221,7 +191,7 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	 *
 	 * @param completedLength
 	 */
-	protected void setCompletedLength(long completedLength) {
+	protected final void setCompletedLength(long completedLength) {
 		if (this.completedLength != completedLength) {
 			if (completedLength<0)
 				throw new IllegalArgumentException("Negative length");
@@ -229,24 +199,37 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 				completedLength = this.getLength();
 			this.completedLength = completedLength;
 		}
-		if (completedLength == this.getLength())
+		if (completedLength == this.getLength()) {
+			if (isDelayedBeforeCompletion())
+				return;
+
 			setRunnableState(RunnableState.COMPLETED);
+		}
 	}
 
-	@Override
-	public long getRemainingDelay() {
+	protected long _getRemainingDelay(long remainingLength) {
+		return Math.round(Math.ceil((double) remainingLength * this.getAllocatedResource().getUnitOfTime() / this.getAllocatedResource().getLong()));
+	}
+
+	protected final long getRemainingDelay(long remainingLength) {
+		if (this.isDelayed())
+			return -1l;
+
+		if (this.getSynchronizationTimeAdjust() < 0)
+			return -1l;
+
+		if (remainingLength <= 0l)
+			return this.getSynchronizationTimeAdjust();
+
 		if (this.getAllocatedResource() == null)
 			throw new IllegalStateException("Not allowed when there is no resource allocated");
-		if (this.getAllocatedResource().getLong() == 0)
-			return Long.MAX_VALUE;
 
-		long remainingLength = this.getLength() - this.getCompletedLength();
-		if (remainingLength <= 0l)
-			return 0l;
+		if (this.getAllocatedResource().getLong() == 0)
+			return -1l;
 
 		long total = 0l;
 
-		total += Math.round(Math.ceil((double) remainingLength * this.getAllocatedResource().getUnitOfTime() / this.getAllocatedResource().getLong()));
+		total += _getRemainingDelay(remainingLength);
 
 		total += this.getSynchronizationTimeAdjust();
 
@@ -259,6 +242,15 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 		return total;
 	}
 
+	@Override
+	public final long getRemainingDelay() {
+		return getRemainingDelay(this.getLength() - this.getCompletedLength());
+	}
+
+	protected long _getCompletedLengthAfterDelay(long delay) {
+		return Math.round(Math.floor((double) delay * getAllocatedResource().getLong() / this.getAllocatedResource().getUnitOfTime()));
+	}
+
 	/**
 	 * Returns the length completed after computing for the given <tt>delay</tt> using the
 	 * current allocated resource. This should <b>not</b> include old Completed Length if any.
@@ -266,18 +258,19 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	 * @param delay
 	 * @return the length completed after computing for the given <tt>delay</tt>
 	 */
-	protected long getCompletedLengthAfterDelay(long delay) {
-		if (this.getSynchronizationTimeAdjust() > 0) {
-			delay -= this.getSynchronizationTimeAdjust();
-			if (delay < 0) {
-				this.setSynchronizationTimeAdjust(-delay);
-				return 0l;
-			} else {
-				this.setSynchronizationTimeAdjust(0l);
-			}
+	protected final long getCompletedLengthAfterDelay(long delay) {
+		if (this.getSynchronizationTimeAdjust() < 0)
+			return 0l;
+
+		delay -= this.getSynchronizationTimeAdjust();
+		if (delay <= 0) {
+			this.setSynchronizationTimeAdjust(-delay);
+			return 0l;
+		} else {
+			this.setSynchronizationTimeAdjust(0l);
 		}
 
-		return Math.round(Math.floor((double) delay * getAllocatedResource().getLong() / this.getAllocatedResource().getUnitOfTime()));
+		return _getCompletedLengthAfterDelay(delay);
 	}
 
 	/**
@@ -302,10 +295,10 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 
 		long value = r.getLong();
 
-		if (r.getLong() > getSynchronizedResource())
+		if (value > getSynchronizedResource())
 			value = getSynchronizedResource();
 
-		if (r.getLong() > getResourceMax())
+		if (value > getResourceMax())
 			value = getResourceMax();
 
 		if (value < getResourceMin())
@@ -457,49 +450,134 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 		return true;
 	}
 
+	protected long getNextLengthForDelaying() {
+		return Long.MAX_VALUE;
+	}
+
+	@Override
+	public boolean isDelayed() {
+		return ((this.delayedState & DELAYED) != 0);
+	}
+
+	@Override
+	public boolean isDelayedBeforeCompletion() {
+		int delayedState;
+
+		if (isRunning())
+			delayedState = this.delayedState;
+		else {
+			long old = this.maxActivationLength;
+			delayedState = getDelayedStateAndSetMaxActivationLength();
+			this.maxActivationLength = old;
+		}
+
+		return ((delayedState & DELAY_BEFORE_COMPLETION) != 0);
+	}
+
+	private int getDelayedStateAndSetMaxActivationLength() {
+		int delayedState = 0;
+		this.maxActivationLength = getNextLengthForDelaying();
+		if (this.maxActivationLength >= this.getCompletedLength() && this.maxActivationLength <= this.getLength()) {
+			if (this.maxActivationLength == this.getCompletedLength()) {
+				delayedState = delayedState | DELAYED;
+			}
+			delayedState = delayedState | DELAY_BEFORE_COMPLETION;
+		} else
+			this.maxActivationLength = this.getLength(); //necessary to compute remaining length
+
+		if (getSynchronizationTimeAdjust() < 0) {
+			delayedState = delayedState | DELAYED;
+			delayedState = delayedState | DELAY_BEFORE_COMPLETION;
+		}
+
+		if (isSynchronizedNeedsDelayingBeforeCompletion()) {
+			if (this.getCompletedLength() == this.getLength())
+				delayedState = delayedState | DELAYED;
+			delayedState = delayedState | DELAY_BEFORE_COMPLETION;
+		}
+
+		return delayedState;
+	}
+
 	/**
 	 * Activates the operation after the provisioner is ready and returns <tt>true</tt> on success.
 	 *
-	 * <p>This activation method does not throw notification unlike {@link Operation#activate()} does.
+	 * <p>This activation method does not throw notifications.
 	 *
 	 * @return <tt>true</tt> if the operation was successfully activate
 	 * and <tt>false</tt> if the operation was not activated
 	 */
 	protected boolean activate0() {
-		Resource r = LongOperationImpl.this.getProvisionerPromise();
-		if (r == null) {
-			getLogger().log(Level.FINEST, LongOperationImpl.this, "Failed because the provisioner cannot allocate resources for this operation.");
-			doFail();
-			return false;
-		}
-
 		//register listeners to keep the operation consistent
 		if (!registerListeners()) {
 			doFail();
 			return false;
 		}
 
-		setAllocatedResource(r);
+		//Fill the delayedState var
+		this.delayedState = getDelayedStateAndSetMaxActivationLength();
 
-		grantAllocatedResource();
+		this.endOfOperationEvent = null;
 
-		//schedule an event for the end of the operation
-		endOfOperationEvent = new EventImpl() {
-			@Override
-			public void process() {
-				LongOperationImpl.this.doPause();
+		if (!isDelayed()) {
+			long remainingLength = this.maxActivationLength - this.getCompletedLength();
+
+			if (remainingLength > 0) {
+				Resource r = LongOperationImpl.this.getProvisionerPromise();
+				if (r == null) {
+					getLogger().log(Level.FINEST, LongOperationImpl.this, "Failed because the provisioner cannot allocate resources for this operation.");
+					doFail();
+					return false;
+				}
+
+				setAllocatedResource(r);
+
+				grantAllocatedResource();
 			}
-		};
-		Simulator.getSimulator().schedule(getRemainingDelay(), endOfOperationEvent);
 
-		this.lastActivated = Simulator.getSimulator().getTime();
-		setRunnableState(RunnableState.RUNNING);
+			//notify the operation start before scheduling endOfOperationEvent!
+			this.lastActivated = Simulator.getSimulator().getTime();
+			setRunnableState(RunnableState.RUNNING);
+
+			//schedule an event for the end of the operation, or for the delaying
+			long remainingDelay = getRemainingDelay(remainingLength);
+
+			//if remainingDelay is negative, then run forever
+			if (remainingDelay >= 0) {
+				endOfOperationEvent = new EventImpl() {
+					@Override
+					public void process() {
+						LongOperationImpl.this.doPause();
+						if (!LongOperationImpl.this.isTerminated())
+							LongOperationImpl.this.doStart();
+					}
+				};
+				Simulator.getSimulator().schedule(remainingDelay, endOfOperationEvent);
+			}
+		} else {
+			setAllocatedResource(null);
+			endOfOperationEvent = null;
+
+			this.lastActivated = Simulator.getSimulator().getTime();
+			setRunnableState(RunnableState.RUNNING);
+		}
+
+		if (this.endOfOperationEvent == null) {
+			//make sure there is a scheduled event, so that the simulation will not stop
+			endOfOperationEvent = new EventImpl() {
+				@Override
+				public void process() {
+					//dummy event
+				}
+			};
+			Simulator.getSimulator().schedule(Simulator.getSimulator().getMaximumScheduleDelay(), endOfOperationEvent);
+		}
 
 		return true;
 	}
 
 	/**
-	 * Deactivates the operation silently without throwing notifications unlike {@link Operation#deactivate()} does
+	 * Deactivates the operation silently without throwing notifications
 	 * and returns <tt>true</tt> on success.
 	 *
 	 * @return <tt>true</tt> if the operation was successfully deactivated
@@ -510,23 +588,30 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 		this.lastActivated = Long.MAX_VALUE;
 
 		unregisterListeners();
+
+		this.oldTotalRunningTime = this.oldTotalRunningTime + delay;
+
 		if (endOfOperationEvent != null) {
 			endOfOperationEvent.cancel();
 			endOfOperationEvent = null;
 		}
 
-		revokeAllocatedResource();
+		if (!isDelayed()) {
+			revokeAllocatedResource();
 
-		this.oldTotalRunningTime = this.oldTotalRunningTime + delay;
+			long total = getCompletedLengthAfterDelay(delay);
 
-		long total = getCompletedLengthAfterDelay(delay);
-
-		setCompletedLength(getCompletedLength() + total);
+			setCompletedLength(Math.min(this.maxActivationLength, getCompletedLength() + total));
+		}
 
 		if (getRunnableState() == RunnableState.RUNNING) //if the state was not changed by setCompletedLength()
 			setRunnableState(RunnableState.PAUSED);
 
 		setAllocatedResource(null);
+
+		this.maxActivationLength = 0;
+
+		this.delayedState = 0;
 
 		return true;
 	}
@@ -566,8 +651,24 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 			doStart();
 	}
 
+	@Override
+	public void doTerminate() {
+		if (this.isTerminated())
+			return;
+
+		if (this.isRunning())
+			this.doPause();
+		else
+			this.setCompletedLength(this.getCompletedLength()); //make sure it is not completed
+
+		if (!this.isTerminated())
+			this.doCancel();
+	}
+
 	/**
 	 * This method is used for synchronization.
+	 *
+	 * <p>It computes and returns minimum resource value to use in order to finish before the given <tt>delay</tt>.
 	 *
 	 * <p>This method assumes that the operation is not running.
 	 *
@@ -575,57 +676,127 @@ public abstract class LongOperationImpl<Resource extends LongResource> extends O
 	 */
 	protected abstract Resource computeSynchronizedResource(long delay);
 
+	protected static long computeSynchronizedResource(long remainingLength, long unitoftime, long delay) {
+		//return Math.round(Math.floor((double)remainingLength * unitoftime / (delay - 1)));
+		return Math.round(Math.ceil((double)remainingLength * unitoftime / delay));
+	}
+
 	protected long getSynchronizedResource() {
 		return this.synchronizedResource;
 	}
 
-	protected long getSynchronizationTimeAdjust() {
+	/**
+	 * Returns the synchronization time adjust value which is positive, or -1 if
+	 * there for an infinite adjust time (i.e. if the operation needs to be delayed).
+	 *
+	 * @return the synchronization time adjust value which is positive, or -1 if
+	 * there for an infinite adjust time (i.e. if the operation needs to be delayed).
+	 */
+	private long getSynchronizationTimeAdjust() {
 		return this.synchronizedTimeAdjust;
 	}
 
-	protected void setSynchronizationTimeAdjust(long newValue) {
+	private void setSynchronizationTimeAdjust(long newValue) {
 		this.synchronizedTimeAdjust = newValue;
 	}
 
-	protected Operation<?> getSynchronizedWith() {
-		return this.synchronizedWith;
+	private boolean isSynchronizedNeedsDelayingBeforeCompletion() {
+		return this.synchronizedNeedsDelayingBeforeCompletion;
 	}
 
-	protected void startSynchronization(long delay, Operation<?> operation) {
-		if (delay <= 0)
-			throw new IllegalArgumentException("Given delay is negative");
-
+	/**
+	 * @see SynchronizableOperation#startSynchronization(OperationSynchronizer)
+	 */
+	protected void startSynchronization(OperationSynchronizer operationSynchronizer) {
 		if (isRunning())
 			throw new IllegalStateException("Not allowed when this operation is running");
 
-		this.synchronizedWith = operation;
+		this.operationSynchronizer = operationSynchronizer;
 
-		final Resource r = computeSynchronizedResource(delay);
-		this.synchronizedResource = r.getLong();
-		final boolean notifEnabled = !this.isNotificationsDisabled();
-		if (notifEnabled)
-			this.disableNotifications();
-		final Resource oldAllocatedResource = this.getAllocatedResource();
-		this.setAllocatedResource(r);
-		this.synchronizedTimeAdjust = 0l;
-		this.synchronizedTimeAdjust = delay - this.getRemainingDelay();
-		if (this.synchronizedTimeAdjust < 0l)
+		long delay = this.operationSynchronizer.getSynchronizationDelay();
+		if (delay > 0l) {
+			final Resource r = computeSynchronizedResource(delay);
+			this.synchronizedResource = r.getLong();
+			if (this.synchronizedResource == 0)
+				this.synchronizedResource = Long.MAX_VALUE; //zero length remaining
+			final boolean notifEnabled = !this.isNotificationsDisabled();
+			if (notifEnabled)
+				this.disableNotifications();
+			final Resource oldAllocatedResource = this.getAllocatedResource();
+			this.setAllocatedResource(r);
+			this.synchronizedTimeAdjust = delay - this.getRemainingDelay();
+			if (this.synchronizedTimeAdjust < 0l)
+				this.synchronizedTimeAdjust = 0l;
+			this.setAllocatedResource(oldAllocatedResource);
+			if (notifEnabled)
+				this.enableNotifications();
+		} else if (delay == 0l) {
+			this.synchronizedResource = Long.MAX_VALUE;
 			this.synchronizedTimeAdjust = 0l;
-		this.setAllocatedResource(oldAllocatedResource);
-		if (notifEnabled)
-			this.enableNotifications();
+		} else {
+			this.synchronizedResource = Long.MAX_VALUE;
+			this.synchronizedTimeAdjust = -1;
+		}
+
+		this.synchronizedNeedsDelayingBeforeCompletion = this.operationSynchronizer.isSynchronizeDelayBeforeCompletion();
 	}
 
+	/**
+	 * @see SynchronizableOperation#stopSynchronization(long, Operation)
+	 */
 	protected void stopSynchronization() {
 		if (isRunning())
 			throw new IllegalStateException("Not allowed when this operation is running");
 
 		this.synchronizedResource = Long.MAX_VALUE;
 		this.synchronizedTimeAdjust = 0l;
-		this.synchronizedWith = null;
+		this.synchronizedNeedsDelayingBeforeCompletion = false;
+		this.operationSynchronizer = null;
 	}
 
-	protected boolean isSynchronized(Operation<?> operation) {
-		return (this.synchronizedResource != Long.MAX_VALUE) && this.synchronizedWith == operation;
+	/**
+	 * @see SynchronizableOperation#getOperationSynchronizer()
+	 */
+	protected OperationSynchronizer getOperationSynchronizer() {
+		return this.operationSynchronizer;
+	}
+
+	protected void synchronizeWith(SynchronizableOperation<?> operation) {
+		if (this.getOperationSynchronizer() != null) {
+			if (operation.getOperationSynchronizer() != null) {
+				List<SynchronizableOperation<?>> l = newArrayList(this.getOperationSynchronizer().getOperations().size() +
+						operation.getOperationSynchronizer().getOperations().size());
+
+				l.addAll(this.getOperationSynchronizer().getOperations());
+				l.addAll(operation.getOperationSynchronizer().getOperations());
+
+				OperationSynchronizer os = Factory.getFactory(this).newOperationSynchronizer(null);
+				for (SynchronizableOperation<?> o: l) {
+					o.getOperationSynchronizer().removeOperation(o);
+					os.addOperation(o);
+				}
+			} else {
+				this.getOperationSynchronizer().addOperation(operation);
+			}
+		} else {
+			if (operation.getOperationSynchronizer() != null) {
+				operation.getOperationSynchronizer().addOperation((SynchronizableOperation<?>) this);
+			} else {
+				OperationSynchronizer os = Factory.getFactory(this).newOperationSynchronizer(null);
+
+				os.addOperation((SynchronizableOperation<?>) this);
+				os.addOperation(operation);
+			}
+		}
+	}
+
+	protected void cancelSynchronization() {
+		OperationSynchronizer os = this.getOperationSynchronizer();
+		if (os == null)
+			return;
+		os.removeOperation((SynchronizableOperation<?>) this);
+
+		if (os.getOperations().size() == 1)
+			os.removeAllOperations();
 	}
 }

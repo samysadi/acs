@@ -30,10 +30,9 @@ import java.util.List;
 
 import com.samysadi.acs.core.entity.Entity;
 import com.samysadi.acs.core.entity.RunnableEntity;
-import com.samysadi.acs.core.notifications.Notifier;
 import com.samysadi.acs.hardware.Host;
 import com.samysadi.acs.hardware.network.NetworkInterface;
-import com.samysadi.acs.hardware.network.operation.NetworkOperation;
+import com.samysadi.acs.hardware.network.operation.NetworkOperationDelayer;
 import com.samysadi.acs.hardware.network.operation.provisioner.NetworkProvisioner;
 import com.samysadi.acs.hardware.pu.ProcessingUnit;
 import com.samysadi.acs.hardware.pu.operation.ComputingOperation;
@@ -259,10 +258,38 @@ public interface VirtualMachine extends Entity, RunnableEntity {
 	public NetworkProvisioner getNetworkProvisioner();
 
 	/**
-	 * Indicates that {@link NetworkOperation} entities that run on top of this VM must buffer their {@link NotificationCodes#RUNNABLE_STATE_CHANGED} notifications
-	 * using this VM's buffer.
+	 * Returns the currently set {@link NetworkOperationDelayer} for network operations in this VM.
+	 *
+	 * @return the currently set {@link NetworkOperationDelayer} for network operations in this VM.
 	 */
-	public static final long FLAG_BUFFER_NETWORK_OUTPUT		= 0x00001000;
+	public NetworkOperationDelayer getNetworkOperationDelayer();
+
+	/**
+	 * Sets the current {@link NetworkOperationDelayer} for network operations in this VM.
+	 *
+	 * <p>If the VM is running, then the VM is first paused, then the {@link NetworkOperationDelayer}
+	 * is set, and finally the VM is resumed.
+	 *
+	 */
+	public void setNetworkOperationDelayer(NetworkOperationDelayer v);
+
+	/**
+	 * Returns an epoch value characterizing the execution state of the VM.
+	 *
+	 * @return an epoch value characterizing the execution state of the VM
+	 *
+	 * @since 1.2
+	 */
+	public int getEpoch();
+
+	/**
+	 * Updates the epoch value of this VM.
+	 *
+	 * @param epoch
+	 *
+	 * @since 1.2
+	 */
+	public void setEpoch(int epoch);
 
 	/**
 	 * Indicates that this VM is being migrated to another host.
@@ -291,45 +318,4 @@ public interface VirtualMachine extends Entity, RunnableEntity {
 	 * @param flag
 	 */
 	public void unsetFlag(long flag);
-
-	/**
-	 * Adds the given notification information into a buffer in this VM level.
-	 *
-	 * <p>Buffered notifications can then be released using the {@link VirtualMachine#releaseBufferedNotifications(int)} or
-	 * discarded using {@link VirtualMachine#clearBufferedNotifications(int)}.
-	 *
-	 * @param notifier
-	 * @param notification_code
-	 * @param data
-	 */
-	public void bufferNotification(Notifier notifier, int notification_code, Object data);
-
-	/**
-	 * Clears all buffered notifications that were added before the given epoch.
-	 *
-	 * @param epoch all notifications that were added before this epoch (exclusive) are cleared. Use {@link VirtualMachine#getNotificationsBufferEpoch()} to
-	 * get current epoch.
-	 */
-	public void clearBufferedNotifications(int epoch);
-
-	/**
-	 * Returns the current epoch of the VM's notifications buffer.
-	 * This is also equal to the epoch of the next notification that will be buffered.
-	 *
-	 * <p>You can use this to selectively release or clear buffered notifications.
-	 *
-	 * <p>Note that after buffering a new notification this value is incremented.
-	 *
-	 * @return the current epoch of the VM's notifications buffer
-	 */
-	public int getNotificationsBufferEpoch();
-
-	/**
-	 * Releases and clears all buffered notifications before the given epoch, and calls the {@link Notifier#notify(int, Object)} on
-	 * each released <tt>notifier</tt>.
-	 *
-	 * @param epoch all notifications that were added before this epoch (exclusive) are released. Use {@link VirtualMachine#getNotificationsBufferEpoch()} to
-	 * get current epoch.
-	 */
-	public void releaseBufferedNotifications(int epoch);
 }

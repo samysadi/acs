@@ -36,8 +36,8 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
 
 /**
  * This provisioner gives promises that are equal to the average capacity computed
- * by considering all active operations that use this provisioner.<br/>
- * When resources are granted (or revoked) for (from) a operation, then other active operations are
+ * by considering all running operations that use this provisioner.<br/>
+ * When resources are granted (or revoked) for (from) a operation, then other running operations are
  * notified that they can use more (or less) resources (see
  * {@link NotificationCodes#OPERATION_RESOURCE_INVALIDATED}).
  *

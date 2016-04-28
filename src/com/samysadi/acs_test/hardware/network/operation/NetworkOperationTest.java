@@ -26,6 +26,9 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs_test.hardware.network.operation;
 
+import java.util.Arrays;
+import java.util.logging.Level;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,6 +38,7 @@ import com.samysadi.acs.core.Simulator;
 import com.samysadi.acs.core.entity.FailureProneEntity.FailureState;
 import com.samysadi.acs.core.entity.PoweredEntity.PowerState;
 import com.samysadi.acs.core.entity.RunnableEntity.RunnableState;
+import com.samysadi.acs.core.event.EventChain;
 import com.samysadi.acs.core.event.EventImpl;
 import com.samysadi.acs.core.notifications.NotificationListener;
 import com.samysadi.acs.core.notifications.Notifier;
@@ -43,10 +47,14 @@ import com.samysadi.acs.hardware.network.NetworkInterface;
 import com.samysadi.acs.hardware.network.NetworkLink;
 import com.samysadi.acs.hardware.network.Switch;
 import com.samysadi.acs.hardware.network.operation.NetworkOperation;
+import com.samysadi.acs.hardware.network.operation.NetworkOperationDelayer;
 import com.samysadi.acs.service.CloudProvider;
+import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.factory.Factory;
 import com.samysadi.acs.virtualization.job.Job;
+import com.samysadi.acs.virtualization.job.operation.LongResource;
 import com.samysadi.acs.virtualization.job.operation.Operation;
+import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
 import com.samysadi.acs_test.Utils;
 
 /**
@@ -70,6 +78,7 @@ public class NetworkOperationTest {
 	@Before
 	public void beforeTest() {
 		simulator = Utils.newSimulator();
+		//simulator.getSimulator().getLogger().setLevel(Level.ALL);
 		cloudProvider = simulator.getCloudProviders().get(0);
 		Utils.generateTopology2(simulator);
 		h0 = cloudProvider.getHosts().get(0);
@@ -502,5 +511,144 @@ public class NetworkOperationTest {
             throw exc;
 
 		Assert.assertEquals(lat0 + lat1 + (long) Math.ceil((double)OP_DATA_LENGTH * (1+ Math.max(loss0, loss1)) * Simulator.SECOND / LINK_BW), simulator.getTime());
+	}
+
+	private void _testDelayed(final long lengthForDelaying, final boolean sync) {
+		final long BW = LINK_BW / 3;
+
+		final long BW_SYNC = (BW / 5);
+
+		final long MIN_BW = Math.min(BW/2, sync ? BW_SYNC : (BW / 2));
+
+		final long delayToSendEverything = (long) Math.ceil((double)(OP_DATA_LENGTH - lengthForDelaying) * Simulator.SECOND / MIN_BW);
+
+		final long BIG_DELAY = Simulator.DAY * 10;
+
+		final NetworkOperationDelayer od = new NetworkOperationDelayer() {
+			@Override
+			public long getNextLength(
+					NetworkOperation operation) {
+				return lengthForDelaying;
+			}
+		};
+
+		j0.getParent().setNetworkOperationDelayer(od);
+
+		final long[] timeFinish = {0l};
+
+		simulator.schedule(new EventImpl() {
+			@Override
+			public void process() {
+				//add network load
+				final NetworkOperation o01_0 = j0.sendData(j1, OP_DATA_LENGTH, getOperationListener());
+				o01_0.doPause(); o01_0.setResourceMax(BW / 2); o01_0.doStart();
+				final NetworkOperation o01_1 = j0.sendData(j1, OP_DATA_LENGTH, getOperationListener());
+				final NetworkOperation o01_2 = j0.sendData(j1, OP_DATA_LENGTH, getOperationListener());
+
+				final NetworkOperation o2l_0;
+				if (sync) {
+					o2l_0 = j2.sendData(jl, OP_DATA_LENGTH, getOperationListener());
+					o2l_0.doPause(); o2l_0.setResourceMax(BW_SYNC); o2l_0.doStart();
+					o2l_0.addListener(NotificationCodes.RUNNABLE_STATE_CHANGED, new NotificationListener() {
+						@Override
+						protected void notificationPerformed(Notifier notifier,
+								int notification_code, Object data) {
+							if (!o2l_0.isTerminated())
+								return;
+							Assert.assertEquals(RunnableState.COMPLETED, o2l_0.getRunnableState());
+							Assert.assertEquals(delayToSendEverything + BIG_DELAY, Simulator.getSimulator().getTime());
+						}
+					});
+					//o01_0.doPause(); o01_1.doPause(); o01_2.doPause(); o2l_0.doPause();
+					((SynchronizableOperation<?>) o2l_0).synchronizeWith((SynchronizableOperation<?>) o01_0);
+					((SynchronizableOperation<?>) o01_0).synchronizeWith((SynchronizableOperation<?>) o01_1);
+					((SynchronizableOperation<?>) o01_1).synchronizeWith((SynchronizableOperation<?>) o01_2);
+					//o01_0.doStart();
+				} else
+					o2l_0 = null;
+
+				Simulator.getSimulator().schedule(BIG_DELAY, new EventChain() {
+
+					@Override
+					public boolean processStage(int stageNum) {
+						if (stageNum < 100)
+							return CONTINUE;
+
+						boolean b = false;
+						for (NetworkOperation o: Arrays.asList(o01_0,o01_1,o01_2, o2l_0)) {
+							if (o == null)
+								continue;
+							Assert.assertTrue(o.isRunning());
+							Assert.assertNull(o.getAllocatedResource());
+							Assert.assertTrue(o.getRemainingDelay() < 0l);
+							Assert.assertTrue(o.isDelayed());
+							if (!sync)
+								Assert.assertEquals(lengthForDelaying, o.getCompletedLength());
+							else
+								b = b || (lengthForDelaying == o.getCompletedLength());
+						}
+						if (sync)
+							Assert.assertTrue(b);
+
+						j0.getParent().setNetworkOperationDelayer(null);
+
+						Simulator.getSimulator().schedule(delayToSendEverything, new EventChain() {
+							@Override
+							public boolean processStage(int stageNum) {
+								if (stageNum < 100)
+									return CONTINUE;
+
+								for (NetworkOperation o: Arrays.asList(o01_0,o01_1,o01_2, o2l_0)) {
+									if (o == null)
+										continue;
+									Assert.assertTrue(o.isTerminated());
+									Assert.assertTrue(o.getRemainingDelay() == 0l);
+								}
+
+								return STOP;
+							}
+						});
+
+						return STOP;
+					}
+				});
+			}
+		});
+
+		simulator.start();
+		if (exc != null)
+            throw exc;
+
+		Assert.assertEquals(delayToSendEverything + BIG_DELAY, simulator.getTime());
+	}
+
+	@Test
+	public void testDelayed0f() {
+		_testDelayed(0, false);
+	}
+
+	@Test
+	public void testDelayed1f() {
+		_testDelayed(OP_DATA_LENGTH, false);
+	}
+
+	@Test
+	public void testDelayed2f() {
+		_testDelayed(OP_DATA_LENGTH / 3, false);
+	}
+
+	@Test
+	public void testDelayed0t() {
+		_testDelayed(0, true);
+	}
+
+	@Test
+	public void testDelayed1t() {
+		_testDelayed(OP_DATA_LENGTH, true);
+	}
+
+	@Test
+	public void testDelayed2t() {
+		_testDelayed(OP_DATA_LENGTH / 3, true);
 	}
 }

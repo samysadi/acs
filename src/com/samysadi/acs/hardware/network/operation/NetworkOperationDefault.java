@@ -37,11 +37,9 @@ import com.samysadi.acs.hardware.network.routingprotocol.Route;
 import com.samysadi.acs.hardware.network.routingprotocol.RoutingProtocol;
 import com.samysadi.acs.hardware.network.routingprotocol.RoutingProtocol.RouteInfo;
 import com.samysadi.acs.utility.NotificationCodes;
-import com.samysadi.acs.virtualization.VirtualMachine;
 import com.samysadi.acs.virtualization.job.Job;
 import com.samysadi.acs.virtualization.job.operation.LongOperationImpl;
-import com.samysadi.acs.virtualization.job.operation.Operation;
-import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
+import com.samysadi.acs.virtualization.job.operation.SynchronizableLongOperationImpl;
 
 /**
  * This implementation will automatically
@@ -52,7 +50,7 @@ import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
  *
  * @since 1.0
  */
-public class NetworkOperationDefault extends LongOperationImpl<NetworkResource> implements NetworkOperation, SynchronizableOperation<NetworkResource> {
+public class NetworkOperationDefault extends SynchronizableLongOperationImpl<NetworkResource> implements NetworkOperation {
 	private Job destinationJob;
 	private boolean retransmitOnError;
 	/**
@@ -170,16 +168,7 @@ public class NetworkOperationDefault extends LongOperationImpl<NetworkResource> 
 	}
 
 	@Override
-	public long getRemainingDelay() {
-		if (this.getAllocatedResource() == null)
-			throw new IllegalStateException("Not allowed when there is no resource allocated");
-		if (this.getAllocatedResource().getLong() == 0)
-			return Long.MAX_VALUE;
-
-		long remainingLength = this.getLength() - this.getCompletedLength();
-		if (remainingLength <= 0l)
-			return 0l;
-
+	protected long _getRemainingDelay(long remainingLength) {
 		long total = 0;
 		if (this.remainingLatencyForRoute < 0)
 			this.remainingLatencyForRoute = this.getAllocatedResource().getLatency();
@@ -187,29 +176,11 @@ public class NetworkOperationDefault extends LongOperationImpl<NetworkResource> 
 
 		total += Math.round(Math.ceil(((double) remainingLength * getAllocatedResource().getUnitOfTime() * (1.0d + (isRetransmitOnError() ? getAllocatedResource().getLossRate() : 0.0d))) / getAllocatedResource().getBw()));
 
-		total += this.getSynchronizationTimeAdjust();
-
-		if (isRunning()) {
-			total -= Simulator.getSimulator().getTime() - this.getLastActivated();
-			if (total <= 0l)
-				return 0l;
-		}
-
 		return total;
 	}
 
 	@Override
-	protected long getCompletedLengthAfterDelay(long delay) {
-		if (this.getSynchronizationTimeAdjust() > 0) {
-			delay -= this.getSynchronizationTimeAdjust();
-			if (delay < 0) {
-				this.setSynchronizationTimeAdjust(-delay);
-				return 0l;
-			} else {
-				this.setSynchronizationTimeAdjust(0l);
-			}
-		}
-
+	protected long _getCompletedLengthAfterDelay(long delay) {
 		if (this.remainingLatencyForRoute > 0) {
 			delay -= this.remainingLatencyForRoute;
 			if (delay < 0) {
@@ -220,12 +191,12 @@ public class NetworkOperationDefault extends LongOperationImpl<NetworkResource> 
 			}
 		}
 
-		return Math.round(Math.floor((double)this.getAllocatedResource().getBw() * delay / (Simulator.SECOND * (1.0d + (isRetransmitOnError() ? this.getAllocatedResource().getLossRate() : 0.0d)))));
+		return Math.round(Math.floor((double)this.getAllocatedResource().getBw() * delay / (this.getAllocatedResource().getUnitOfTime() * (1.0d + (isRetransmitOnError() ? this.getAllocatedResource().getLossRate() : 0.0d)))));
 	}
 
 	@Override
 	protected NetworkResource computeSynchronizedResource(long delay) {
-		return new NetworkResource(Math.round(Math.ceil(((double) (this.getLength() - this.getCompletedLength()) * Simulator.SECOND) / delay)),
+		return new NetworkResource(LongOperationImpl.computeSynchronizedResource(this.getLength() - this.getCompletedLength(), Simulator.SECOND, delay),
 				0,
 				0);
 	}
@@ -348,29 +319,33 @@ public class NetworkOperationDefault extends LongOperationImpl<NetworkResource> 
 		getAllocatedRoute().revokeAllocatedResource(this);
 	}
 
-	@Override
-	public void startSynchronization(long delay, Operation<?> operation) {
-		super.startSynchronization(delay, operation);
+	protected NetworkOperationDelayer getNetworkOperationDelayer() {
+		if (getParent() == null)
+			return null;
+		if (getParent().getParent() == null)
+			return null;
+		return getParent().getParent().getNetworkOperationDelayer();
+	}
+
+	protected NetworkOperationDelayer getRemoteNetworkOperationDelayer() {
+		if (getDestinationJob() == null)
+			return null;
+		if (getDestinationJob().getParent() == null)
+			return null;
+		return getDestinationJob().getParent().getNetworkOperationDelayer();
 	}
 
 	@Override
-	public void stopSynchronization() {
-		super.stopSynchronization();
-	}
-
-	@Override
-	public boolean isSynchronized(Operation<?> operation) {
-		return super.isSynchronized(operation);
-	}
-
-	@Override
-	public void notify(int notification_code, Object data) {
-		if (notification_code == NotificationCodes.RUNNABLE_STATE_CHANGED &&
-				getParent() != null &&
-				getParent().getParent() != null &&
-				getParent().getParent().getFlag(VirtualMachine.FLAG_BUFFER_NETWORK_OUTPUT))
-			getParent().getParent().bufferNotification(this, notification_code, data);
+	protected long getNextLengthForDelaying() {
+		long l;
+		NetworkOperationDelayer o = getNetworkOperationDelayer();
+		if (o != null)
+			l = o.getNextLength(this);
 		else
-			super.notify(notification_code, data);
+			l = Long.MAX_VALUE;
+		NetworkOperationDelayer ro = getRemoteNetworkOperationDelayer();
+		if (ro != null)
+			l = Math.min(l, ro.getNextLength(this));
+		return l;
 	}
 }

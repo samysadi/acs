@@ -48,8 +48,7 @@ import com.samysadi.acs.utility.factory.Factory;
 import com.samysadi.acs.virtualization.VirtualMachine;
 import com.samysadi.acs.virtualization.job.Job;
 import com.samysadi.acs.virtualization.job.operation.Operation;
-import com.samysadi.acs.virtualization.job.operation.OperationSynchronizer;
-import com.samysadi.acs.virtualization.job.operation.OperationSynchronizer.RunnableStateChanged;
+import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
 
 /**
  *
@@ -181,7 +180,7 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 			}
 		};
 
-		StorageOperation read = j.readFile(primary, pos, size, n_read);
+		final StorageOperation read = j.readFile(primary, pos, size, n_read);
 		if (read == null) {
 			getLogger().log(Level.FINEST, replica, "Consistency update failed, because we cannot read primary file.");
 			j.doCancel();
@@ -201,7 +200,7 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 			}
 		};
 
-		StorageOperation write = j.writeFile(replica, pos, size, n_write);
+		final StorageOperation write = j.writeFile(replica, pos, size, n_write);
 		if (write == null) {
 			getLogger().log(Level.FINEST, replica, "Consistency update failed, because we cannot write replica file.");
 			j.doCancel();
@@ -209,24 +208,28 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 			return;
 		}
 
-		final OperationSynchronizer sync = OperationSynchronizer.synchronizeOperations(read, write, new RunnableStateChanged() {
+		((SynchronizableOperation<?>)read).synchronizeWith((SynchronizableOperation<?>) write);
+
+		read.addListener(NotificationCodes.RUNNABLE_STATE_CHANGED, new NotificationListener() {
+
 			@Override
-			public void run(OperationSynchronizer sync) {
-				if (!sync.getOperation1().isTerminated())
+			protected void notificationPerformed(Notifier notifier,
+					int notification_code, Object data) {
+				if (!read.isTerminated())
 					return;
 
-				final StorageFile primary = ((StorageOperation)sync.getOperation1()).getStorageFile();
-				final StorageFile replica = ((StorageOperation)sync.getOperation2()).getStorageFile();
+				final StorageFile primary = read.getStorageFile();
+				final StorageFile replica = write.getStorageFile();
 
-				if (sync.getOperation1().getRunnableState() != RunnableState.COMPLETED) {
+				if (read.getRunnableState() != RunnableState.COMPLETED) {
 					getLogger().log(Level.FINEST, replica, "Consistency update failed, because we read/write operations failed.");
-					removeTemporaryVm(sync.getOperation1().getParent().getParent());
-					sync.discard();
+					removeTemporaryVm(read.getParent().getParent());
+					((SynchronizableOperation<?>)read).cancelSynchronization();
 					return;
 				}
 
-				removeTemporaryVm(sync.getOperation1().getParent().getParent());
-				sync.discard();
+				removeTemporaryVm(read.getParent().getParent());
+				((SynchronizableOperation<?>)read).cancelSynchronization();
 
 				//ok
 				replica.unsetProperty(PROP_UPD_KEY);
@@ -245,7 +248,7 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 		});
 
 		//
-		replica.setProperty(PROP_UPD_KEY, sync);
+		replica.setProperty(PROP_UPD_KEY, read);
 	}
 
 	@Override
@@ -284,12 +287,12 @@ public class SfConsistencyManagerDefault extends EntityImpl implements SfConsist
 		}
 
 		for (StorageFile replica: replicas) {
-			OperationSynchronizer sync = (OperationSynchronizer) replica.getProperty(PROP_UPD_KEY);
-			if (sync != null) {
-				sync.getOperation1().getParent().doCancel();
-				sync.getOperation1().getParent().unplace();
+			StorageOperation read = (StorageOperation) replica.getProperty(PROP_UPD_KEY);
+			if (read != null) {
+				read.doCancel();
+				read.getParent().unplace();
 
-				sync.discard();
+				((SynchronizableOperation<?>)read).cancelSynchronization();
 
 				replica.unsetProperty(PROP_UPD_KEY);
 			}

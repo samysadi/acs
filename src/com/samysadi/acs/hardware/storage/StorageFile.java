@@ -94,16 +94,16 @@ public interface StorageFile extends MemoryZone {
 	public boolean canRead();
 
 	/**
-	 * This method is called by a {@link StorageOperation} when it is activated.
+	 * This method is called by a {@link StorageOperation} when it is started.
 	 * @param operation
 	 */
 	public void dealWithOperationActivation(StorageOperation operation);
 
 	/**
-	 * This method is called by a {@link StorageOperation} when it is deactivated.
+	 * This method is called by a {@link StorageOperation} when it is stopped.
 	 * @param operation
-	 * @param oldCompletedLength the completed length before this operation was activated. This can be used to
-	 * compute newly completed length during this activation ({@code operation.getCompletedLength() - oldCompletedLength}).
+	 * @param oldCompletedLength the completed length before this operation is started. This can be used to
+	 * compute newly completed length during current run (using {@code operation.getCompletedLength() - oldCompletedLength}).
 	 */
 	public void dealWithOperationDeactivation(StorageOperation operation, long oldCompletedLength);
 

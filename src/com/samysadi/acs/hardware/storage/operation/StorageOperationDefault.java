@@ -28,7 +28,9 @@ package com.samysadi.acs.hardware.storage.operation;
 
 import com.samysadi.acs.core.Simulator;
 import com.samysadi.acs.core.entity.Entity;
-import com.samysadi.acs.core.event.EventImpl;
+import com.samysadi.acs.core.event.DispensableEventImpl;
+import com.samysadi.acs.core.notifications.NotificationListener;
+import com.samysadi.acs.core.notifications.Notifier;
 import com.samysadi.acs.hardware.Host;
 import com.samysadi.acs.hardware.network.operation.NetworkOperation;
 import com.samysadi.acs.hardware.storage.StorageFile;
@@ -40,6 +42,7 @@ import com.samysadi.acs.virtualization.job.Job;
 import com.samysadi.acs.virtualization.job.operation.LongOperationImpl;
 import com.samysadi.acs.virtualization.job.operation.Operation;
 import com.samysadi.acs.virtualization.job.operation.OperationSynchronizer;
+import com.samysadi.acs.virtualization.job.operation.SynchronizableLongOperationImpl;
 import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
 
 /**
@@ -50,16 +53,15 @@ import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
  *
  * @since 1.0
  */
-public class StorageOperationDefault extends LongOperationImpl<StorageResource> implements StorageOperation, SynchronizableOperation<StorageResource> {
+public class StorageOperationDefault extends SynchronizableLongOperationImpl<StorageResource> implements StorageOperation {
 	private StorageFile storageFile;
 	private StorageOperationType type;
 	private long filePos;
 
 	/**
-	 * The operation synchronizer used to synchronize this operation with
-	 * the {@link NetworkOperation} that is used to retrieve data if the storageFile is on a remote device
+	 * A {@link NetworkOperation} that is used to retrieve data if the storageFile is on a remote device
 	 */
-	private OperationSynchronizer operationSynchronizer;
+	private NetworkOperation networkOperation;
 
 	/**
 	 * Empty constructor that creates a zero-length operation with a <tt>null</tt> storage file.
@@ -116,7 +118,7 @@ public class StorageOperationDefault extends LongOperationImpl<StorageResource> 
 	protected void initializeEntity() {
 		super.initializeEntity();
 
-		this.operationSynchronizer = null;
+		this.networkOperation = null;
 	}
 
 	@Override
@@ -124,7 +126,7 @@ public class StorageOperationDefault extends LongOperationImpl<StorageResource> 
 		super.afterSetParent(oldParent);
 
 		//old network operation may still be available if we just paused this operation, so make sure it is discarded
-		discardOperationSynchronizer();
+		discardNetworkOperation();
 	}
 
 	@Override
@@ -156,7 +158,7 @@ public class StorageOperationDefault extends LongOperationImpl<StorageResource> 
 				throw new IllegalArgumentException("The operation's filePos and size implies to read/write data outside the file's bounds.");
 		}
 
-		discardOperationSynchronizer();
+		discardNetworkOperation();
 
 		notify(NotificationCodes.SO_SF_CHANGED, null);
 	}
@@ -298,56 +300,104 @@ public class StorageOperationDefault extends LongOperationImpl<StorageResource> 
 		return true;
 	}
 
-	protected void discardOperationSynchronizer() {
-		if (this.operationSynchronizer == null)
+	protected void discardNetworkOperation() {
+		if (this.networkOperation == null)
 			return;
 
-		NetworkOperation old = (NetworkOperation) this.operationSynchronizer.getOperation2();
-		this.operationSynchronizer.discard();
-		this.operationSynchronizer = null;
+		NetworkOperation op = this.networkOperation;
+		this.networkOperation = null;
 
-		if (old == null)
-			return;
+		if (op instanceof SynchronizableOperation<?>)
+			((SynchronizableOperation<?>) op).cancelSynchronization();
 
-		old.doTerminate();
-		old.getParent().doTerminate();
-		old.getDestinationJob().doTerminate();
+		op.doTerminate();
+		op.getParent().doTerminate();
+		op.getDestinationJob().doTerminate();
 
 		final Job pJob;
 		final VirtualMachine tempVm;
 		if (isSendingData()) {
-			pJob = old.getParent();
-			tempVm = old.getDestinationJob().getParent();
+			pJob = op.getParent();
+			tempVm = op.getDestinationJob().getParent();
 		} else {
-			pJob = old.getDestinationJob();
-			tempVm = old.getParent().getParent();
+			pJob = op.getDestinationJob();
+			tempVm = op.getParent().getParent();
 		}
 
-		old.unplace();
+		op.unplace();
 
 		//schedule free resources.
 		//Don't free them right away, may provoke concurrent modification exceptions.
-		Simulator.getSimulator().schedule(new MyStaticEvent0(tempVm, pJob));
+		scheduleRemovePJob(pJob);
+		scheduleRemoveTemporaryVm(tempVm);
 	}
 
-	private static final class MyStaticEvent0 extends EventImpl {
-		private final VirtualMachine tempVm;
-		private final Job pJob;
+	private static void scheduleRemovePJob(final Job pJob) {
+		Simulator.getSimulator().schedule(1l, new DispensableEventImpl() {
+			@Override
+			public void process() {
+				pJob.unplace();
+			}
+		});
+	}
 
-		private MyStaticEvent0(VirtualMachine tempVm, Job pJob) {
-			this.tempVm = tempVm;
-			this.pJob = pJob;
-		}
+	private static void scheduleRemoveTemporaryVm(final VirtualMachine vm) {
+		//make sure all listeners are invoked before discarding temporary vm
+		Simulator.getSimulator().schedule(1l, new DispensableEventImpl() {
+			@Override
+			public void process() {
+				if (vm.hasParentRec()) {
+					Operation<?> toWait = null;
+					for (Job j: vm.getJobs()) {
+						if (j.isTerminated())
+							continue;
+						for (Operation<?> o: j.getOperations())
+							if (!o.isTerminated()) {
+								toWait = o;
+								break;
+							}
+						if (toWait != null)
+							break;
+						for (Operation<?> o: j.getRemoteOperations())
+							if (!o.isTerminated()) {
+								toWait = o;
+								break;
+							}
+						if (toWait != null)
+							break;
+					}
 
-		@Override
-		public void process() {
-			pJob.unplace();
-			removeTemporaryVm(tempVm);
+					if (toWait != null) {
+						scheduleRemoveTemporaryVm(vm, toWait);
+						return;
+					}
+				}
+
+				removeTemporaryVm(vm);
+			}
+		});
+	}
+
+	private static void scheduleRemoveTemporaryVm(final VirtualMachine vm, Operation<?> o) {
+		NotificationListener n = new NotificationListener() {
+			@Override
+			protected void notificationPerformed(Notifier notifier,
+					int notification_code, Object data) {
+				final NetworkOperation o = (NetworkOperation) notifier;
+				if (o.getParent() == null || o.isTerminated()) {
+					scheduleRemoveTemporaryVm(vm);
+					this.discard();
+				}
+			}
+		};
+		if (o != null) {
+			o.addListener(NotificationCodes.RUNNABLE_STATE_CHANGED, n);
+			o.addListener(NotificationCodes.ENTITY_PARENT_CHANGED, n);
 		}
 	}
 
-	private void prepareOperationSynchronizer() {
-		if (this.operationSynchronizer != null)
+	private void prepareNetworkOperation() {
+		if (this.networkOperation != null)
 			return;
 
 		if (this.getStorageFile() == null)
@@ -374,10 +424,18 @@ public class StorageOperationDefault extends LongOperationImpl<StorageResource> 
 			destinationJob.setParent(sendingData ? remoteVm : localVm);
 			destinationJob.doStart();
 
-			NetworkOperation networkOperation = Factory.getFactory(this).newNetworkOperation(null, sourceJob, destinationJob,
+			this.networkOperation = Factory.getFactory(this).newNetworkOperation(null, sourceJob, destinationJob,
 					StorageOperationDefault.this.getLength() - StorageOperationDefault.this.getCompletedLength());
 
-			this.operationSynchronizer = OperationSynchronizer.synchronizeOperations(this, networkOperation);
+
+			if (this.networkOperation instanceof SynchronizableOperation<?>)
+				Simulator.getSimulator().schedule(new DispensableEventImpl() {
+					@Override
+					public void process() {
+						if (StorageOperationDefault.this.networkOperation != null)
+							((SynchronizableOperation<?>) StorageOperationDefault.this.networkOperation).synchronizeWith(StorageOperationDefault.this);
+					}
+				});
 		}
 	}
 
@@ -397,7 +455,7 @@ public class StorageOperationDefault extends LongOperationImpl<StorageResource> 
 
 	@Override
 	protected void prepareActivation() {
-		prepareOperationSynchronizer();
+		prepareNetworkOperation();
 	}
 
 	@Override
@@ -429,21 +487,6 @@ public class StorageOperationDefault extends LongOperationImpl<StorageResource> 
 
 	@Override
 	protected StorageResource computeSynchronizedResource(long delay) {
-		return new StorageResource(Math.round(Math.ceil((double)(this.getLength() - this.getCompletedLength()) * Simulator.SECOND / delay)));
-	}
-
-	@Override
-	public void startSynchronization(long delay, Operation<?> operation) {
-		super.startSynchronization(delay, operation);
-	}
-
-	@Override
-	public void stopSynchronization() {
-		super.stopSynchronization();
-	}
-
-	@Override
-	public boolean isSynchronized(Operation<?> operation) {
-		return super.isSynchronized(operation);
+		return new StorageResource(LongOperationImpl.computeSynchronizedResource(this.getLength() - this.getCompletedLength(), Simulator.SECOND, delay));
 	}
 }

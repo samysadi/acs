@@ -43,6 +43,7 @@ import com.samysadi.acs.core.notifications.NotificationListener;
 import com.samysadi.acs.core.notifications.Notifier;
 import com.samysadi.acs.hardware.Host;
 import com.samysadi.acs.hardware.network.NetworkInterface;
+import com.samysadi.acs.hardware.network.operation.NetworkOperationDelayer;
 import com.samysadi.acs.hardware.network.operation.provisioner.NetworkProvisioner;
 import com.samysadi.acs.hardware.pu.ProcessingUnit;
 import com.samysadi.acs.hardware.pu.operation.provisioner.ComputingProvisioner;
@@ -79,27 +80,15 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 
 	private long flag;
 
-	private int notificationsBufferEpoch;
-	private ArrayList<NotificationInfo> notificationsBuffer;
-
-	private static class NotificationInfo {
-		public Notifier notifier;
-		public int notification_code;
-		public Object data;
-		public NotificationInfo(Notifier notifier, int notificationCode,
-				Object data) {
-			super();
-			this.notifier = notifier;
-			this.notification_code = notificationCode;
-			this.data = data;
-		}
-	}
+	private NetworkOperationDelayer networkOperationDelayer;
+	private int epoch;
 
 	public VirtualMachineDefault() {
 		super();
 
 		this.flag = 0;
-		this.notificationsBufferEpoch = 0;
+		this.networkOperationDelayer = null;
+		this.epoch = 0;
 	}
 
 	@Override
@@ -128,8 +117,6 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 		this.vmPlacementPolicy = null;
 
 		this.wildcardListener = new WildcardListener();
-
-		this.notificationsBuffer = null;
 
 		User user = this.user;
 		this.user = null;
@@ -625,62 +612,38 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 	}
 
 	@Override
-	public void bufferNotification(Notifier notifier, int notificationCode,
-			Object data) {
-		if (this.notificationsBuffer == null)
-			this.notificationsBuffer = newArrayList();
-		this.notificationsBuffer.add(new NotificationInfo(notifier, notificationCode, data));
-		if (this.notificationsBufferEpoch == Integer.MAX_VALUE)
-			this.notificationsBufferEpoch = 0;
-		else
-			this.notificationsBufferEpoch++;
-	}
-
-	private int notificationsBufferEpochToIndex(int epoch) {
-		int e = epoch - this.notificationsBufferEpoch;
-		if (this.notificationsBufferEpoch < this.notificationsBuffer.size())
-			e-= Integer.MAX_VALUE;
-		e+= this.notificationsBuffer.size();
-		return e;
+	public NetworkOperationDelayer getNetworkOperationDelayer() {
+		return this.networkOperationDelayer;
 	}
 
 	@Override
-	public void clearBufferedNotifications(int epoch) {
-		final int e = notificationsBufferEpochToIndex(epoch);
-
-		if (e>=this.notificationsBuffer.size())
-			this.notificationsBuffer = null;
-		else
-			this.notificationsBuffer.subList(0, e).clear();
-	}
-
-	@Override
-	public int getNotificationsBufferEpoch() {
-		return this.notificationsBufferEpoch;
-	}
-
-	@Override
-	public void releaseBufferedNotifications(int epoch) {
-		if (this.notificationsBuffer == null)
+	public void setNetworkOperationDelayer(NetworkOperationDelayer operationDelayer) {
+		if (this.networkOperationDelayer == operationDelayer)
 			return;
-		long oldFlag = this.flag;
-		final int e = notificationsBufferEpochToIndex(epoch);
-		if (e<=0)
-			return;
-		this.flag = 0; //make sure the notifier will not buffer notifications again
-		int c = 0;
-		final Iterator<NotificationInfo> it = this.notificationsBuffer.iterator();
-		while (it.hasNext() && (c < e)) {
-			NotificationInfo ni = it.next();
-			ni.notifier.notify(ni.notification_code, ni.data);
-			c++;
-		}
-		this.flag = oldFlag;
 
-		if (e>=this.notificationsBuffer.size())
-			this.notificationsBuffer = null;
-		else
-			this.notificationsBuffer.subList(0, e).clear();
+		boolean wasRunning = this.isRunning();
+		if (wasRunning)
+			this.doPause();
+
+		this.networkOperationDelayer = operationDelayer;
+		notify(NotificationCodes.VM_OPERATION_DELAYER_CHANGED, null);
+
+		if (wasRunning)
+			this.doStart();
+	}
+
+	@Override
+	public int getEpoch() {
+		return this.epoch;
+	}
+
+	@Override
+	public void setEpoch(int epoch) {
+		if (this.epoch == epoch)
+			return;
+
+		this.epoch = epoch;
+		notify(NotificationCodes.VM_OPERATION_EPOCH_CHANGED, null);
 	}
 
 	protected WildcardListener getWildcardListener() {

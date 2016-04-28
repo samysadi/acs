@@ -66,11 +66,18 @@ public interface Operation<Resource> extends Entity, RunnableEntity {
 	public Resource getAllocatedResource();
 
 	/**
-	 * Returns the delay remaining until the end of this operation using the current allocated resources.
+	 * Returns the delay remaining until the end of this operation using the current allocated resources,
+	 * or -1l if the operation will not end.
 	 *
-	 * <p>If the operation is running, the returned value takes into account the progress made during current activation.
+	 * <p>If the operation is running, the returned value takes into account the progress made since it was started.
+	 *
+	 * <p>The -1l return value indicates that there is an infinite remaining delay
+	 * for the operation to complete.
+	 * This is for instance the case if the operation has zero allocated resources, or if
+	 * the operation is delayed (see {@link Operation#isDelayed()}).
 	 *
 	 * @return the delay remaining until the end of this operation using the current allocated resources
+	 * or -1l if the operation will not end
 	 */
 	public long getRemainingDelay();
 
@@ -80,4 +87,36 @@ public interface Operation<Resource> extends Entity, RunnableEntity {
 	 * @return the total accumulated simulation time when this operation was running
 	 */
 	public long getTotalRunningTime();
+
+	/**
+	 * Returns <tt>true</tt> if the operation is running and is delayed.
+	 *
+	 * <p>If an operation is delayed, then it will keep running forever and will
+	 * never complete.
+	 * You have to pause and restart the operation so that it can complete.
+	 *
+	 * <p>It is left to implementations to decide if and when to delay an operation.
+	 *
+	 * @return <tt>true</tt> if the operation is running and is delayed.
+	 *
+	 * @since 1.2
+	 */
+	public boolean isDelayed();
+
+	/**
+	 * Returns <tt>true</tt> if the operation is delayed, or if it will be delayed at a certain
+	 * moment before completion.
+	 *
+	 * <p>When this method returns <tt>true</tt>, then some time before completion, this operation
+	 * will release any used resources and will enter in a never-ending running state.
+	 *
+	 * <p>When current operation is not running, then this method returns <tt>true</tt> if,
+	 * after being started, the operation will be delayed before completion.
+	 *
+	 * @return <tt>true</tt> if the operation is delayed or if it will be delayed at a certain
+	 * moment before completion.
+	 *
+	 * @since 1.2
+	 */
+	public boolean isDelayedBeforeCompletion();
 }

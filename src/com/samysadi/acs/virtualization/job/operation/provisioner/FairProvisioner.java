@@ -37,9 +37,9 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
 
 
 /**
- * This provisioner ensures fair distribution of the available capacity through active operations. It
+ * This provisioner ensures fair distribution of the available capacity through running operations. It
  * gives resource promises that are equal to the average capacity computed
- * by considering all active operations that use this provisioner.<br/>
+ * by considering all running operations that use this provisioner.<br/>
  * If a operation uses less than the promised average, then this provisioner will ensure that the remaining
  * capacity is fairly distributed among other operations that need it. To do so, they are notified whenever
  * there is more or less resources available (see

@@ -24,31 +24,28 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 ===============================================================================
 */
 
-package com.samysadi.acs.virtualization;
-
-import com.samysadi.acs.core.entity.Entity;
-import com.samysadi.acs.hardware.pu.ProcessingUnit;
-import com.samysadi.acs.hardware.pu.operation.ComputingOperation;
+package com.samysadi.acs.virtualization.job.operation;
 
 /**
- * This interface defines the strategy to use when a new {@link ComputingOperation} is
- * being started in order to select a {@link ProcessingUnit} among all available ones
- * inside the VM.
+ * This interface defines an operation delayer which is used to determine
+ * when an operation should be delayed.
  *
- * @since 1.0
+ * @since 1.2
  */
-public interface PuAllocator extends Entity {
-
-	@Override
-	public PuAllocator clone();
-
-	@Override
-	public VirtualMachine getParent();
-
+public interface OperationDelayer<O extends LongOperation<?>> {
 	/**
-	 * Returns the best {@link ProcessingUnit} that should be used for the given computing operation.
+	 * Returns a long value indicating at which length the given operation
+	 * should be delayed.
 	 *
-	 * @return the best {@link ProcessingUnit} that should be used for the given computing operation
+	 * <p>Returning a value which is equal to the operation's currently completed length,
+	 * means that the operation should be delayed immediately.
+	 *
+	 * <p>Returning a negative value, a value strictly smaller than currently completed length,
+	 * or a value greater than the operation length, means that the operation
+	 * will never be delayed.
+	 *
+	 * @return a long value indicating at which length the given operation
+	 * should be delayed.
 	 */
-	public ProcessingUnit chooseProcessingUnit(ComputingOperation com);
+	public long getNextLength(O operation);
 }

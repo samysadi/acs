@@ -44,7 +44,7 @@ import com.samysadi.acs.service.CloudProvider;
 import com.samysadi.acs.utility.factory.Factory;
 import com.samysadi.acs.virtualization.job.Job;
 import com.samysadi.acs.virtualization.job.operation.Operation;
-import com.samysadi.acs.virtualization.job.operation.OperationSynchronizer;
+import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
 import com.samysadi.acs_test.Utils;
 
 /**
@@ -185,10 +185,10 @@ public class ComputingOperationTest {
 				final ComputingOperation c1 = newJob().compute(LENGTH, getOperationListener());
 				final ComputingOperation c2 = newJob().compute(LENGTH, getOperationListener());
 				c2.doPause();c2.setResourceMax(100);c2.doStart();
-				c0.doPause();c1.doPause();c2.doPause();
-				OperationSynchronizer.synchronizeOperations(c0, c1);
-				OperationSynchronizer.synchronizeOperations(c1, c2);
-				c0.doStart();c1.doStart();c2.doStart();
+				//c0.doPause();c1.doPause();c2.doPause();
+				((SynchronizableOperation<?>) c0).synchronizeWith((SynchronizableOperation<?>) c1);
+				((SynchronizableOperation<?>) c1).synchronizeWith((SynchronizableOperation<?>) c2);
+				//c0.doStart();c1.doStart();c2.doStart();
 
 				Simulator.getSimulator().schedule(1, new EventImpl() {
 					@Override
@@ -229,12 +229,12 @@ public class ComputingOperationTest {
 				c2.doPause();c2.setResourceMax(100);c2.doStart();
 				final ComputingOperation c3 = newJob(1).compute(LENGTH, getOperationListener());
 				final ComputingOperation c4 = newJob(2).compute(LENGTH, getOperationListener());
-				c0.doPause();c1.doPause();c2.doPause();c3.doPause();c4.doPause();
-				OperationSynchronizer.synchronizeOperations(c0, c1);
-				OperationSynchronizer.synchronizeOperations(c1, c2);
-				OperationSynchronizer.synchronizeOperations(c0, c3);
-				OperationSynchronizer.synchronizeOperations(c2, c4);
-				c0.doStart();c1.doStart();c2.doStart();c3.doStart();c4.doStart();
+				//c0.doPause();c1.doPause();c2.doPause();c3.doPause();c4.doPause();
+				((SynchronizableOperation<?>) c0).synchronizeWith((SynchronizableOperation<?>) c1);
+				((SynchronizableOperation<?>) c1).synchronizeWith((SynchronizableOperation<?>) c2);
+				((SynchronizableOperation<?>) c0).synchronizeWith((SynchronizableOperation<?>) c3);
+				((SynchronizableOperation<?>) c2).synchronizeWith((SynchronizableOperation<?>) c4);
+				//c0.doStart();c1.doStart();c2.doStart();c3.doStart();c4.doStart();
 
 				Simulator.getSimulator().schedule(1, new EventImpl() {
 					@Override
@@ -280,12 +280,12 @@ public class ComputingOperationTest {
 				c2.doPause();c2.setResourceMax(100);c2.doStart();
 				final ComputingOperation c3 = newJob(1).compute(LENGTH, getOperationListener());
 				final ComputingOperation c4 = newJob(2).compute(LENGTH, getOperationListener());
-				c0.doPause();c1.doPause();c2.doPause();c3.doPause();c4.doPause();
-				OperationSynchronizer.synchronizeOperations(c0, c1);
-				OperationSynchronizer.synchronizeOperations(c1, c2);
-				OperationSynchronizer.synchronizeOperations(c0, c3);
-				OperationSynchronizer.synchronizeOperations(c2, c4);
-				c0.doStart();c1.doStart();c2.doStart();c3.doStart();c4.doStart();
+				//c0.doPause();c1.doPause();c2.doPause();c3.doPause();c4.doPause();
+				((SynchronizableOperation<?>) c0).synchronizeWith((SynchronizableOperation<?>) c1);
+				((SynchronizableOperation<?>) c1).synchronizeWith((SynchronizableOperation<?>) c2);
+				((SynchronizableOperation<?>) c0).synchronizeWith((SynchronizableOperation<?>) c3);
+				((SynchronizableOperation<?>) c2).synchronizeWith((SynchronizableOperation<?>) c4);
+				//c0.doStart();c1.doStart();c2.doStart();c3.doStart();c4.doStart();
 
 				Simulator.getSimulator().schedule(500, new EventImpl() {
 					@Override

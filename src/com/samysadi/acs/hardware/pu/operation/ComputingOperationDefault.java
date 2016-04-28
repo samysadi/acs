@@ -32,8 +32,7 @@ import com.samysadi.acs.hardware.pu.ProcessingUnit;
 import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.virtualization.PuAllocator;
 import com.samysadi.acs.virtualization.job.operation.LongOperationImpl;
-import com.samysadi.acs.virtualization.job.operation.Operation;
-import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
+import com.samysadi.acs.virtualization.job.operation.SynchronizableLongOperationImpl;
 
 /**
  * This implementation will automatically
@@ -44,7 +43,7 @@ import com.samysadi.acs.virtualization.job.operation.SynchronizableOperation;
  *
  * @since 1.0
  */
-public class ComputingOperationDefault extends LongOperationImpl<ComputingResource> implements ComputingOperation, SynchronizableOperation<ComputingResource> {
+public class ComputingOperationDefault extends SynchronizableLongOperationImpl<ComputingResource> implements ComputingOperation {
 	private ProcessingUnit allocatedPu;
 
 	/**
@@ -163,21 +162,6 @@ public class ComputingOperationDefault extends LongOperationImpl<ComputingResour
 
 	@Override
 	protected ComputingResource computeSynchronizedResource(long delay) {
-		return new ComputingResource(Math.round(Math.ceil((double)(this.getLength() - this.getCompletedLength()) * Simulator.SECOND / delay)));
-	}
-
-	@Override
-	public void startSynchronization(long delay, Operation<?> operation) {
-		super.startSynchronization(delay, operation);
-	}
-
-	@Override
-	public void stopSynchronization() {
-		super.stopSynchronization();
-	}
-
-	@Override
-	public boolean isSynchronized(Operation<?> operation) {
-		return super.isSynchronized(operation);
+		return new ComputingResource(LongOperationImpl.computeSynchronizedResource(this.getLength() - this.getCompletedLength(), Simulator.SECOND, delay));
 	}
 }

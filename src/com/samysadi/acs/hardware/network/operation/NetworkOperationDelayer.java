@@ -24,31 +24,14 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 ===============================================================================
 */
 
-package com.samysadi.acs.virtualization;
+package com.samysadi.acs.hardware.network.operation;
 
-import com.samysadi.acs.core.entity.Entity;
-import com.samysadi.acs.hardware.pu.ProcessingUnit;
-import com.samysadi.acs.hardware.pu.operation.ComputingOperation;
+import com.samysadi.acs.virtualization.job.operation.OperationDelayer;
 
 /**
- * This interface defines the strategy to use when a new {@link ComputingOperation} is
- * being started in order to select a {@link ProcessingUnit} among all available ones
- * inside the VM.
  *
- * @since 1.0
+ * @since 1.2
  */
-public interface PuAllocator extends Entity {
+public interface NetworkOperationDelayer extends OperationDelayer<NetworkOperation> {
 
-	@Override
-	public PuAllocator clone();
-
-	@Override
-	public VirtualMachine getParent();
-
-	/**
-	 * Returns the best {@link ProcessingUnit} that should be used for the given computing operation.
-	 *
-	 * @return the best {@link ProcessingUnit} that should be used for the given computing operation
-	 */
-	public ProcessingUnit chooseProcessingUnit(ComputingOperation com);
 }
