@@ -1,4 +1,4 @@
-# 1.2 (underway)
+# 1.2
 - Redesigned checkpointing implementation
 - Enhanced operations and operation synchronization 
 - Simulation initialization through factories redesigned 
