@@ -20,6 +20,7 @@ com.samysadi.acs.hardware.storage.operation
 com.samysadi.acs.hardware.storage.operation.provisioner
 com.samysadi.acs.service
 com.samysadi.acs.service.checkpointing
+com.samysadi.acs.service.checkpointing.checkpoint
 com.samysadi.acs.service.jobplacement
 com.samysadi.acs.service.migration
 com.samysadi.acs.service.power
