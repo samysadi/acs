@@ -8,6 +8,14 @@
 		<Enabled>1</Enabled>
 	</STaaS>
 
+	<VmCheckpointingHandler>
+		<!-- VmCheckpointingHandlerDefault Settings
+			for more information and more settings see the documentation
+			of com.samysadi.acs.service.checkpointing.VmCheckpointingHandlerDefault
+			-->
+		<Interval>10</Interval>
+	</VmCheckpointingHandler>
+
 	<Topology>
 		<!-- Include the topology configuration file  -->
 		<!--<include>../topology/hierarchical.xml</include>-->

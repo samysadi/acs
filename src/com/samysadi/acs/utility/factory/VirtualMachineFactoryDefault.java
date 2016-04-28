@@ -84,10 +84,10 @@ public class VirtualMachineFactoryDefault extends VirtualMachineFactory {
 
 				FactoryUtils.generateTraces(getConfig(), vm);
 
-				Config cfg = vm.getConfig().addContext(FactoryUtils.Checkpoint_CONTEXT);
+				Config cfg = vm.getConfig().addContext(FactoryUtils.VmCheckpoint_CONTEXT);
 
 				if (cfg.getBoolean("Enabled", false))
-					getCloudProvider().getCheckpointingHandler().register(vm);
+					getCloudProvider().getVmCheckpointingHandler().register(vm, cfg);
 
 				_notifyDone(vm);
 			}

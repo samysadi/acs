@@ -40,6 +40,7 @@ import com.samysadi.acs.hardware.pu.operation.provisioner.ComputingProvisioner;
 import com.samysadi.acs.hardware.ram.VirtualRam;
 import com.samysadi.acs.hardware.storage.VirtualStorage;
 import com.samysadi.acs.hardware.storage.operation.provisioner.StorageProvisioner;
+import com.samysadi.acs.service.checkpointing.checkpoint.VmCheckpoint;
 import com.samysadi.acs.service.vmplacement.VmPlacementPolicy;
 import com.samysadi.acs.user.User;
 import com.samysadi.acs.utility.NotificationCodes;
@@ -130,6 +131,13 @@ public interface VirtualMachine extends Entity, RunnableEntity {
 	 * @return the list of {@link Job}s that are running on top of this VirtualMachine
 	 */
 	public List<Job> getJobs();
+
+	/**
+	 * Returns a list (immutable) containing all {@link VmCheckpoint}s owned by this VM.
+	 *
+	 * @return a list (immutable) containing all {@link VmCheckpoint}s owned by this VM
+	 */
+	public List<VmCheckpoint> getCheckpoints();
 
 	/**
 	 * Returns the processing units that this VM can use.

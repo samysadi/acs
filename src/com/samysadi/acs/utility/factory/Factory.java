@@ -76,10 +76,10 @@ import com.samysadi.acs.hardware.storage.operation.provisioner.FairStorageProvis
 import com.samysadi.acs.hardware.storage.operation.provisioner.StorageProvisioner;
 import com.samysadi.acs.service.CloudProvider;
 import com.samysadi.acs.service.CloudProviderDefault;
-import com.samysadi.acs.service.checkpointing.Checkpoint;
-import com.samysadi.acs.service.checkpointing.CheckpointDefault;
-import com.samysadi.acs.service.checkpointing.CheckpointingHandler;
-import com.samysadi.acs.service.checkpointing.CheckpointingHandlerDefault;
+import com.samysadi.acs.service.checkpointing.VmCheckpointingHandler;
+import com.samysadi.acs.service.checkpointing.VmCheckpointingHandlerDefault;
+import com.samysadi.acs.service.checkpointing.checkpoint.VmCheckpoint;
+import com.samysadi.acs.service.checkpointing.checkpoint.VmCheckpointDefault;
 import com.samysadi.acs.service.jobplacement.JobPlacementPolicy;
 import com.samysadi.acs.service.jobplacement.JobPlacementPolicyRandomFit;
 import com.samysadi.acs.service.migration.MigrationHandler;
@@ -349,16 +349,16 @@ public class Factory  {
 		return ni;
 	}
 
-	public Class<?> getCheckpointClass() {
-		return getConfig().getClassFromConfig("Checkpoint_Class", CheckpointDefault.class, true);
+	public Class<?> getVmCheckpointClass() {
+		return getConfig().getClassFromConfig("VmCheckpoint_Class", VmCheckpointDefault.class, true);
 	}
 
-	public Checkpoint newCheckpoint(Class<?> clazz, VirtualMachine parent) {
+	public VmCheckpoint newVmCheckpoint(Class<?> clazz, VirtualMachine parent) {
 		if (clazz == null)
-			clazz = getCheckpointClass();
+			clazz = getVmCheckpointClass();
 
 		try {
-			return setParentFor((Checkpoint) clazz
+			return setParentFor((VmCheckpoint) clazz
 					.getConstructor()
 					.newInstance(), parent);
 		} catch (Exception e) {
@@ -367,16 +367,16 @@ public class Factory  {
 		}
 	}
 
-	public Class<?> getCheckpointingHandlerClass() {
-		return getConfig().getClassFromConfig("CheckpointingHandler_Class", CheckpointingHandlerDefault.class, true);
+	public Class<?> getVmCheckpointingHandlerClass() {
+		return getConfig().getClassFromConfig("VmCheckpointingHandler_Class", VmCheckpointingHandlerDefault.class, true);
 	}
 
-	public CheckpointingHandler newCheckpointingHandler(Class<?> clazz, CloudProvider parent) {
+	public VmCheckpointingHandler newVmCheckpointingHandler(Class<?> clazz, CloudProvider parent) {
 		if (clazz == null)
-			clazz = getCheckpointingHandlerClass();
+			clazz = getVmCheckpointingHandlerClass();
 
 		try {
-			return setParentFor((CheckpointingHandler) clazz
+			return setParentFor((VmCheckpointingHandler) clazz
 					.getConstructor()
 					.newInstance(), parent);
 		} catch (Exception e) {

@@ -51,7 +51,7 @@ import com.samysadi.acs.hardware.ram.Ram;
 import com.samysadi.acs.hardware.storage.Storage;
 import com.samysadi.acs.hardware.storage.operation.provisioner.StorageProvisioner;
 import com.samysadi.acs.service.CloudProvider;
-import com.samysadi.acs.service.checkpointing.CheckpointingHandler;
+import com.samysadi.acs.service.checkpointing.VmCheckpointingHandler;
 import com.samysadi.acs.user.ThinClient;
 import com.samysadi.acs.user.ThinClientVirtualMachine;
 import com.samysadi.acs.user.User;
@@ -845,13 +845,13 @@ public final class FactoryUtils {
 		return t;
 	}
 
-	public static final String CheckpointingHandler_CONTEXT		= "CheckpointingHandler";
+	public static final String VmCheckpointingHandler_CONTEXT		= "VmCheckpointingHandler";
 
-	public static CheckpointingHandler generateCheckpointingHandler(CloudProvider cloudProvider, Config config) {
-		CheckpointingHandler ch = Factory.getFactory(config).newCheckpointingHandler(null, cloudProvider);
+	public static VmCheckpointingHandler generateVmCheckpointingHandler(CloudProvider cloudProvider, Config config) {
+		VmCheckpointingHandler ch = Factory.getFactory(config).newVmCheckpointingHandler(null, cloudProvider);
 		ch.setConfig(config);
 		return ch;
 	}
 
-	public static final String Checkpoint_CONTEXT					= "Checkpointing";
+	public static final String VmCheckpoint_CONTEXT					= "Checkpointing";
 }

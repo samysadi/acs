@@ -537,7 +537,7 @@ public class NotificationCodes extends CoreNotificationCodes {
 	 */
 	public static final int SFP_STORAGESELECTION_FAILED		= SFP_MASK | 0x01;
 
-	/* CHEKPOINT_HANDLER
+	/* CHEKPOINT
 	 * ------------------------------------------------------------------------
 	 */
 	private static final int CH_MASK = nextMask();
@@ -617,6 +617,41 @@ public class NotificationCodes extends CoreNotificationCodes {
 	 */
 	private static final int CHH_MASK = nextMask();
 
+	public static class CheckpointingHandlerRecoverResult<E extends RunnableEntity, C extends Checkpoint<E,?>> {
+		private E entity;
+		private C checkpoint;
+		private E newEntity;
+
+		public CheckpointingHandlerRecoverResult(E entity, C checkpoint,
+				E newEntity) {
+			super();
+			this.entity = entity;
+			this.checkpoint = checkpoint;
+			this.newEntity = newEntity;
+		}
+
+		/**
+		 * @return the entity that has been recovered (i.e. the entity that has failed)
+		 */
+		public E getEntity() {
+			return entity;
+		}
+
+		/**
+		 * @return the checkpoint that was used for recovery
+		 */
+		public C getCheckpoint() {
+			return checkpoint;
+		}
+
+		/**
+		 * @return the new created entity after using checkpoint for recovery.
+		 */
+		public E getNewEntity() {
+			return newEntity;
+		}
+	}
+
 	public static class CheckpointingHandlerDeleteResult<E extends RunnableEntity, C extends Checkpoint<E,?>> {
 		private E entity;
 		private C checkpoint;
@@ -655,77 +690,77 @@ public class NotificationCodes extends CoreNotificationCodes {
 	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
 	 * <b>Object:</b> the {@link RunnableEntity} that was registered.
 	 */
-	public static final int CHECKPOINTINGHANDLER_REGISTERED		= CHH_MASK | 0x00;
+	public static final int CHECKPOINTINGHANDLER_REGISTERED				= CHH_MASK | 0x00;
 
 	/**
 	 * <b>Description:</b> Thrown after that an entity was unregistered from automatic checkpointing.<br/>
 	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
 	 * <b>Object:</b> the {@link RunnableEntity} that was unregistered.
 	 */
-	public static final int CHECKPOINTINGHANDLER_UNREGISTERED	= CHH_MASK | 0x01;
+	public static final int CHECKPOINTINGHANDLER_UNREGISTERED			= CHH_MASK | 0x01;
 
 	/**
 	 * <b>Description:</b> Thrown after that a entity's checkpoint is automatically updated.<br/>
 	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
-	 * <b>Object:</b> the {@link Checkpoint}.
+	 * <b>Object:</b> the {@link Checkpoint} that was used for the update.
 	 */
-	public static final int CHECKPOINTINGHANDLER_AUTOUPDATE_SUCCESS	= CHH_MASK | 0x20;
+	public static final int CHECKPOINTINGHANDLER_AUTOUPDATE_SUCCESS		= CHH_MASK | 0x20;
 
 	/**
 	 * <b>Description:</b> Thrown after that an error happens when trying to automatically update an entity's checkpoint.<br/>
 	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
-	 * <b>Object:</b> the {@link Checkpoint}.
+	 * <b>Object:</b> the {@link RunnableEntity} for which the auto update failed.
 	 */
-	public static final int CHECKPOINTINGHANDLER_AUTOUPDATE_ERROR	= CHH_MASK | 0x21;
+	public static final int CHECKPOINTINGHANDLER_AUTOUPDATE_ERROR		= CHH_MASK | 0x21;
 
 	/**
 	 * <b>Description:</b> Thrown after that a entity's checkpoint is automatically used for recovery.<br/>
 	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
-	 * <b>Object:</b> the {@link Checkpoint}.
+	 * <b>Object:</b> a {@link CheckpointingHandlerRecoverResult} object.
 	 */
 	public static final int CHECKPOINTINGHANDLER_AUTORECOVER_SUCCESS	= CHH_MASK | 0x30;
 
 	/**
 	 * <b>Description:</b> Thrown after that an error happens when trying to automatically recover using an entity's checkpoint.<br/>
 	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
-	 * <b>Object:</b> the {@link Checkpoint}.
+	 * <b>Object:</b> the {@link RunnableEntity} for which the auto recovery failed.
 	 */
-	public static final int CHECKPOINTINGHANDLER_AUTORECOVER_ERROR	= CHH_MASK | 0x31;
+	public static final int CHECKPOINTINGHANDLER_AUTORECOVER_ERROR		= CHH_MASK | 0x31;
 
 	/**
 	 * <b>Description:</b> Thrown after that a new checkpoint was create by the {@link CheckpointingHandler}.<br/>
 	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
 	 * <b>Object:</b> the created {@link Checkpoint}.
 	 */
-	public static final int CHECKPOINTINGHANDLER_CHECKPOINT_CREATED	= CHH_MASK | 0x40;
+	public static final int CHECKPOINTINGHANDLER_CHECKPOINT_CREATION_SUCCESS	= CHH_MASK | 0x40;
 
 	/**
 	 * <b>Description:</b> Thrown after that an error is thrown while the {@link CheckpointingHandler} is trying to create a checkpoint.<br/>
 	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
 	 * <b>Object:</b> the {@link RunnableEntity} for which the handler tried to create a checkpoint.
 	 */
-	public static final int CHECKPOINTINGHANDLER_CHECKPOINT_ERROR	= CHH_MASK | 0x41;
+	public static final int CHECKPOINTINGHANDLER_CHECKPOINT_CREATION_ERROR		= CHH_MASK | 0x41;
 
 	/**
-	 * <b>Description:</b> Thrown after that a checkpoint was deleted using the {@link CheckpointingHandler} delete methods.<br/>
+	 * <b>Description:</b> Thrown after that a checkpoint was deleted using the {@link CheckpointingHandler} delete method.<br/>
 	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
-	 * <b>Object:</b> the {@link CheckpointingHandlerDeleteResult} object holding the information about the deleted checkpoint.
+	 * <b>Object:</b> the {@link CheckpointingHandlerDeleteResult} object which holds information about the deleted checkpoint.
 	 */
-	public static final int CHECKPOINTINGHANDLER_CHECKPOINT_DELETED	= CHH_MASK | 0x48;
+	public static final int CHECKPOINTINGHANDLER_CHECKPOINT_DELETED				= CHH_MASK | 0x48;
 
 	/**
-	 * <b>Description:</b> Thrown after that the {@link CheckpointingHandler} found a checkpoint to use for recovery.<br/>
+	 * <b>Description:</b> Thrown during the recovery process, after that the {@link CheckpointingHandler} has selected a checkpoint to use for recovery.<br/>
 	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
 	 * <b>Object:</b> the found {@link Checkpoint}
 	 */
-	public static final int CHECKPOINTINGHANDLER_RECOVER_SUCCESS		= CHH_MASK | 0x50;
+	public static final int CHECKPOINTINGHANDLER_CHECKPOINT_SELECTION_SUCCESS	= CHH_MASK | 0x50;
 
 	/**
-	 * <b>Description:</b> Thrown if the {@link CheckpointingHandler} cannot find a checkpoint to use for recovery.<br/>
+	 * <b>Description:</b> Thrown during the recovery process, if the {@link CheckpointingHandler} cannot find a checkpoint to use for recovery.<br/>
 	 * <b>Notifier:</b> {@link CheckpointingHandler}<br/>
 	 * <b>Object:</b> the {@link RunnableEntity} for which the handler tried to find a checkpoint
 	 */
-	public static final int CHECKPOINTINGHANDLER_RECOVER_ERROR		= CHH_MASK | 0x51;
+	public static final int CHECKPOINTINGHANDLER_CHECKPOINT_SELECTION_ERROR		= CHH_MASK | 0x51;
 
 
 

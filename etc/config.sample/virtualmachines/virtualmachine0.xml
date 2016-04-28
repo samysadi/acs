@@ -3,9 +3,21 @@
 <config>
 	<Name>m3.medium</Name>
 
+	<!-- Checkpoint Settings -->
 	<Checkpointing>
-		<!-- Set to 1 to enable checkpointing (if omitted, default is 0) -->
+		<!-- Checkpoint class to use for this VM, leave commented to use default -->
+		<!-- <VmCheckpoint_Class></VmCheckpoint_Class> -->
+
+		<!-- set to 1 to enable checkpointing (if omitted, default is 0) -->
 		<Enabled>0</Enabled>
+
+		<!-- VmCheckpointDefault settings
+			for more information and more settings see the documentation
+			of com.samysadi.acs.service.checkpointing.checkpoint.VmCheckpointDefault
+			-->
+		<!-- <UpdateOverhead>0</UpdateOverhead> -->
+		<!-- <RecoveryOverhead>0</RecoveryOverhead> -->
+		<!-- <CompressionRatio>1.0</CompressionRatio> -->
 	</Checkpointing>
 
 	<Pu_Count>2</Pu_Count>

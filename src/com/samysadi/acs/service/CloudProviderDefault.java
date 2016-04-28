@@ -26,7 +26,6 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,6 +34,7 @@ import com.samysadi.acs.core.entity.EntityImpl;
 import com.samysadi.acs.hardware.Host;
 import com.samysadi.acs.hardware.network.Switch;
 import com.samysadi.acs.service.checkpointing.CheckpointingHandler;
+import com.samysadi.acs.service.checkpointing.VmCheckpointingHandler;
 import com.samysadi.acs.service.jobplacement.JobPlacementPolicy;
 import com.samysadi.acs.service.migration.MigrationHandler;
 import com.samysadi.acs.service.power.PowerManager;
@@ -53,7 +53,7 @@ import com.samysadi.acs.utility.collections.infrastructure.RackImpl;
 
 
 /**
- * 
+ *
  * @since 1.0
  */
 public class CloudProviderDefault extends EntityImpl implements CloudProvider {
@@ -69,7 +69,7 @@ public class CloudProviderDefault extends EntityImpl implements CloudProvider {
 	private VmPlacementPolicy vmPlacementPolicy;
 	private Staas staas;
 	private MigrationHandler migrationHandler;
-	private CheckpointingHandler checkpointingHandler;
+	private VmCheckpointingHandler vmCheckpointingHandler;
 
 	public CloudProviderDefault() {
 		super();
@@ -89,14 +89,14 @@ public class CloudProviderDefault extends EntityImpl implements CloudProvider {
 		this.defaultRack = null;
 		addDatacenter();
 
-		this.switches = new ArrayList<Switch>();
-		this.users = new ArrayList<User>();
+		this.switches = newArrayList();
+		this.users = newArrayList();
 		this.powerManager = null;
 		this.jobPlacementPolicy = null;
 		this.vmPlacementPolicy = null;
 		this.staas = null;
 		this.migrationHandler = null;
-		this.checkpointingHandler = null;
+		this.vmCheckpointingHandler = null;
 	}
 
 	@Override
@@ -146,11 +146,11 @@ public class CloudProviderDefault extends EntityImpl implements CloudProvider {
 				this.migrationHandler.setParent(null);
 			this.migrationHandler = (MigrationHandler) entity;
 		} else if (entity instanceof CheckpointingHandler) {
-			if (this.checkpointingHandler == entity)
+			if (this.vmCheckpointingHandler == entity)
 				return;
-			if (this.checkpointingHandler != null)
-				this.checkpointingHandler.setParent(null);
-			this.checkpointingHandler = (CheckpointingHandler) entity;
+			if (this.vmCheckpointingHandler != null)
+				this.vmCheckpointingHandler.setParent(null);
+			this.vmCheckpointingHandler = (VmCheckpointingHandler) entity;
 		} else {
 			super.addEntity(entity);
 			return;
@@ -193,9 +193,9 @@ public class CloudProviderDefault extends EntityImpl implements CloudProvider {
 				return;
 			this.migrationHandler = null;
 		} else if (entity instanceof CheckpointingHandler) {
-			if (this.checkpointingHandler != entity)
+			if (this.vmCheckpointingHandler != entity)
 				return;
-			this.checkpointingHandler = null;
+			this.vmCheckpointingHandler = null;
 		} else {
 			super.removeEntity(entity);
 			return;
@@ -209,7 +209,7 @@ public class CloudProviderDefault extends EntityImpl implements CloudProvider {
 
 		List<Host> h = this.getHosts();
 
-		List<Entity> l = new ArrayList<Entity>(6);
+		List<Entity> l = newArrayList(6);
 		if (this.powerManager != null)
 			l.add(this.powerManager);
 		if (this.jobPlacementPolicy != null)
@@ -220,10 +220,10 @@ public class CloudProviderDefault extends EntityImpl implements CloudProvider {
 			l.add(this.staas);
 		if (this.migrationHandler != null)
 			l.add(this.migrationHandler);
-		if (this.checkpointingHandler != null)
-			l.add(this.checkpointingHandler);
+		if (this.vmCheckpointingHandler != null)
+			l.add(this.vmCheckpointingHandler);
 
-		List<List<? extends Entity>> r = new ArrayList<List<? extends Entity>>();
+		List<List<? extends Entity>> r = newArrayList(5);
 		r.add(s);
 		r.add(l);
 		r.add(this.users);
@@ -335,7 +335,7 @@ public class CloudProviderDefault extends EntityImpl implements CloudProvider {
 	}
 
 	@Override
-	public CheckpointingHandler getCheckpointingHandler() {
-		return this.checkpointingHandler;
+	public VmCheckpointingHandler getVmCheckpointingHandler() {
+		return this.vmCheckpointingHandler;
 	}
 }

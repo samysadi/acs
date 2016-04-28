@@ -2,8 +2,6 @@
 <!-- Default classes (leave empty to let the simulator use its own defaults)
 	Make sure to use fully qualified class names -->
 <config>
-	<Checkpoint_Class></Checkpoint_Class>
-	<CheckpointingHandler_Class></CheckpointingHandler_Class>
 	<CloudProvider_Class></CloudProvider_Class>
 	<CloudProviderFactory_Class></CloudProviderFactory_Class>
 	<ComputingOperation_Class></ComputingOperation_Class>
@@ -49,6 +47,8 @@
 	<VirtualRam_Class></VirtualRam_Class>
 	<VirtualStorage_Class></VirtualStorage_Class>
 	<VirtualMachineFactory_Class></VirtualMachineFactory_Class>
+	<VmCheckpoint_Class></VmCheckpoint_Class>
+	<VmCheckpointingHandler_Class></VmCheckpointingHandler_Class>
 	<VmPlacementPolicy_Class></VmPlacementPolicy_Class>
 	<Workload_Class></Workload_Class>
 </config>

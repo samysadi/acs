@@ -26,9 +26,7 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs.virtualization;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -50,6 +48,7 @@ import com.samysadi.acs.hardware.pu.operation.provisioner.ComputingProvisioner;
 import com.samysadi.acs.hardware.ram.VirtualRam;
 import com.samysadi.acs.hardware.storage.VirtualStorage;
 import com.samysadi.acs.hardware.storage.operation.provisioner.StorageProvisioner;
+import com.samysadi.acs.service.checkpointing.checkpoint.VmCheckpoint;
 import com.samysadi.acs.service.vmplacement.VmPlacementPolicy;
 import com.samysadi.acs.user.User;
 import com.samysadi.acs.utility.NotificationCodes;
@@ -73,6 +72,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 	private ComputingProvisioner computingProvisioner;
 	private StorageProvisioner storageProvisioner;
 	private NetworkProvisioner networkProvisioner;
+	private List<VmCheckpoint> checkpoints;
 	private VmPlacementPolicy vmPlacementPolicy;
 	private User user;
 
@@ -106,6 +106,7 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 		this.computingProvisioner = null;
 		this.storageProvisioner = null;
 		this.networkProvisioner = null;
+		this.checkpoints = null;
 
 		this.usableProcessingUnits = null;
 		this.usableProcessingUnitsAllocated = false;
@@ -309,6 +310,11 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 				return;
 		} else if (entity instanceof RunnableEntity) {
 			throw new UnsupportedOperationException("Adding this RunnableEntity is not supported by this implementation.");
+		} else if (entity instanceof VmCheckpoint) {
+			if (this.checkpoints == null)
+				this.checkpoints = newArrayList();
+			if (!this.checkpoints.add((VmCheckpoint) entity))
+				return;
 		} else if (entity instanceof PuAllocator) {
 			if (this.puAllocator == entity)
 				return;
@@ -357,6 +363,13 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 				return;
 			if (this.jobs.isEmpty())
 				this.jobs = null;
+		} else if (entity instanceof VmCheckpoint) {
+			if (this.checkpoints == null)
+				return;
+			if (!this.checkpoints.remove(entity))
+				return;
+			if (this.checkpoints.isEmpty())
+				this.checkpoints = null;
 		} else if (entity instanceof PuAllocator) {
 			if (this.puAllocator != entity)
 				return;
@@ -402,11 +415,13 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 		if (this.networkProvisioner != null)
 			l.add(this.networkProvisioner);
 
-		List<List<? extends Entity>> r = newArrayList(3);
+		List<List<? extends Entity>> r = newArrayList(4);
 		r.add(s);
 		r.add(l);
 		if (this.jobs != null)
 			r.add(this.jobs);
+		if (this.checkpoints != null)
+			r.add(this.checkpoints);
 		return new MultiListView<Entity>(r);
 	}
 
@@ -416,6 +431,14 @@ public class VirtualMachineDefault extends RunnableEntityImpl implements Virtual
 			return Collections.emptyList();
 		else
 			return Collections.unmodifiableList(this.jobs);
+	}
+
+	@Override
+	public List<VmCheckpoint> getCheckpoints() {
+		if (this.checkpoints == null)
+			return Collections.emptyList();
+		else
+			return Collections.unmodifiableList(this.checkpoints);
 	}
 
 	@Override

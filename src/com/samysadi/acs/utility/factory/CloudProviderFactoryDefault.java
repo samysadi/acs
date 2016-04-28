@@ -132,7 +132,7 @@ public class CloudProviderFactoryDefault extends CloudProviderFactory {
 		if (staas_enabled)
 			Factory.getFactory(staas).newSfReplicationManager(null, staas);
 
-		FactoryUtils.generateCheckpointingHandler(cp, getConfig().addContext(FactoryUtils.CheckpointingHandler_CONTEXT));
+		FactoryUtils.generateVmCheckpointingHandler(cp, getConfig().addContext(FactoryUtils.VmCheckpointingHandler_CONTEXT));
 
 
 		newMigrationHandler(null, cp);

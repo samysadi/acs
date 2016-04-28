@@ -26,23 +26,25 @@ along with ACS. If not, see <http://www.gnu.org/licenses/>.
 
 package com.samysadi.acs_test.service.checkpointing;
 
-import org.junit.Assert;
-
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.samysadi.acs.core.Simulator;
 import com.samysadi.acs.core.entity.FailureProneEntity.FailureState;
+import com.samysadi.acs.core.entity.RunnableEntity.RunnableState;
 import com.samysadi.acs.core.event.EventChain;
 import com.samysadi.acs.core.event.EventImpl;
 import com.samysadi.acs.core.notifications.NotificationListener;
 import com.samysadi.acs.core.notifications.Notifier;
 import com.samysadi.acs.hardware.Host;
 import com.samysadi.acs.hardware.pu.operation.ComputingOperation;
+import com.samysadi.acs.hardware.storage.Storage;
+import com.samysadi.acs.hardware.storage.StorageFile;
 import com.samysadi.acs.service.CloudProvider;
-import com.samysadi.acs.service.checkpointing.Checkpoint;
+import com.samysadi.acs.service.checkpointing.checkpoint.VmCheckpoint;
 import com.samysadi.acs.utility.NotificationCodes;
 import com.samysadi.acs.utility.factory.Factory;
 import com.samysadi.acs.utility.factory.FactoryUtils;
@@ -54,20 +56,36 @@ import com.samysadi.acs_test.Utils;
 
 
 /**
- * 
+ * Following tests have been written assuming:<ul>
+ * <li>recovery/checkpoint overhead == 0
+ * <li>checkpoint compression == 0%
+ * </ul>
+ *
  * @since 1.0
  */
-public class CheckpointingHandlerTest {
+public class VmCheckpointTest {
 	Simulator simulator;
 	CloudProvider cloudProvider;
 	Host hPrimary;
+	Host hCheckpoint;
+	Host hCheckpoint2;
 	Host hRecovery;
+	final long[] finished = new long[]{0l};
 
 	VirtualMachine vmPrimary;
 	Job jobPrimary;
 
+	/**
+	 * Completed length at the moment when the checkpoint was last updated
+	 */
+	long old_c = 0;
+	long timeOffset = 0;
+
+	long PU;
+	long NETWORK;
+	long STORAGE;
+
 	private volatile AssertionError exc;
-	protected long lastComp = -1;
 
 	@After
 	public void afterTest() {
@@ -82,15 +100,27 @@ public class CheckpointingHandlerTest {
 
 	@Before
 	public void beforeTest() {
-
 		simulator = Utils.newSimulator();
-		simulator.getConfig().setInt("Trace.Count", 0);
 		cloudProvider = FactoryUtils.generateCloudProvider(simulator.getConfig());
 
 		hPrimary = cloudProvider.getHosts().get(0); hPrimary.setName("HostPrime");
+		hCheckpoint = cloudProvider.getHosts().get(1); hCheckpoint.setName("HostCheckpoint");
 		hRecovery = cloudProvider.getHosts().get(cloudProvider.getHosts().size()-1); hRecovery.setName("HostRecovery");
 
+
+		Host h2 = FactoryUtils.generateHost(hCheckpoint.getConfig(), cloudProvider);
+		FactoryUtils.linkDevices(simulator.getConfig(), h2, cloudProvider.getSwitches().get(0), 100 * Simulator.MEBIBYTE, 100 * Simulator.MEBIBYTE, 0, 0);
+		hCheckpoint2 = h2; hCheckpoint2.setName("HostCheckpoint2");
+
+		PU = hPrimary.getProcessingUnits().get(0).getComputingProvisioner().getCapacity();
+		NETWORK = hPrimary.getInterfaces().get(0).getUpLink().getNetworkProvisioner().getCapacity();
+		STORAGE = hPrimary.getStorages().get(0).getStorageProvisioner().getCapacity();
+
+		Assert.assertEquals("We need same up and down BW for this test", NETWORK, hPrimary.getInterfaces().get(0).getDownLink().getNetworkProvisioner().getCapacity());
+
 		cloudProvider.getPowerManager().powerOn(hPrimary);
+		cloudProvider.getPowerManager().powerOn(hCheckpoint);
+		cloudProvider.getPowerManager().powerOn(hCheckpoint2);
 		cloudProvider.getPowerManager().powerOn(hRecovery);
 
 		vmPrimary = FactoryUtils.generateVirtualMachine(cloudProvider.getConfig(), null, null);
@@ -101,25 +131,6 @@ public class CheckpointingHandlerTest {
 			}
 		});
 		jobPrimary = Factory.getFactory(simulator).newJob(null, vmPrimary);
-
-		vmPrimary.addListener(NotificationCodes.ENTITY_ADDED, new NotificationListener() {
-			@Override
-			protected void notificationPerformed(Notifier notifier,
-					int notification_code, Object data) {
-				if (data instanceof Checkpoint) {
-					((Checkpoint)data).addGlobalListener(new NotificationListener() {
-
-						@Override
-						protected void notificationPerformed(Notifier notifier,
-								int notification_code, Object data) {
-							simulator.getLogger().log(NotificationCodes.notificationCodeToString(notification_code));
-
-						}
-						
-					});
-				}
-			}
-		});
 	}
 
 	private NotificationListener getOperationListener() {
@@ -134,13 +145,24 @@ public class CheckpointingHandlerTest {
 				n.getLogger().log(n, "On " + n.getParent().getParent().getParent().getName() +
 						": " + n.getRunnableState() + ": " + n.getAllocatedResource() + " comp=" + n.getCompletedLength());
 
-				lastComp  = n.getLength() - n.getCompletedLength();
+				if (n.getRunnableState() == RunnableState.COMPLETED)
+					finished[0] = Simulator.getSimulator().getTime();
 			}
 		};
 	}
 
+	private void assertLEquals(long expected, long time) {
+		long d = expected - time;
+		Assert.assertTrue("Expected <" + expected + "> but was: <" + time + ">", Math.abs(d) <= 1);
+	}
+
 	public void testWith(final long COMPUTE_LENGTH,
 			final long CHECKPOINT_RAM_SIZE, final long CHECKPOINT_STORAGE_SIZE) {
+		final VmCheckpoint c = Factory.getFactory(simulator).newVmCheckpoint(null, vmPrimary);
+
+		Storage storage = hRecovery.getStorages().get(0);
+		StorageFile sf = Factory.getFactory(simulator).newStorageFile(null, storage, 0);
+		c.setMemoryZone(sf);
 
 		//first launch computing
 		simulator.schedule(0, new EventChain() {
@@ -153,7 +175,7 @@ public class CheckpointingHandlerTest {
 						vmPrimary.doStart();
 					if (vmPrimary.canStart())
 						jobPrimary.doStart();
-	
+
 					Operation<?> op0 = jobPrimary.compute(COMPUTE_LENGTH, getOperationListener());
 					Assert.assertNotNull(op0);
 					op0.addListener(NotificationCodes.ENTITY_CLONED, new NotificationListener() {
@@ -167,11 +189,9 @@ public class CheckpointingHandlerTest {
 
 					if (CHECKPOINT_RAM_SIZE>0)
 						jobPrimary.allocateRam(CHECKPOINT_RAM_SIZE).modify(0, CHECKPOINT_RAM_SIZE);
-					
+
 					if (CHECKPOINT_STORAGE_SIZE>0)
 						jobPrimary.createFile(CHECKPOINT_STORAGE_SIZE).modify(0, CHECKPOINT_STORAGE_SIZE);
-
-					cloudProvider.getCheckpointingHandler().register(vmPrimary);
 				} catch(AssertionError e) {
 					exc = e;
 				}
@@ -179,11 +199,86 @@ public class CheckpointingHandlerTest {
 			}
 		});
 
-		final long CHECKPOINT_FAILURE_SEC = 7;
-		simulator.schedule(CHECKPOINT_FAILURE_SEC * Simulator.SECOND, new EventImpl() {
+		//
+		final long CHECKPOINT_START_SEC = 5;
+		timeOffset = CHECKPOINT_START_SEC * Simulator.SECOND;
+
+		simulator.schedule(CHECKPOINT_START_SEC * Simulator.SECOND, new EventImpl() {
 			@Override
 			public void process() {
-				hPrimary.setFailureState(FailureState.FAILED);
+				NotificationListener l = new NotificationListener() {
+					@Override
+					protected void notificationPerformed(Notifier notifier,
+							int notification_code, Object data) {
+						try {
+							long expected = timeOffset + (CHECKPOINT_RAM_SIZE + CHECKPOINT_STORAGE_SIZE) * Simulator.SECOND / NETWORK;
+							simulator.getLogger().log(NotificationCodes.notificationCodeToString(notification_code));
+
+							Assert.assertEquals(NotificationCodes.CHECKPOINT_UPDATE_SUCCESS, notification_code);
+							assertLEquals(expected, Simulator.getSimulator().getTime());
+
+							old_c = ((ComputingOperation)jobPrimary.getOperations().get(0)).getCompletedLength();
+
+							Storage storage = hCheckpoint2.getStorages().get(0);
+							StorageFile sf = Factory.getFactory(simulator).newStorageFile(null, storage, 0);
+							c.copy(sf);
+
+						} catch (AssertionError e) {
+							exc = e;
+						}
+					}
+				};
+				c.addListener(NotificationCodes.CHECKPOINT_UPDATE_ERROR, l);
+				c.addListener(NotificationCodes.CHECKPOINT_UPDATE_SUCCESS, l);
+
+				NotificationListener l2 = new NotificationListener() {
+					@Override
+					protected void notificationPerformed(Notifier notifier,
+							int notification_code, Object data) {
+						try {
+							simulator.getLogger().log(NotificationCodes.notificationCodeToString(notification_code));
+
+							simulator.schedule(2 * Simulator.SECOND, new EventImpl() {
+								@Override
+								public void process() {
+									hPrimary.setFailureState(FailureState.FAILED);
+									c.recover(hRecovery, null);
+
+									timeOffset = Simulator.getSimulator().getTime();
+								}
+							});
+
+							timeOffset = Simulator.getSimulator().getTime();
+						} catch (AssertionError e) {
+							exc = e;
+						}
+					}
+				};
+				c.addListener(NotificationCodes.CHECKPOINT_COPY_ERROR, l2);
+				c.addListener(NotificationCodes.CHECKPOINT_COPY_SUCCESS, l2);
+
+				NotificationListener l3 = new NotificationListener() {
+					@Override
+					protected void notificationPerformed(Notifier notifier,
+							int notification_code, Object data) {
+						try {
+							VirtualMachine vm = ((VirtualMachine) data);
+							Assert.assertNotNull(vm);
+							vm.doStart();
+							simulator.getLogger().log(NotificationCodes.notificationCodeToString(notification_code));
+
+							//assertLEquals(timeOffset + c.getCheckpointSize() * Simulator.SECOND / NETWORK,
+							//		Simulator.getSimulator().getTime());
+
+							timeOffset = Simulator.getSimulator().getTime();
+						} catch (AssertionError e) {
+							exc = e;
+						}
+					}
+				};
+				c.addListener(NotificationCodes.CHECKPOINT_RECOVER_ERROR, l3);
+				c.addListener(NotificationCodes.CHECKPOINT_RECOVER_SUCCESS, l3);
+				c.update();
 			}
 		});
 
@@ -193,7 +288,10 @@ public class CheckpointingHandlerTest {
 		if (exc != null)
             throw exc;
 
-		Assert.assertEquals(0, lastComp);
+		old_c = (COMPUTE_LENGTH - old_c);
+		if (old_c > 0)
+			assertLEquals(timeOffset + old_c * Simulator.SECOND / PU
+					, finished[0]);
 	}
 
 
@@ -202,7 +300,7 @@ public class CheckpointingHandlerTest {
 	public void test5() {
 		testWith(
 				13 * 1000 * Simulator.MI,
-				63 * Simulator.MEBIBYTE,
+				630 * Simulator.MEBIBYTE,
 				510 * Simulator.MEBIBYTE
 			);
 	}
