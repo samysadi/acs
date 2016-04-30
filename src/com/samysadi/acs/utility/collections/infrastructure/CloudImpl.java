@@ -52,13 +52,13 @@ public class CloudImpl extends MyArrayList<DatacenterImpl> implements Cloud {
 	}
 
 	@Override
-	public List<DatacenterImpl> getDatacenters() {
+	public List<Datacenter> getDatacenters() {
 		return new UnmodifiableCloud(this);
 	}
 
 	@Override
-	public List<ClusterImpl> getClusters() {
-		return new MyMultiListView<ClusterImpl>() {
+	public List<Cluster> getClusters() {
+		return new MyMultiListView<Cluster>() {
 			@Override
 			protected List<? extends List<ClusterImpl>> lists() {
 				return CloudImpl.this;
@@ -73,12 +73,14 @@ public class CloudImpl extends MyArrayList<DatacenterImpl> implements Cloud {
 	}
 
 	@Override
-	public List<RackImpl> getRacks() {
-		final List<ClusterImpl> clusters = this.getClusters();
-		return new MyMultiListView<RackImpl>() {
+	public List<Rack> getRacks() {
+		final List<Cluster> clusters = this.getClusters();
+		return new MyMultiListView<Rack>() {
+			@SuppressWarnings("unchecked")
 			@Override
 			protected List<? extends List<RackImpl>> lists() {
-				return clusters;
+				//safe cast: CloudImpl implements DatacenterImpl, DatacenterImpl implements List<ClusterImpl>, ClusterImpl implements List<RackImpl>
+				return (List<? extends List<RackImpl>>) clusters;
 			}
 
 			@Override
@@ -91,11 +93,13 @@ public class CloudImpl extends MyArrayList<DatacenterImpl> implements Cloud {
 
 	@Override
 	public List<Host> getHosts() {
-		final List<RackImpl> racks = this.getRacks();
+		final List<Rack> racks = this.getRacks();
 		return new MyMultiListView<Host>() {
+			@SuppressWarnings("unchecked")
 			@Override
 			protected List<? extends List<Host>> lists() {
-				return racks;
+				//safe cast: CloudImpl implements DatacenterImpl, DatacenterImpl implements List<ClusterImpl>, ClusterImpl implements List<RackImpl> and RackImpl implements List<Host>
+				return (List<? extends List<Host>>) racks;
 			}
 
 			@Override
@@ -105,23 +109,23 @@ public class CloudImpl extends MyArrayList<DatacenterImpl> implements Cloud {
 		};
 	}
 
-	protected static class UnmodifiableCloud extends MyUnmodifiableList<DatacenterImpl> implements Cloud {
+	protected static class UnmodifiableCloud extends MyUnmodifiableList<Datacenter> implements Cloud {
 		public UnmodifiableCloud(CloudImpl cloud) {
 			super(cloud);
 		}
 
 		@Override
-		public List<DatacenterImpl> getDatacenters() {
+		public List<Datacenter> getDatacenters() {
 			return this;
 		}
 
 		@Override
-		public List<ClusterImpl> getClusters() {
+		public List<Cluster> getClusters() {
 			return ((CloudImpl)list).getClusters();
 		}
 
 		@Override
-		public List<RackImpl> getRacks() {
+		public List<Rack> getRacks() {
 			return ((CloudImpl)list).getRacks();
 		}
 

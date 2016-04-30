@@ -53,13 +53,13 @@ public class DatacenterImpl extends MyArrayList<ClusterImpl> implements Datacent
 	}
 
 	@Override
-	public List<ClusterImpl> getClusters() {
+	public List<Cluster> getClusters() {
 		return new UnmodifiableDatacenter(this);
 	}
 
 	@Override
-	public List<RackImpl> getRacks() {
-		return new MyMultiListView<RackImpl>() {
+	public List<Rack> getRacks() {
+		return new MyMultiListView<Rack>() {
 			@Override
 			protected List<? extends List<RackImpl>> lists() {
 				return DatacenterImpl.this;
@@ -75,11 +75,13 @@ public class DatacenterImpl extends MyArrayList<ClusterImpl> implements Datacent
 
 	@Override
 	public List<Host> getHosts() {
-		final List<RackImpl> racks = this.getRacks();
+		final List<Rack> racks = this.getRacks();
 		return new MyMultiListView<Host>() {
+			@SuppressWarnings("unchecked")
 			@Override
 			protected List<? extends List<Host>> lists() {
-				return racks;
+				//safe cast: DatacenterImpl implements List<ClusterImpl>, ClusterImpl implements List<RackImpl> and RackImpl implements List<Host>
+				return (List<? extends List<Host>>) racks;
 			}
 
 			@Override
@@ -89,18 +91,18 @@ public class DatacenterImpl extends MyArrayList<ClusterImpl> implements Datacent
 		};
 	}
 
-	protected static class UnmodifiableDatacenter extends MyUnmodifiableList<ClusterImpl> implements Datacenter {
+	protected static class UnmodifiableDatacenter extends MyUnmodifiableList<Cluster> implements Datacenter {
 		public UnmodifiableDatacenter(DatacenterImpl datacenter) {
 			super(datacenter);
 		}
 
 		@Override
-		public List<ClusterImpl> getClusters() {
+		public List<Cluster> getClusters() {
 			return this;
 		}
 
 		@Override
-		public List<RackImpl> getRacks() {
+		public List<Rack> getRacks() {
 			return ((DatacenterImpl)list).getRacks();
 		}
 

@@ -45,14 +45,14 @@ public interface Cluster {
 	 *
 	 * @return an unmodifiable list that contains all racks
 	 */
-	public List<? extends Rack> getRacks();
+	public List<Rack> getRacks();
 
 	/**
 	 * Returns an unmodifiable list that contains all hosts in all racks of this cluster.
 	 *
 	 * @return an unmodifiable list that contains all hosts
 	 */
-	public List<? extends Host> getHosts();
+	public List<Host> getHosts();
 
 	/**
 	 * Returns the data-center that contains this cluster, or <tt>null</tt> if it is not set.

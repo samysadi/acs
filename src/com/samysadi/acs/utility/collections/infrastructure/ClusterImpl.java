@@ -53,7 +53,7 @@ public class ClusterImpl extends MyArrayList<RackImpl> implements Cluster {
 	}
 
 	@Override
-	public List<RackImpl> getRacks() {
+	public List<Rack> getRacks() {
 		return new UnmodifiableCluster(this);
 	}
 
@@ -72,13 +72,13 @@ public class ClusterImpl extends MyArrayList<RackImpl> implements Cluster {
 		};
 	}
 
-	private static class UnmodifiableCluster extends MyUnmodifiableList<RackImpl> implements Cluster {
+	private static class UnmodifiableCluster extends MyUnmodifiableList<Rack> implements Cluster {
 		public UnmodifiableCluster(ClusterImpl cluster) {
 			super(cluster);
 		}
 
 		@Override
-		public List<RackImpl> getRacks() {
+		public List<Rack> getRacks() {
 			return this;
 		}
 

@@ -45,27 +45,27 @@ public interface Cloud {
 	 *
 	 * @return an unmodifiable list containing all data-centers
 	 */
-	public List<? extends Datacenter> getDatacenters();
+	public List<Datacenter> getDatacenters();
 
 	/**
 	 * Returns an unmodifiable list that contains all clusters in all data-centers of this cloud.
 	 *
 	 * @return an unmodifiable list that contains all clusters
 	 */
-	public List<? extends Cluster> getClusters();
+	public List<Cluster> getClusters();
 
 	/**
 	 * Returns an unmodifiable list that contains all racks in all clusters in all data-centers in this cloud.
 	 *
 	 * @return an unmodifiable list that contains all racks
 	 */
-	public List<? extends Rack> getRacks();
+	public List<Rack> getRacks();
 
 	/**
 	 * Returns an unmodifiable list that contains all hosts in all racks in all clusters in all data-centers in this cloud.
 	 *
 	 * @return an unmodifiable list that contains all hosts
 	 */
-	public List<? extends Host> getHosts();
+	public List<Host> getHosts();
 
 }

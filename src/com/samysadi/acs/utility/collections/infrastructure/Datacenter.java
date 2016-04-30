@@ -45,21 +45,21 @@ public interface Datacenter {
 	 *
 	 * @return an unmodifiable list that contains all clusters
 	 */
-	public List<? extends Cluster> getClusters();
+	public List<Cluster> getClusters();
 
 	/**
 	 * Returns an unmodifiable list that contains all racks in all clusters of this data-center.
 	 *
 	 * @return an unmodifiable list that contains all racks
 	 */
-	public List<? extends Rack> getRacks();
+	public List<Rack> getRacks();
 
 	/**
 	 * Returns an unmodifiable list that contains all hosts in all racks in all clusters of this data-center.
 	 *
 	 * @return an unmodifiable list that contains all hosts
 	 */
-	public List<? extends Host> getHosts();
+	public List<Host> getHosts();
 
 	public Cloud getCloud();
 

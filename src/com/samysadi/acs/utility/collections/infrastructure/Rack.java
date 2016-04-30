@@ -45,7 +45,7 @@ public interface Rack {
 	 *
 	 * @return an unmodifiable list that contains all hosts
 	 */
-	public List<? extends Host> getHosts();
+	public List<Host> getHosts();
 
 	/**
 	 * Returns the cluster that contains this rack, or <tt>null</tt> if it is not set.
