@@ -47,7 +47,9 @@ public class CloudProviderFactoryDefault extends CloudProviderFactory {
 
 	//topology
 	private void _generate0(final CloudProvider cp) {
-		getLogger().log(Level.FINER, "Using " + getTopologyFactoryClass().getSimpleName());
+		Config cfg = getConfig().addContext(FactoryUtils.Topology_CONTEXT);
+
+		getLogger().log(Level.FINER, "Using " + getFactory(cfg).getTopologyFactoryClass().getSimpleName());
 
 		NotificationListener l = new NotificationListener() {
 			@Override
@@ -61,7 +63,7 @@ public class CloudProviderFactoryDefault extends CloudProviderFactory {
 		};
 
 		cp.addListener(NotificationCodes.FACTORY_TOPOLOGY_GENERATED, l);
-		FactoryUtils.generateTopology(getConfig().addContext(FactoryUtils.Topology_CONTEXT), cp);
+		FactoryUtils.generateTopology(cfg, cp);
 	}
 
 	private void generateUser(final CloudProvider cp,
