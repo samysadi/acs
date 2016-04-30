@@ -168,7 +168,8 @@ public class UserFactoryDefault extends UserFactory {
 							indexTab[0]++;
 							if (r)
 								break;
-							resubmitCountTab[0]++;
+							if (resubmitVms)
+								resubmitCountTab[0]++;
 						}
 					}
 				};
@@ -179,7 +180,8 @@ public class UserFactoryDefault extends UserFactory {
 					indexTab[0]++;
 					if (r)
 						break;
-					resubmitCountTab[0]++;
+					if (resubmitVms)
+						resubmitCountTab[0]++;
 				}
 			}
 		});
