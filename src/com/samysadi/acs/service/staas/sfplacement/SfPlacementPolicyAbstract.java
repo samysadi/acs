@@ -231,6 +231,8 @@ public abstract class SfPlacementPolicyAbstract extends EntityImpl implements Sf
 		if (storage.getFreeCapacity() < storageFile.getSize())
 			throw new IllegalArgumentException("Not enough space in the storage to place the file on it");
 
+		storageFile.setPlacementPolicy(SfPlacementPolicyAbstract.this);
+
 		//check host power state
 		if (host.getPowerState() != PowerState.ON) {
 			final long size = storageFile.getSize();
@@ -279,11 +281,11 @@ public abstract class SfPlacementPolicyAbstract extends EntityImpl implements Sf
 			throw new IllegalArgumentException("The given StorageFile was not placed using this VmPlacementPolicy");
 
 		//
-		storageFile.unplace();
+		storageFile.setParent(null);
 		storageFile.setPlacementPolicy(null);
 
 		Host host = storage.getParentHost();
-		host.getCloudProvider().getPowerManager().lockHost(host);
+		host.getCloudProvider().getPowerManager().unlockHost(host);
 		//see if host can be powered off
 		if (host.getCloudProvider().getPowerManager().canPowerOff(host))
 			host.getCloudProvider().getPowerManager().powerOff(host);
