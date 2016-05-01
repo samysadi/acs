@@ -552,6 +552,10 @@ public abstract class CheckpointingHandlerAbstract<E extends RunnableEntity, C e
 	 */
 	protected void afterAutoUpdate(C c) {
 		E entity = c.getParent();
+		if (entity == null) {
+			//checkpoint deleted!?
+			return;
+		}
 		CheckpointingHandlerEntityData<E, C> entityData = getCheckpointingHandlerEntityData(entity);
 		if (entityData == null) {
 			//the entity is not registered !?
@@ -594,6 +598,10 @@ public abstract class CheckpointingHandlerAbstract<E extends RunnableEntity, C e
 	 * @param checkpointConfig the checkpoint config to be used when retrying to update
 	 */
 	protected void afterAutoUpdateError(E entity, Config checkpointConfig) {
+		if (entity == null) {
+			//checkpoint deleted!?
+			return;
+		}
 		CheckpointingHandlerEntityData<E, C> entityData = getCheckpointingHandlerEntityData(entity);
 		if (entityData == null) {
 			//the entity is not registered !?
@@ -734,6 +742,10 @@ public abstract class CheckpointingHandlerAbstract<E extends RunnableEntity, C e
 	 */
 	protected void afterAutoRecover(C c, E newEntity) {
 		E entity = c.getParent();
+		if (entity == null) {
+			//checkpoint deleted!?
+			return;
+		}
 		CheckpointingHandlerEntityData<E, C> entityData = getCheckpointingHandlerEntityData(entity);
 		if (entityData == null) {
 			//the entity is not registered !?
@@ -771,6 +783,10 @@ public abstract class CheckpointingHandlerAbstract<E extends RunnableEntity, C e
 	 * @param entity the entity for which the auto recovery failed
 	 */
 	protected void afterAutoRecoverError(E entity) {
+		if (entity == null) {
+			//checkpoint deleted!?
+			return;
+		}
 		CheckpointingHandlerEntityData<E, C> entityData = getCheckpointingHandlerEntityData(entity);
 		if (entityData == null) {
 			//the entity is not registered !?

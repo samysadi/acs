@@ -183,6 +183,11 @@ public abstract class VmCheckpointingHandlerAbstract extends CheckpointingHandle
 	@Override
 	protected void generateCheckpoint(final VirtualMachine vm, final Config checkpointConfig,
 			final _CHMethodReturn<VmCheckpoint> success, final _CHMethodReturnSimple error) {
+		if (!vm.hasParentRec()) {
+			error.run();
+			return;
+		}
+
 		Host vmToReplaceDestinationHost = VmCheckpointingHandlerAbstract.this.getParent().getVmPlacementPolicy().selectHost(vm, null, Arrays.asList(vm.getParent()));
 		if (vmToReplaceDestinationHost == null) {
 			error.run();
