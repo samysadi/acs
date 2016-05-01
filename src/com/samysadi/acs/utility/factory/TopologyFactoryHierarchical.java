@@ -67,6 +67,7 @@ public class TopologyFactoryHierarchical extends TopologyFactory {
 		while (getConfig().hasContext(CONTEXT, i)) {
 			Config cfg = getConfig().addContext(CONTEXT, i);
 			layerConfigurations.add(cfg);
+			i++;
 		}
 
 		if (layerConfigurations.isEmpty())
@@ -103,6 +104,7 @@ public class TopologyFactoryHierarchical extends TopologyFactory {
 //	}
 
 	private int total_adv = 0; //is the total accomplished percent * 100
+	private int shown_adv = 0;
 	private int total_hosts = 0;
 
 	private int poweredOnCount = 0;
@@ -142,8 +144,11 @@ public class TopologyFactoryHierarchical extends TopologyFactory {
 
 			total_adv+= aff_adv;
 			total_hosts++;
-			if (total_hosts % 1000 == 0)
-				FactoryUtils.logAdvancement("Hosts", total_hosts, total_adv/ 100d);
+			int _new_adv = total_adv / 100;
+			if ( _new_adv != shown_adv) {
+				shown_adv = _new_adv;
+				FactoryUtils.logAdvancement("Hosts", total_hosts, shown_adv);
+			}
 		}
 
 		final IpAddress firstIp = IpAddress.newIpAddress();
@@ -220,6 +225,7 @@ public class TopologyFactoryHierarchical extends TopologyFactory {
 
 		int lastLayerIndex = layerConfigurations.size()-1;
 
+		shown_adv = 0;
 		total_adv = 0;
 		total_hosts = 0;
 

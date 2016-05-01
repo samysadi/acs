@@ -78,7 +78,7 @@ public class CloudProviderFactoryDefault extends CloudProviderFactory {
 		}
 
 		index++;
-		if (index % 1000 == 0)
+		if ((index << 7) % count < 128)
 			FactoryUtils.logAdvancement("Users", index, index * 100d / count);
 
 		FactoryUtils.generateUser(getUserGenerationMode().next(), cp);

@@ -110,7 +110,7 @@ public class TopologyFactoryFlat extends TopologyFactory {
 			remainingNodesInRack--;
 
 			i++;
-			if (i % 1000 == 0)
+			if ((i << 7) % nodes_count < 128)
 				FactoryUtils.logAdvancement("Hosts", i, i * 100d / nodes_count);
 
 			rackAdded = false;
