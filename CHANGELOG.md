@@ -1,3 +1,6 @@
+# 1.2b
+- Various fixes
+
 # 1.2
 - Redesigned checkpointing implementation
 - Enhanced operations and operation synchronization 
