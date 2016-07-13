@@ -232,8 +232,10 @@ public class Config {
 
 			if (!includeConfigFile(mainDir, filename, this.context)) {
 				throw new IllegalStateException("Error when loading configuration file");
-			} else
-				setString("ConfigDirectory", mainDir.getAbsolutePath());
+			} else {
+				if (mainDir != null)
+					setString("ConfigDirectory", mainDir.getAbsolutePath());
+			}
 		}
 	}
 
