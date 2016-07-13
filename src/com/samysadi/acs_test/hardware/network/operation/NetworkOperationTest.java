@@ -510,7 +510,7 @@ public class NetworkOperationTest {
 		if (exc != null)
             throw exc;
 
-		Assert.assertEquals(lat0 + lat1 + (long) Math.ceil((double)OP_DATA_LENGTH * (1+ Math.max(loss0, loss1)) * Simulator.SECOND / LINK_BW), simulator.getTime());
+		Assert.assertEquals(lat0 + lat1 + (long) Math.ceil(OP_DATA_LENGTH * (1d+ Math.max(loss0, loss1)) * Simulator.SECOND / LINK_BW), simulator.getTime());
 	}
 
 	private void _testDelayed(final long lengthForDelaying, final boolean sync) {

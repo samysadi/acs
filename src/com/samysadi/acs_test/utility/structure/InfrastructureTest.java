@@ -94,7 +94,7 @@ public class InfrastructureTest {
 			Assert.assertEquals(DATACENTER * CLUSTER * RACK, _cl.getRacks().size());
 			Assert.assertEquals(DATACENTER * CLUSTER * RACK * HOST, _cl.getHosts().size());
 
-			_d = (DatacenterImpl) _cl.get(0);
+			_d = _cl.get(0);
 			Assert.assertEquals(CLUSTER, _d.size());
 			Assert.assertEquals(CLUSTER * RACK, _d.getRacks().size());
 			Assert.assertEquals(CLUSTER * RACK * HOST, _d.getHosts().size());
@@ -191,7 +191,7 @@ public class InfrastructureTest {
 			HashSet<Integer> vd = build(HOST);
 			for (Host _h: _d.get(0).get(0).getHosts()) {
 				vd.remove(
-						((Integer)_h.getProperty("h"))
+						_h.getProperty("h")
 					);
 			}
 

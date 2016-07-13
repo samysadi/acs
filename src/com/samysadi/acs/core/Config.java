@@ -1118,7 +1118,7 @@ public class Config {
 					}
 					ixcfa = IncludeXMLConfigFileAction.ADD;
 
-					ctx = ctx + trimContext((String) tag);
+					ctx = ctx + trimContext(tag);
 					int i = 0;
 					while (true) {
 						String ctx0 = ctx + CONTEXT_ARRAY_SEPARATOR + String.valueOf(i);
@@ -1155,7 +1155,7 @@ public class Config {
 					ctx = ctx + editCtx;
 				} else {
 					ixcfa = IncludeXMLConfigFileAction.DEFAULT;
-					ctx = ctx + trimContext((String) tag) + CONTEXT_SEPARATOR;
+					ctx = ctx + trimContext(tag) + CONTEXT_SEPARATOR;
 				}
 
 				if (ixcfa == IncludeXMLConfigFileAction.ADD || ixcfa == IncludeXMLConfigFileAction.DEFAULT) {

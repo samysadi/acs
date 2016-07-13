@@ -77,7 +77,7 @@ public class JobDefault extends RunnableEntityImpl implements Job {
 			} else if (notification_code == NotificationCodes.JOB_DEST_OPERATION_REMOVED) {
 				if (data instanceof RemoteOperation<?>) {
 					if (((JobDefault)notifier).remoteOperations != null) {
-						((JobDefault)notifier).remoteOperations.remove((RemoteOperation<?>)data);
+						((JobDefault)notifier).remoteOperations.remove(data);
 						if (((JobDefault)notifier).remoteOperations.isEmpty())
 							((JobDefault)notifier).remoteOperations = null;
 					}

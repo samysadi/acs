@@ -256,7 +256,7 @@ public class CloudProviderDefault extends EntityImpl implements CloudProvider {
 
 	protected static ClusterImpl _addCluster(DatacenterImpl datacenter) {
 		ClusterImpl cluster = new ClusterImpl();
-		cluster.setDatacenter((DatacenterImpl) datacenter);
+		cluster.setDatacenter(datacenter);
 		datacenter.add(cluster);
 		return cluster;
 	}
@@ -273,7 +273,7 @@ public class CloudProviderDefault extends EntityImpl implements CloudProvider {
 //		this should always be false
 //		if (this.defaultRack == null)
 //			throw new NullPointerException("There is no defined cluster where to add the rack, please use addCluster instead.");
-		this.defaultRack = _addRack((ClusterImpl) this.defaultRack.getCluster());
+		this.defaultRack = _addRack(this.defaultRack.getCluster());
 	}
 
 	@Override
@@ -281,7 +281,7 @@ public class CloudProviderDefault extends EntityImpl implements CloudProvider {
 //		this should always be false
 //		if (this.defaultRack == null)
 //			throw new NullPointerException("There is no defined datacenter where to add the cluster, please use addDatacenter instead.");
-		this.defaultRack = _addRack(_addCluster((DatacenterImpl) this.defaultRack.getCluster().getDatacenter()));
+		this.defaultRack = _addRack(_addCluster(this.defaultRack.getCluster().getDatacenter()));
 	}
 
 	@Override

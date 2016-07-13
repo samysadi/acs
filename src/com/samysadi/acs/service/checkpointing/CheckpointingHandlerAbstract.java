@@ -297,7 +297,7 @@ public abstract class CheckpointingHandlerAbstract<E extends RunnableEntity, C e
 			C c = (C) _c;
 			if (!isAutomaticCheckpoint(c))
 				continue;
-			deleteCheckpoint((C) c);
+			deleteCheckpoint(c);
 		}
 
 		//throw unregister notification

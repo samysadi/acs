@@ -123,7 +123,7 @@ public class UserBillingProbe extends AbstractProbe<Long> implements PriceProbe 
 
 			Long newP = ((Long) o.getValue1().getValue());
 
-			v+= (double)(newP - o.getValue2()) * price_per_hour / Simulator.HOUR;
+			v+= (newP - o.getValue2()) * price_per_hour / Simulator.HOUR;
 			o.setValue2(newP);
 		}
 		this.vmsPrice += v;
