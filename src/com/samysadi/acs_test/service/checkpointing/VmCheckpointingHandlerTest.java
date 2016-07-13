@@ -29,7 +29,7 @@ package com.samysadi.acs_test.service.checkpointing;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.After;
 import org.junit.Before;
