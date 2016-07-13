@@ -9,5 +9,6 @@ nbproject
 .settings
 TODO
 var
+wiki
 etc/*
 !etc/config.sample
