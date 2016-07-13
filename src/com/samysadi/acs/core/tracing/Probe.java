@@ -55,6 +55,8 @@ import com.samysadi.acs.core.notifications.Notifier;
  * Nevertheless, such implementations may exist in some use case (as they may result in better performances),
  * the probe should then implement the {@link ModifiableProbe} interface.
  *
+ * @param <ValueType>
+ *
  * @since 1.0
  */
 public interface Probe<ValueType> extends Notifier {

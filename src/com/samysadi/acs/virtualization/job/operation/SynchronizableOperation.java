@@ -29,6 +29,8 @@ package com.samysadi.acs.virtualization.job.operation;
 /**
  * An operation that can be synchronized with other operations.
  *
+ * @param <Resource>
+ *
  * @see OperationSynchronizer
  * @since 1.2
  */

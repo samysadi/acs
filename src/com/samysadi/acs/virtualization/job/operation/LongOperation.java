@@ -31,6 +31,8 @@ import com.samysadi.acs.core.Simulator;
 /**
  * This interface defines an {@link Operation} that uses a {@link LongResource}.
  *
+ * @param <Resource>
+ *
  * @since 1.2
  */
 public interface LongOperation<Resource extends LongResource> extends Operation<Resource> {

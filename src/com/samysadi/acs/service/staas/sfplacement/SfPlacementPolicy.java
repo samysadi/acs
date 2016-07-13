@@ -79,12 +79,19 @@ public interface SfPlacementPolicy extends Entity {
 	/**
 	 * Alias for {@link SfPlacementPolicy#selectStorage(StorageFile, List, List)} where
 	 * excluded hosts is <tt>null</tt>.
+	 *
+	 * @param storageFile
+	 * @param hosts
+	 * @return the selected storage or <tt>null</tt> if no storage was found
 	 */
 	public Storage selectStorage(StorageFile storageFile, List<Host> hosts);
 
 	/**
 	 * Alias for {@link SfPlacementPolicy#selectStorage(StorageFile, List)} where
 	 * possible hosts is <tt>null</tt>.
+	 *
+	 * @param storageFile
+	 * @return the selected storage or <tt>null</tt> if no storage was found
 	 */
 	public Storage selectStorage(StorageFile storageFile);
 

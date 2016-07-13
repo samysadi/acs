@@ -32,6 +32,9 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
 
 /**
  *
+ * @param <OperationType>
+ * @param <Resource>
+ *
  * @since 1.0
  */
 public abstract class LongProvisionerImpl<OperationType extends Operation<Resource>, Resource extends LongResource>

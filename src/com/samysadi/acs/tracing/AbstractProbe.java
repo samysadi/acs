@@ -37,6 +37,8 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  *
+ * @param <ValueType>
+ *
  * @since 1.0
  */
 public abstract class AbstractProbe<ValueType> extends ProbeImpl<ValueType> {

@@ -201,6 +201,10 @@ public interface Job extends Entity, RunnableEntity {
 	 * Created virtual machine is owned by the same user as the parent virtual machine of the current job.<br/>
 	 * When the operation ends, the created virtual machine is discarded.
 	 *
+	 * @param destinationHost
+	 * @param dataSize
+	 * @param listener
+	 * @return the created operation, or <tt>null</tt>
 	 * @see Job#sendData(Job, long, NotificationListener)
 	 */
 	public NetworkOperation sendData(Host destinationHost, long dataSize, NotificationListener listener);
@@ -230,6 +234,10 @@ public interface Job extends Entity, RunnableEntity {
 	 * Created virtual machine is owned by the same user as the parent virtual machine of the current job.<br/>
 	 * When the operation ends, the created virtual machine is discarded.
 	 *
+	 * @param srcHost
+	 * @param dataSize
+	 * @param listener
+	 * @return the created operation, or <tt>null</tt>
 	 * @see Job#receiveData(Job, long, NotificationListener)
 	 */
 	public NetworkOperation receiveData(Host srcHost, long dataSize, NotificationListener listener);

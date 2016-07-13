@@ -44,6 +44,7 @@ public interface Ram extends MemoryUnit<RamZone> {
 
 	/**
 	 * Alias for {@link MemoryUnit#getMemoryZones()}.
+	 * @return a list containing all {@link RamZone}s in this Ram
 	 */
 	public List<RamZone> getRamZones();
 }

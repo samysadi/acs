@@ -78,12 +78,19 @@ public interface VmPlacementPolicy extends Entity {
 	/**
 	 * Alias for {@link VmPlacementPolicy#selectHost(VirtualMachine, List, List)} where
 	 * excluded hosts is <tt>null</tt>.
+	 *
+	 * @param vm
+	 * @param hosts
+	 * @return the selected host or <tt>null</tt> if no host was found
 	 */
 	public Host selectHost(VirtualMachine vm, List<Host> hosts);
 
 	/**
 	 * Alias for {@link VmPlacementPolicy#selectHost(VirtualMachine, List)} where
 	 * possible hosts is <tt>null</tt>.
+	 *
+	 * @param vm
+	 * @return the selected host or <tt>null</tt> if no host was found
 	 */
 	public Host selectHost(VirtualMachine vm);
 

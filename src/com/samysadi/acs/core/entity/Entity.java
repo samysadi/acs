@@ -231,6 +231,7 @@ public interface Entity extends Notifier, Probed, Cloneable {
 	 * Returns the property for the given <tt>key</tt> or <tt>defaultValue</tt> if not found.
 	 *
 	 * @param key
+	 * @param defaultValue
 	 * @return the property or <tt>defaultValue</tt> if not found
 	 */
 	public Object getProperty(Object key, Object defaultValue);

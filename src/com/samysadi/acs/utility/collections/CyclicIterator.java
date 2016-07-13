@@ -39,6 +39,7 @@ import java.util.List;
  *
  * <p>A ConcurrentModificationException is thrown if the underlying list is modified during the iteration.
  *
+ * @param <T>
  * @since 1.0
  */
 public class CyclicIterator<T> implements Iterator<T> {

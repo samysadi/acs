@@ -29,6 +29,9 @@ package com.samysadi.acs.utility;
 /**
  * This generic class defines a pair containing two Objects.
  *
+ * @param <O1>
+ * @param <O2>
+ *
  * @since 1.0
  */
 public class Pair<O1, O2> {

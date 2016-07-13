@@ -74,6 +74,8 @@ public class Utils {
 	 * up/down link = 100 mb/s<br/>
 	 * link latency = 0<br/>
 	 * link loss rate = 0
+	 *
+	 * @param simulator
 	 */
 	public static void generateTopology0(Simulator simulator) {
 		if (!quiet) {
@@ -119,6 +121,8 @@ public class Utils {
 	 * up/down link = 100 mb/s | 300 mb/s switch to switch<br/>
 	 * link latency = 0<br/>
 	 * link loss rate = 0
+	 *
+	 * @param simulator
 	 */
 	public static void generateTopology1(Simulator simulator) {
 		final boolean oldQuiet = quiet;
@@ -159,6 +163,8 @@ public class Utils {
 	 * <p>up/down link = 100 mb/s | 300 mb/s switch to switch<br/>
 	 * link latency = 0<br/>
 	 * link loss rate = 0
+	 *
+	 * @param simulator
 	 */
 	public static void generateTopology2(Simulator simulator) {
 		final boolean oldQuiet = quiet;

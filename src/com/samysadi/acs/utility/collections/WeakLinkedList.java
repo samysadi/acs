@@ -44,6 +44,8 @@ import java.util.NoSuchElementException;
  *
  * <p>This implementation is not synchronized.
  *
+ * @param <E>
+ *
  * @since 1.0
  */
 public class WeakLinkedList<E> extends AbstractSequentialList<E> implements

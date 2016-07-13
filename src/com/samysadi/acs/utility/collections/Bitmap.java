@@ -355,6 +355,7 @@ public class Bitmap implements Cloneable {
 	 *
 	 * <p>This method assumes that if a bit at a given page is marked then all the other bits in the page are marked too.
 	 *
+	 * @param pageSize
 	 * @return the marked size based on a page boundary
 	 */
 	public long getMarkedPagesSize(long pageSize) {
@@ -382,6 +383,7 @@ public class Bitmap implements Cloneable {
 	 *
 	 * <p>This method assumes that if a bit at a given page is marked then all the other bits in the page are marked too.
 	 *
+	 * @param pageSize
 	 * @return the unmarked size based on a page boundary
 	 */
 	public long getUnMarkedPagesSize(long pageSize) {

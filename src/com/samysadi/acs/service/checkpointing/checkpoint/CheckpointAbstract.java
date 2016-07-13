@@ -54,6 +54,9 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
 /**
  * Abstract class for checkpoints.
  *
+ * @param <E>
+ * @param <P>
+ *
  * @since 1.2
  */
 public abstract class CheckpointAbstract<E extends RunnableEntity, P extends Entity> extends EntityImpl implements Checkpoint<E, P> {

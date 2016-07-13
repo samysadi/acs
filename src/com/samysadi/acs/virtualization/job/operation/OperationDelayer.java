@@ -29,6 +29,7 @@ package com.samysadi.acs.virtualization.job.operation;
 /**
  * This interface defines an operation delayer which is used to determine
  * when an operation should be delayed.
+ * @param <O>
  *
  * @since 1.2
  */
@@ -44,6 +45,7 @@ public interface OperationDelayer<O extends LongOperation<?>> {
 	 * or a value greater than the operation length, means that the operation
 	 * will never be delayed.
 	 *
+	 * @param operation
 	 * @return a long value indicating at which length the given operation
 	 * should be delayed.
 	 */

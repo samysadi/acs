@@ -44,6 +44,8 @@ import com.samysadi.acs.core.Simulator;
  *
  * <p>If the trace is disabled then no history of the value changes is kept.
  *
+ * @param <T>
+ *
  * @since 1.0
  */
 public interface Trace<T> {
@@ -78,6 +80,8 @@ public interface Trace<T> {
 	 *
 	 * <p>If the trace is disabled then value changes on the parent probe are ignored and are not included
 	 * in the list returned by {@link Trace#getValues()}.
+	 *
+	 * @param v
 	 *
 	 * @throws IllegalStateException if this trace is discarded
 	 */

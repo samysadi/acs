@@ -151,6 +151,8 @@ public interface VirtualMachine extends Entity, RunnableEntity {
 	/**
 	 * Same as {@link VirtualMachine#setUsableProcessingUnits(List, boolean)} with
 	 * the <tt>allocatePu</tt> parameter set to <tt>true</tt>.
+	 *
+	 * @param processingUnits
 	 */
 	public void setUsableProcessingUnits(List<ProcessingUnit> processingUnits);
 
@@ -165,6 +167,8 @@ public interface VirtualMachine extends Entity, RunnableEntity {
 	 * even if it is allocated for another VM and independently from the <tt>allocatePu</tt> parameter.
 	 *
 	 * @param processingUnits usable processing units, or to <tt>null</tt> to let this vm use any processing unit on the parent host
+	 * @param allocatePu
+	 *
 	 * @throws IllegalStateException if this VM is running
 	 * @throws IllegalArgumentException if <tt>allocatePu</tt> parameter is <tt>true</tt> and one of the PUs in the
 	 * given <tt>processingUnits</tt> list is already allocated for another VM
@@ -277,6 +281,8 @@ public interface VirtualMachine extends Entity, RunnableEntity {
 	 *
 	 * <p>If the VM is running, then the VM is first paused, then the {@link NetworkOperationDelayer}
 	 * is set, and finally the VM is resumed.
+	 *
+	 * @param v
 	 *
 	 */
 	public void setNetworkOperationDelayer(NetworkOperationDelayer v);

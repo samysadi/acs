@@ -37,6 +37,8 @@ import com.samysadi.acs.utility.collections.MultiListView;
 
 /**
  *
+ * @param <Zone>
+ *
  * @since 1.0
  */
 public abstract class MemoryUnitImpl<Zone extends MemoryZone> extends FailureProneEntityImpl implements MemoryUnit<Zone> {

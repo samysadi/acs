@@ -164,6 +164,7 @@ public class Factory  {
 	/**
 	 * Returns a factory instance created using the given configuration.
 	 *
+	 * @param config
 	 * @return a factory instance created using the given configuration
 	 */
 	public static Factory getFactory(Config config) {
@@ -173,6 +174,7 @@ public class Factory  {
 	/**
 	 * Returns a factory instance created using the given entity's configuration
 	 *
+	 * @param entity
 	 * @return a factory instance created using the given entity's configuration
 	 * @see Entity#getConfigRec()
 	 */

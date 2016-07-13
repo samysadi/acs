@@ -56,6 +56,9 @@ public interface Probed {
 
 	/**
 	 * This method is an alias for {@link Probed#getProbe(String, boolean) getProbe(probeKey, true)}.
+	 * @param probeKey
+	 * @return an existing probe matching the given <tt>probeKey</tt>, a newly created probe
+	 * or <tt>null</tt>
 	 */
 	public Probe<?> getProbe(String probeKey);
 
@@ -71,7 +74,7 @@ public interface Probed {
 	 * The newly created probe is returned and is also added to the list of probes inside this probed object (ie: it is added
 	 * to the list returned by {@link Probed#getProbes()}.
 	 *
-	 * <p>If the <tt>create</tt> parameter is <tt>false</tt>, then <tt>null</tt> is returned.
+	 * <p>If the <tt>create</tt> parameter is <tt>false</tt> and no probe matching <tt>probeKey</tt> is found, then <tt>null</tt> is returned.
 	 *
 	 * @param probeKey
 	 * @param create whether to create a probe with the given <tt>probeKey</tt> if none is found

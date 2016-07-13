@@ -77,6 +77,9 @@ import com.samysadi.acs.utility.NotificationCodes.CheckpointingHandlerDeleteResu
  * the parent {@link RunnableEntity}.
  * Applicable notifications are also thrown (see {@link CheckpointingHandler}).
  *
+ * @param <E>
+ * @param <C>
+ *
  * @since 1.2
  */
 public abstract class CheckpointingHandlerAbstract<E extends RunnableEntity, C extends Checkpoint<E,?>> extends EntityImpl implements CheckpointingHandler<E,C> {

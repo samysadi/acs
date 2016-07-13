@@ -51,7 +51,7 @@ public class MetaData implements Cloneable {
 	}
 
 	/**
-	 * This method creates and returns a copy of the current meta-data using the {@link Object#clone()} method.
+	 * This method creates and returns a copy of the current meta-data.
 	 *
 	 * <p>The newly created meta-data instance will contain the same <i>data identifier</i> as
 	 * the current instance. In other words, the two instances will be describing the same data.

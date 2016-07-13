@@ -32,6 +32,8 @@ import com.samysadi.acs.core.Simulator;
  * This class defines a pair that contains a traced value,
  * and the time when the traced value was taken.
  *
+ * @param <T>
+ *
  * @since 1.0
  */
 public class TraceItem<T> {

@@ -691,16 +691,24 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * Sets the simulator's random generator to the previous one and
-	 * returns the current random generator (as it was before changing it).
+	 * returns the current random generator (as it was before calling this method).
 	 *
 	 * @return old random generator
+	 *
+	 * @throws IllegalStateException if there is no random generator to restore
 	 */
 	public Random restoreRandomGenerator() {
+		if (this.randoms.isEmpty())
+			throw new IllegalStateException("There is no random generator to restore.");
+
 		return this.randoms.removeLast();
 	}
 
 	/**
 	 * See {@link Simulator#restoreRandomGenerator(int)} for more information about this method.
+	 *
+	 * @return returns current random generator id. Returns 0 if there is no random generator
+	 * in the queue (thus calling {@link Simulator#restoreRandomGenerator()} will throw an exception).
 	 */
 	public int getRandomGeneratorId() {
 		return this.randoms.size();
@@ -709,15 +717,19 @@ public class Simulator extends EntityImpl {
 	/**
 	 * Restores the random context as defined by the given id.
 	 *
-	 * <p>Random generators are usually set at the beginning of a given code block,
-	 * and when the block ends, old random generator is restored.<br/>
-	 * Though, if an exception happens before the block ends, the generator is never restored.
-	 * This is not a problem if exceptions are intended to end the simulation, which
-	 * is the most common expected behavior. Thus, we can avoid to explicitly put the code
-	 * between a try .. finally block which will unnecessarily impact simulation performances.<br/>
-	 * However, if you plan to catch the exception, you may need to restore the random generator
-	 * before continuing. To do so, call the {@link Simulator#getRandomGeneratorId()} method before
-	 * the risky code and call this method when catching an exception.
+	 * <p>A random generator is usually set at the beginning of a code block (using {@link Simulator#setRandomGenerator(Object)} or
+	 * {@link Simulator#setRandomGenerator(Random)}),
+	 * and when the block ends, the old random generator is restored (using this method or
+	 * {@link Simulator#restoreRandomGenerator()}).
+	 *
+	 * <p>The method {@link Simulator#restoreRandomGenerator()} is usually preferred, however
+	 * you may want to restore a random generator using its id.
+	 * To do so, you have to get first the id of the generator using {@link Simulator#getRandomGeneratorId()},
+	 * then using that id you can restore the random generator using this method.
+	 *
+	 * @param id the id of the generator to restore
+	 *
+	 * @throws IllegalArgumentException if there is no random generator matching the id
 	 */
 	public void restoreRandomGenerator(int id) {
 		id = this.randoms.size() - id;
@@ -753,6 +765,7 @@ public class Simulator extends EntityImpl {
 	 * consider alternative time units (minutes, hours, days)
 	 * @param appendUnits if <tt>false</tt> then units are not appended to the returned string. If <tt>useAlternativeUnits</tt> is <tt>true</tt>
 	 * then this parameter is ignored and units are always appended.
+	 *
 	 * @return formatted time
 	 */
 	public static String formatTime(long time, boolean useAlternativeUnits, boolean appendUnits) {
@@ -782,6 +795,9 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * See {@link Simulator#formatTime(long, boolean, boolean) formatTime(time, true, true)}.
+	 *
+	 * @param time
+	 * @return formatted time
 	 */
 	public static String formatTime(long time) {
 		return formatTime(time, true, true);
@@ -817,6 +833,11 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * See {@link Simulator#formatSize(long, boolean, boolean, boolean) formatSize(size, useAlternativeUnits, appendUnits, false)}.
+	 *
+	 * @param size
+	 * @param useAlternativeUnits
+	 * @param appendUnits
+	 * @return formatted size
 	 */
 	public static String formatSize(long size, boolean useAlternativeUnits, boolean appendUnits) {
 		return formatSize(size, useAlternativeUnits, appendUnits, false);
@@ -824,6 +845,9 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * See {@link Simulator#formatSize(long, boolean, boolean) formatSize(size, true, true)}.
+	 *
+	 * @param size
+	 * @return formatted size
 	 */
 	public static String formatSize(long size) {
 		return formatSize(size, true, true);
@@ -831,6 +855,12 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * See {@link Simulator#formatSize(long, boolean, boolean, boolean)}.
+	 *
+	 * @param sizePerSec
+	 * @param useAlternativeUnits
+	 * @param appendUnits
+	 * @param si
+	 * @return formatted data rate
 	 */
 	public static String formatDataRate(long sizePerSec, boolean useAlternativeUnits, boolean appendUnits, boolean si) {
 		StringBuilder sb = new StringBuilder(formatSize(sizePerSec, useAlternativeUnits, appendUnits, si));
@@ -841,6 +871,11 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * See {@link Simulator#formatDataRate(long, boolean, boolean, boolean) formatDataRate(sizePerSec, useAlternativeUnits, appendUnits, false)}.
+	 *
+	 * @param sizePerSec
+	 * @param useAlternativeUnits
+	 * @param appendUnits
+	 * @return formatted data rate
 	 */
 	public static String formatDataRate(long sizePerSec, boolean useAlternativeUnits, boolean appendUnits) {
 		return formatDataRate(sizePerSec, useAlternativeUnits, appendUnits, false);
@@ -848,6 +883,9 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * See {@link Simulator#formatDataRate(long, boolean, boolean) formatDataRate(sizePerSec, true, true)}.
+	 *
+	 * @param sizePerSec
+	 * @return formatted data rate
 	 */
 	public static String formatDataRate(long sizePerSec) {
 		return formatDataRate(sizePerSec, true, true);
@@ -875,6 +913,10 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * See {@link Simulator#formatPrice(long, int, boolean) formatPrice(price, 2, appendUnits)}.
+	 *
+	 * @param price
+	 * @param appendUnits
+	 * @return formatted price
 	 */
 	public static String formatPrice(long price, boolean appendUnits) {
 		return formatPrice(price, 2, appendUnits);
@@ -882,6 +924,9 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * See {@link Simulator#formatPrice(long, boolean) formatPrice(price, true)}.
+	 *
+	 * @param price
+	 * @return formatted price
 	 */
 	public static String formatPrice(long price) {
 		return formatPrice(price, true);
@@ -903,6 +948,9 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * See {@link Simulator#formatMi(long, boolean) formatMi(mi, true)}.
+	 *
+	 * @param mi
+	 * @return formatted mi
 	 */
 	public static String formatMi(long mi) {
 		return formatMi(mi, true);
@@ -924,6 +972,9 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * See {@link Simulator#formatMips(long, boolean) formatMips(mips, true)}.
+	 *
+	 * @param mips
+	 * @return formatted mips
 	 */
 	public static String formatMips(long mips) {
 		return formatMips(mips, true);
@@ -967,6 +1018,9 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * See {@link Simulator#formatPower(long, boolean, boolean) formatPower(power, true, true)}.
+	 *
+	 * @param power
+	 * @return formatted power
 	 */
 	public static String formatPower(long power) {
 		return formatPower(power, true, true);
@@ -1011,6 +1065,9 @@ public class Simulator extends EntityImpl {
 
 	/**
 	 * See {@link Simulator#formatEnergy(long, boolean, boolean) formatEnergy(energy, true, true)}.
+	 *
+	 * @param energy
+	 * @return formatted energy
 	 */
 	public static String formatEnergy(long energy) {
 		return formatEnergy(energy, true, true);

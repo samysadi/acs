@@ -38,6 +38,8 @@ import com.samysadi.acs.core.notifications.Notifier;
 
 /**
  *
+ * @param <T>
+ *
  * @since 1.0
  */
 public class TraceDefault<T> implements Trace<T> {

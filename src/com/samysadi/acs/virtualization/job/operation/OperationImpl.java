@@ -38,6 +38,8 @@ import com.samysadi.acs.virtualization.job.Job;
 
 /**
  *
+ * @param <Resource>
+ *
  * @since 1.0
  */
 public abstract class OperationImpl<Resource> extends RunnableEntityImpl implements Operation<Resource> {

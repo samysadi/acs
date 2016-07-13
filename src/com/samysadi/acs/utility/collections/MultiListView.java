@@ -30,6 +30,8 @@ import java.util.List;
 
 /**
  *
+ * @param <E>
+ *
  * @since 1.0
  */
 public class MultiListView<E> extends AbstractMultiListView<E>{

@@ -54,6 +54,8 @@ import java.util.RandomAccess;
  * If {@code lists()} is not, or contains non-{@link RandomAccess} lists, then you will
  * probably experience important performance issues.
  *
+ * @param <E>
+ *
  * @since 1.0
  */
 public abstract class AbstractMultiListView<E> extends AbstractCollection<E> implements List<E>, RandomAccess {

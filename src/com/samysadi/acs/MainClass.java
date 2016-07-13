@@ -39,6 +39,7 @@ public class MainClass {
 	 * -Xms512m -Xmx1024m
 	 *
 	 * @param args
+	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
 		Simulator simulator = FactoryUtils.generateSimulator();

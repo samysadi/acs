@@ -46,6 +46,9 @@ public class NumberUtils {
 	 * you can find x,y,z such as {@code compareDoubles(x,y)==0}, {@code compareDoubles(y,z)==0} but
 	 * {@code compareDoubles(x,z)>0}
 	 *
+	 * @param a
+	 * @param b
+	 *
 	 * @return -1 if {@code a < b}, 0 if {@code a == b} and 1 if {@code a > b}
 	 */
 	public static int compareDoubles(double a, double b) {

@@ -110,6 +110,10 @@ public final class FactoryUtils {
 
 	/**
 	 *
+	 * @param configName
+	 * @param config
+	 * @param defaultValue
+	 * @return the {@link NumberGenerator}
 	 * @see #generateDouble(String, Config, Double)
 	 */
 	public static NumberGenerator getDoubleGenerator(String configName, Config config, Double defaultValue) {
@@ -183,6 +187,10 @@ public final class FactoryUtils {
 
 	/**
 	 *
+	 * @param configName
+	 * @param config
+	 * @param defaultValue
+	 * @return the {@link NumberGenerator}
 	 * @see #generateLong(String, Config, Long)
 	 */
 	public static NumberGenerator getLongGenerator(String configName, Config config, Long defaultValue) {
@@ -256,6 +264,10 @@ public final class FactoryUtils {
 
 	/**
 	 *
+	 * @param configName
+	 * @param config
+	 * @param defaultValue
+	 * @return the {@link NumberGenerator}
 	 * @see #generateInt(String, Config, Integer)
 	 */
 	public static NumberGenerator getIntGenerator(String configName, Config config, Integer defaultValue) {
@@ -301,6 +313,9 @@ public final class FactoryUtils {
 	 * This method is used in factories when generating objects to define how
 	 * many objects will be generated.<br/>
 	 * For more details, see {@link FactoryUtils#generateInt(String, Config, Integer)}.
+	 * @param config
+	 * @param defaultCount
+	 * @return the generated count
 	 */
 	public static Integer generateCount(Config config, Integer defaultCount) {
 		return generateInt("Count", config, defaultCount);
@@ -356,6 +371,12 @@ public final class FactoryUtils {
 	 * This calls {@link FactoryUtils#linkDevices(Config, NetworkDevice, NetworkDevice, long, long, long, double)}
 	 * such that <b>linkUpBw</b> and <b>linkDownBw</b> are gotten from the device0 configuration contexted with
 	 * {@link FactoryUtils#NetworkInterface_CONTEXT} (default is {@code 100MiB/s}).
+	 * @param config
+	 * @param device0
+	 * @param device1
+	 * @param linkLatency
+	 * @param linkLossRate
+	 * @return an array containing the two created {@link NetworkInterface}s
 	 */
 	public static NetworkInterface[] linkDevices(
 			Config config,
@@ -389,6 +410,14 @@ public final class FactoryUtils {
 	 * <li>networkProvisionerClass: is gotten from given configuration contexted with {@link FactoryUtils#NetworkLink_CONTEXT}.
 	 * </ul>
 	 * Additionally returned network interfaces' configuration are set.
+	 * @param config
+	 * @param device0
+	 * @param device1
+	 * @param linkUpBw
+	 * @param linkDownBw
+	 * @param linkLatency
+	 * @param linkLossRate
+	 * @return an array containing the two created {@link NetworkInterface}s
 	 */
 	public static NetworkInterface[] linkDevices(
 			Config config,
@@ -419,6 +448,10 @@ public final class FactoryUtils {
 	 * such that <b>linkUpBw</b> and <b>linkDownBw</b> are directly gotten from the given <tt>config</tt>
 	 * or from the networkDevice contexted configuration (contexted using {@link FactoryUtils#NetworkInterface_CONTEXT})
 	 * (default is {@code 100MiB/s}).
+	 * @param config
+	 * @param networkDevice
+	 * @param linkLatency
+	 * @param linkLossRate
 	 */
 	public static void connectToInternet(
 			Config config,
@@ -453,6 +486,12 @@ public final class FactoryUtils {
 	 * <li>networkLinkClass: is gotten from given configuration contexted with {@link FactoryUtils#NetworkLink_CONTEXT};
 	 * <li>networkProvisionerClass: is gotten from given configuration contexted with {@link FactoryUtils#NetworkLink_CONTEXT}.
 	 * </ul>
+	 * @param config
+	 * @param networkDevice
+	 * @param linkUpBw
+	 * @param linkDownBw
+	 * @param linkLatency
+	 * @param linkLossRate
 	 */
 	public static void connectToInternet(
 			Config config,

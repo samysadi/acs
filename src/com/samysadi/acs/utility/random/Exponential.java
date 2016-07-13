@@ -53,6 +53,7 @@ public class Exponential extends AbstractRandom {
 	/**
 	 * Creates a new instance based on the current simulator's random generator.
 	 *
+	 * @param mean
 	 * @see Exponential#Exponential(double, Random)
 	 */
 	public Exponential(double mean) {

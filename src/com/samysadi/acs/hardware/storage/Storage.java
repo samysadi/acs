@@ -46,6 +46,8 @@ public interface Storage extends MemoryUnit<StorageFile>, FailureProneEntity {
 
 	/**
 	 * Alias for {@link MemoryUnit#getMemoryZones()}.
+	 *
+	 * @return a list containing all {@link StorageFile}s in this Storage
 	 */
 	public List<StorageFile> getStorageFiles();
 

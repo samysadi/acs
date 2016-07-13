@@ -54,6 +54,9 @@ public class Weibull extends AbstractRandom {
 	/**
 	 * Creates a new instance based on the current simulator's random generator.
 	 *
+	 * @param k
+	 * @param lambda
+	 *
 	 * @see Weibull#Weibull(double, double, Random)
 	 */
 	public Weibull(double k, double lambda) {

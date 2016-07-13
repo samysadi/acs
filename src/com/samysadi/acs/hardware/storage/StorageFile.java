@@ -69,6 +69,8 @@ public interface StorageFile extends MemoryZone {
 
 	/**
 	 * Updates the {@link StorageFileShareMode} of this file.
+	 *
+	 * @param newShareMode
 	 */
 	public void setShareMode(StorageFileShareMode newShareMode);
 

@@ -45,6 +45,8 @@ import com.samysadi.acs.utility.factory.Factory;
 /**
  * This is the default implementation of the {@link LongOperation} interface.
  *
+ * @param <Resource>
+ *
  * @since 1.0
  */
 public abstract class LongOperationImpl<Resource extends LongResource> extends OperationImpl<Resource> implements LongOperation<Resource> {

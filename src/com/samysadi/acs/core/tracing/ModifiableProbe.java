@@ -36,6 +36,8 @@ import com.samysadi.acs.core.notifications.CoreNotificationCodes;
  * to update this probe's value. But you can instead rely on updates
  * from other Probes for instance.
  *
+ * @param <ValueType>
+ *
  * @since 1.0
  */
 public interface ModifiableProbe<ValueType> extends Probe<ValueType> {

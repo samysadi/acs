@@ -30,6 +30,9 @@ import com.samysadi.acs.core.entity.AllocatableEntity;
 
 /**
  *
+ * @param <Zone>
+ * @param <Unit>
+ *
  * @since 1.0
  */
 public interface VirtualMemoryUnit<Zone extends MemoryZone, Unit extends MemoryUnit<Zone>> extends MemoryUnit<Zone>, MemoryZone, AllocatableEntity {

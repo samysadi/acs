@@ -54,6 +54,9 @@ public class Pareto extends AbstractRandom {
 	/**
 	 * Creates a new instance based on the current simulator's random generator.
 	 *
+	 * @param xm
+	 * @param alpha
+	 *
 	 * @see Pareto#Pareto(double, double, Random)
 	 */
 	public Pareto(double xm, double alpha) {

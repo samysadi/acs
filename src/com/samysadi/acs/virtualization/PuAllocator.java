@@ -48,6 +48,7 @@ public interface PuAllocator extends Entity {
 	/**
 	 * Returns the best {@link ProcessingUnit} that should be used for the given computing operation.
 	 *
+	 * @param com
 	 * @return the best {@link ProcessingUnit} that should be used for the given computing operation
 	 */
 	public ProcessingUnit chooseProcessingUnit(ComputingOperation com);

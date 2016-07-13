@@ -93,6 +93,8 @@ public interface Checkpoint<E extends RunnableEntity, P extends Entity> extends 
 	 * Use {@link Checkpoint#copy(MemoryZone)} to copy the checkpoint to another {@link MemoryZone} without losing
 	 * the saved state.
 	 *
+	 * @param zone
+	 *
 	 * @throws IllegalStateException if {@link Checkpoint#canDelete()} returns <tt>false</tt>.
 	 */
 	public void setMemoryZone(MemoryZone zone);

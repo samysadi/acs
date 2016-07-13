@@ -56,6 +56,9 @@ public class Uniform extends AbstractRandom {
 	/**
 	 * Creates a new instance based on the current simulator's random generator.
 	 *
+	 * @param min
+	 * @param max
+	 *
 	 * @see Uniform#Uniform(double, double, Random)
 	 */
 	public Uniform(double min, double max) {
@@ -74,6 +77,8 @@ public class Uniform extends AbstractRandom {
 
 	/**
 	 * Creates a new instance based on the current simulator's random generator.
+	 *
+	 * @param max
 	 *
 	 * @see Uniform#Uniform(double, Random)
 	 */

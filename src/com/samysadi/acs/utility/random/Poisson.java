@@ -51,6 +51,8 @@ public class Poisson extends AbstractRandom {
 	/**
 	 * Creates a new instance based on the current simulator's random generator.
 	 *
+	 * @param lambda
+	 *
 	 * @see Poisson#Poisson(double, Random)
 	 */
 	public Poisson(double lambda) {

@@ -48,6 +48,9 @@ import com.samysadi.acs.virtualization.job.operation.Operation;
  * <p>Note that this provisioner is more accurate and all available capacity is usable,
  * unlike {@link FastFairProvisioner} which may not in some use cases.
  *
+ * @param <OperationType>
+ * @param <Resource>
+ *
  * @since 1.0
  */
 public abstract class FairProvisioner<OperationType extends Operation<Resource>, Resource extends LongResource>

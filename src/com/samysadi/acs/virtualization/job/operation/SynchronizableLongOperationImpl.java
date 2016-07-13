@@ -29,6 +29,8 @@ package com.samysadi.acs.virtualization.job.operation;
 /**
  * A {@link LongOperationImpl} that implements the {@link SynchronizableOperation} interface.
  *
+ * @param <Resource>
+ *
  * @since 1.2
  */
 public abstract class SynchronizableLongOperationImpl<Resource extends LongResource> extends LongOperationImpl<Resource> implements SynchronizableOperation<Resource>{

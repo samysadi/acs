@@ -65,6 +65,8 @@ public interface Notifier extends Cloneable {
 	 * Creates a clone of this {@link Notifier}.
 	 *
 	 * <p>The clone will contain a new empty listeners list and is independent from this object.
+	 *
+	 * @return the created clone
 	 */
 	public Notifier clone();
 
@@ -127,6 +129,7 @@ public interface Notifier extends Cloneable {
 	 * Removes the given <tt>listener</tt> from the list of global listeners.
 	 *
 	 * @param listener
+	 * @return <tt>true</tt> if the listener was removed after this call
 	 */
 	public boolean removeGlobalListener(NotificationListener listener);
 

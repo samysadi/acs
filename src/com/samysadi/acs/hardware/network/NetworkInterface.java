@@ -108,6 +108,7 @@ public interface NetworkInterface extends Entity, FailureProneEntity {
 	public IpAddress getIp();
 
 	/**
+	 * @param ip
 	 */
 	public void setIp(IpAddress ip);
 }

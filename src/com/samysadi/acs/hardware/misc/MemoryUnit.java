@@ -36,6 +36,8 @@ import com.samysadi.acs.utility.NotificationCodes;
 
 /**
  *
+ * @param <Zone>
+ *
  * @since 1.0
  */
 public interface MemoryUnit<Zone extends MemoryZone> extends Entity {

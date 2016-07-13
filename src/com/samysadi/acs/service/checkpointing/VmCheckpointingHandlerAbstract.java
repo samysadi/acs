@@ -42,7 +42,7 @@ import com.samysadi.acs.virtualization.job.Job;
  *
  * <p>The host where a recovered {@link VirtualMachine} is to be placed, might
  * be different from the host where the checkpoint is saved.
- * However, you can override the appropriate method (i.e. {@link #useSameHostForCheckpointAndRecoveredVm()}) so that this implementation will try to place the
+ * However, you can override the appropriate method (i.e. useSameHostForCheckpointAndRecoveredVm) so that this implementation will try to place the
  * checkpoint file in the same host as the host where a potentially recovered VM is
  * to be placed.
  *

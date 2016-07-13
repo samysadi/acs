@@ -39,6 +39,9 @@ import com.samysadi.acs.utility.NotificationCodes;
  * <p>This implementation is different from {@link VirtualMemoryUnitDynamic} in the fact that the occupied size on
  * the parent memory unit can decrease.
  *
+ * @param <Zone>
+ * @param <Unit>
+ *
  * @since 1.0
  */
 public abstract class VirtualMemoryUnitElastic<Zone extends MemoryZone, Unit extends MemoryUnit<Zone>> extends VirtualMemoryUnitImpl<Zone, Unit> {

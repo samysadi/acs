@@ -50,6 +50,7 @@ public class Geometric extends AbstractRandom {
 	/**
 	 * Creates a new instance based on the current simulator's random generator.
 	 *
+	 * @param p
 	 * @see Geometric#Geometric(double, Random)
 	 */
 	public Geometric(double p) {
