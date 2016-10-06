@@ -218,7 +218,9 @@ public class Simulator extends EntityImpl {
 	private static final WeakHashMap<Thread, Simulator> simulators = new WeakHashMap<Thread, Simulator>();
 
 	public static Simulator getSimulator() {
-		return simulators.get(Thread.currentThread());
+		synchronized(simulators) {
+			return simulators.get(Thread.currentThread());
+		}
 	}
 
 	private void init() {
