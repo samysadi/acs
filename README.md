@@ -28,6 +28,8 @@ Sample configuration file can be found [here](http://github.com/samysadi/acs/rel
 # Documentation
 The Html java documentation can be found [here](http://samysadi.github.io/acs/javadoc/).
 
+Additionally, there is a wiki [here](https://github.com/samysadi/acs/wiki) which contains documentation and code examples.
+
 # Contributing
 We accept Pull Requests. Please use the [google group](https://groups.google.com/d/forum/acs-ml) <acs-ml@googlegroups.com> as the main channel of communication for contributors.
 
